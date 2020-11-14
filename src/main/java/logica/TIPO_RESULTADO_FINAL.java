@@ -1,0 +1,7 @@
+package logica;
+
+public enum TIPO_RESULTADO_FINAL {
+PARTICIPANTE1,
+PARTICIPANTE2,
+EMPATE
+}
