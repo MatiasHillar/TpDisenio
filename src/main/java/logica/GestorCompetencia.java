@@ -165,4 +165,8 @@ public class GestorCompetencia {
 		
 	}
 	
+	public static Competencia buscarCompetencia(int id_competencia) {
+		return (new CompetenciaDAOimpl()).buscarPorId(id_competencia);
+	}
+	
 }
