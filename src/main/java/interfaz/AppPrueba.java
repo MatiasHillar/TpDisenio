@@ -21,11 +21,10 @@ public class AppPrueba {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JFrame ventana = new JFrame("Mi app");
+		JFrame ventana = new PanelVerCompetencia(true);
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.pack();
-		ventana.setSize(1280, 720);
-		ventana.setContentPane(new PanelAltaCompetencia(ventana, true));
+		ventana.setSize(1024,655);
 		ventana.setVisible(true);
 	}
 }

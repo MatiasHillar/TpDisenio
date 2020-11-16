@@ -84,7 +84,7 @@ public class PanelAltaCompetencia extends JFrame{
 	ArrayList<Deporte> deportes;
 	HashMap<LugarRealizacion,Integer> lugaresElegidos;
 	boolean permiteEmpate;
-	public PanelAltaCompetencia(JFrame padre, boolean modal) {
+	public PanelAltaCompetencia(boolean modal) {
 		super();
 		inicializarComponentes();
 		armarPanel();

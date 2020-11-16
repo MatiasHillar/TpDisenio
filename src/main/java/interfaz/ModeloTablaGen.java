@@ -2,19 +2,18 @@ package interfaz;
 
 import javax.swing.table.DefaultTableModel;
 
-public class ModeloTablaSedes extends DefaultTableModel {
-	
+public class ModeloTablaGen extends DefaultTableModel{
 	String[] columnas;
 	Object[][] data;
 	
-	public ModeloTablaSedes(Object [][] data,String[] columnas) {
+	public ModeloTablaGen(Object [][] data,String[] columnas) {
 		super();
 		this.data = data;
 		this.columnas = columnas;
 		setDataVector(data,columnas);
 	}
 	
-	public ModeloTablaSedes() {
+	public ModeloTablaGen() {
 		
 	}
 	
@@ -22,6 +21,5 @@ public class ModeloTablaSedes extends DefaultTableModel {
 	public boolean isCellEditable(int row, int column) {
 		return false;
 	}
-	
 	
 }
