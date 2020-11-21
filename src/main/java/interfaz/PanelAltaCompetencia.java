@@ -45,7 +45,7 @@ import javax.swing.table.TableColumn;
 
 import logica.*;
 
-public class PanelAltaCompetencia extends JFrame{
+public class PanelAltaCompetencia extends JPanel{
 	JButton cancelar;
 	JButton aceptar;
 	JButton agregarSede;
@@ -88,11 +88,11 @@ public class PanelAltaCompetencia extends JFrame{
 		super();
 		inicializarComponentes();
 		armarPanel();
-		this.setContentPane(panel);
+	/*	this.setContentPane(panel);
 		this.setSize(1024,720);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);*/
 	}
 	private void inicializarComponentes() {
 		 deportes=GestorDeporte.buscarTodos();
@@ -226,7 +226,7 @@ public class PanelAltaCompetencia extends JFrame{
 	        };
 	     ActionListener cancelarListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				/*dispose();*/
 				System.exit(0);
 			}
 		}; 
@@ -307,7 +307,9 @@ public class PanelAltaCompetencia extends JFrame{
 	
 	
 	private void armarPanel() {
+		this.setLayout(new BorderLayout());
 		panel = new JPanel();
+		this.add(panel);
 		panel.add(splitHorizontal);
 		CardLayout c1 = new CardLayout();
 		basico = panelBasico();

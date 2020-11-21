@@ -8,9 +8,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -24,7 +26,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 
 
 
-public class PanelVerCompetencia extends JFrame {
+public class PanelVerCompetencia extends JPanel {
 	//Componentes Swing
 	JLabel labelDatosComp;
 	JLabel labelNombreC;
@@ -45,8 +47,8 @@ public class PanelVerCompetencia extends JFrame {
 	JButton botonGenFixture;
 	JButton botonVerPartic;
 	JButton botonCancelar;
-	BasicArrowButton botonPagIzq;
-	BasicArrowButton botonPagDer;
+	JButton botonPagIzq;
+	JButton botonPagDer;
 	JPanel panel;
 	JPanel panelIzq;
 	JPanel panelDer;
@@ -61,11 +63,6 @@ public class PanelVerCompetencia extends JFrame {
 		super();
 		inicializarComponentes();
 		armarPanel();
-		this.setContentPane(panel);
-		this.setSize(1024,720);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
-		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 	}
 	private void inicializarComponentes() {
 		//VARIABLES
@@ -98,8 +95,12 @@ public class PanelVerCompetencia extends JFrame {
 		 botonGenFixture.setPreferredSize(new Dimension(300,30));
 		 botonVerPartic.setPreferredSize(new Dimension(300,30));
 		 botonCancelar.setPreferredSize(new Dimension(150,50));
-		 botonPagIzq = new BasicArrowButton(BasicArrowButton.WEST);
-		 botonPagDer = new BasicArrowButton(BasicArrowButton.EAST);
+		 botonPagIzq = new JButton();
+		 botonPagIzq.setIcon(new ImageIcon("src/main/java/interfaz/flechaIzq.png"));
+		 botonPagIzq.setPreferredSize(new Dimension(25,25));
+		 botonPagDer = new JButton();
+		 botonPagDer.setIcon(new ImageIcon("src/main/java/interfaz/flechaDer.png"));
+		 botonPagDer.setPreferredSize(new Dimension(25,25));
 		 //TABLAS
 		 tablaEncuentros = new JTable(3,3);
 		 tablaEncuentros.setPreferredSize(new Dimension(270,210));
@@ -143,6 +144,7 @@ public class PanelVerCompetencia extends JFrame {
 			 construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros());
 	}
 	private void armarPanel() {
+		this.setLayout(new BorderLayout());
 		panel = new JPanel();
 		this.add(panel,BorderLayout.CENTER);
 		SpringLayout layout = new SpringLayout();
@@ -159,7 +161,7 @@ public class PanelVerCompetencia extends JFrame {
 		
 		armarPanelIzq();
 		armarPanelDer();
-		
+
 	}
 	private void armarPanelIzq() {
 		SpringLayout sLayout = new SpringLayout();
@@ -203,10 +205,11 @@ public class PanelVerCompetencia extends JFrame {
 		sLayout.putConstraint(SpringLayout.NORTH,labelPaginador,10,SpringLayout.SOUTH,tablaEncuentros);
 		panelIzq.add(botonPagIzq);
 		sLayout.putConstraint(SpringLayout.EAST,botonPagIzq,-20,SpringLayout.WEST,labelPaginador);
-		sLayout.putConstraint(SpringLayout.NORTH,botonPagIzq,10,SpringLayout.SOUTH,tablaEncuentros);
+		sLayout.putConstraint(SpringLayout.NORTH,botonPagIzq,5,SpringLayout.SOUTH,tablaEncuentros);
 		panelIzq.add(botonPagDer);
 		sLayout.putConstraint(SpringLayout.WEST,botonPagDer,20,SpringLayout.EAST,labelPaginador);
-		sLayout.putConstraint(SpringLayout.NORTH,botonPagDer,10,SpringLayout.SOUTH,tablaEncuentros);
+		sLayout.putConstraint(SpringLayout.NORTH,botonPagDer,5,SpringLayout.SOUTH,tablaEncuentros);
+	
 	}
 	private void armarPanelDer() {
 		SpringLayout sLayout = new SpringLayout();
