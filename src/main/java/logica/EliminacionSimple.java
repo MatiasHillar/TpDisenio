@@ -16,4 +16,8 @@ public class EliminacionSimple extends Competencia implements java.io.Serializab
 		super(deporte, forma, usuario, nombre, permite_empate, estado);
 	};
 	
+	
+	public EliminacionSimple(Deporte deporte, String nombre, String estado) {
+		super(deporte, nombre, estado);
+	}
 }

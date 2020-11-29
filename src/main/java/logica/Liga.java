@@ -19,7 +19,10 @@ public class Liga extends Competencia implements java.io.Serializable {
 		this.puntosPartidoGanado = puntosPartidoGanado;
 		this.puntosPartidoEmpatado = puntosPartidoEmpatado;
 	}
-
+	
+	public Liga(Deporte deporte, String nombre, String estado) {
+		super(deporte, nombre, estado);
+	}
 
 	public Liga(Deporte deporte, FormaPuntuacion forma, Usuario usuario, String nombre, boolean permite_empate, String estado,
 			Integer puntos_pg, Integer puntos_pe) {

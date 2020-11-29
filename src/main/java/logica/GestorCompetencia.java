@@ -4,6 +4,7 @@
 package logica;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -165,8 +166,57 @@ public class GestorCompetencia {
 		
 	}
 	
+	public static List<CompetenciaDTO> buscarCompetenciaPorFiltros(String nombre, String deporte, String modalidad, String estado){
+		
+		List<Competencia> competenciaObj = new ArrayList<Competencia>();
+		CompetenciaDAOimpl daoComp = new CompetenciaDAOimpl();
+		switch(modalidad) {
+		case "Liga":
+			Liga l = new Liga(new Deporte(deporte), nombre,  estado);
+			competenciaObj = daoComp.selectCompetenciaByFilters(l);
+			break;
+			
+			
+		case "Eliminacion Simple":
+			EliminacionSimple es = new EliminacionSimple(new Deporte(deporte), nombre,  estado);
+			competenciaObj = daoComp.selectCompetenciaByFilters(es);
+			break;
+			
+			
+			
+		case "Eliminacion Doble":
+			EliminacionDoble ed = new EliminacionDoble(new Deporte(deporte), nombre,  estado);
+			competenciaObj = daoComp.selectCompetenciaByFilters(ed);
+			break;
+			
+			
+		default:
+			Competencia c = new Competencia(new Deporte(deporte), nombre,  estado);
+			competenciaObj = daoComp.selectCompetenciaByFilters(c);
+			
+		}
+		
+		List<CompetenciaDTO> resultado = new ArrayList<CompetenciaDTO>();
+		
+		for(Competencia comp:competenciaObj) {
+			CompetenciaDTO dto = new CompetenciaDTO(comp.getIdCompetencia(), comp.getDeporte().getNombreDeporte(),  comp.getNombre(), comp.getEstado());
+			resultado.add(dto);
+		}
+		
+		
+		return resultado;
+		
+	}
+	
+	
+
+	
 	public static Competencia buscarCompetencia(int id_competencia) {
-		return (new CompetenciaDAOimpl()).buscarPorId(id_competencia);
+		Competencia c = (new CompetenciaDAOimpl()).buscarPorId(id_competencia);
+		return c;
+		
+		
+		
 	}
 	
 }

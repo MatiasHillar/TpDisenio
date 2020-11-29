@@ -26,7 +26,42 @@ public class CompetenciaDTO {
 	
 	private String[][] fixture;
 	private String[][] disponiblePara;
+	private String[][] participantes;
 	
+	
+	
+	public CompetenciaDTO(Integer idCompetencia, String deporte, String nombre, String estado) {
+		super();
+		this.idCompetencia = idCompetencia;
+		this.deporte = deporte;
+		this.nombre = nombre;
+		this.estado = estado;
+	}
+	
+	
+
+	public CompetenciaDTO(Integer idCompetencia, String deporte, Integer formaPuntuacion, String[] usuario,
+			String nombre, Boolean permiteEmpate, String fechaInicio, String fechaFin, String fechaBaja, String estado,
+			String reglamento, String[][] fixture, String[][] disponiblePara, String[][] participantes) {
+		super();
+		this.idCompetencia = idCompetencia;
+		this.deporte = deporte;
+		this.formaPuntuacion = formaPuntuacion;
+		this.usuario = usuario;
+		this.nombre = nombre;
+		this.permiteEmpate = permiteEmpate;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.fechaBaja = fechaBaja;
+		this.estado = estado;
+		this.reglamento = reglamento;
+		this.fixture = fixture;
+		this.disponiblePara = disponiblePara;
+		this.participantes = participantes;
+	}
+
+
+
 	public CompetenciaDTO(Integer idCompetencia, String deporte, Integer formaPuntuacion, String[] usuario,
 			String nombre, Boolean permiteEmpate, String fechaInicio, String fechaFin, String fechaBaja, String estado,
 			String reglamento, String[][] fixture, String[][] disponiblePara) {

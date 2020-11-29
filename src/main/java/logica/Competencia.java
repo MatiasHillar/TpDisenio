@@ -2,6 +2,7 @@ package logica;
 // default package
 // Generated 7 oct. 2020 00:43:56 by Hibernate Tools 5.4.18.Final
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class Competencia implements java.io.Serializable {
 	private Date fechaBaja;
 	private String estado;
 	private String reglamento;
+	private ArrayList<Participante> participantes;
 	
 	private Set fixtures = new HashSet(0);
 	private Set<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>(0);
@@ -49,6 +51,29 @@ public class Competencia implements java.io.Serializable {
 		this.disponibleParas = disponibleParas;
 	}
 	
+	
+	
+	public Competencia(Integer idCompetencia, Deporte deporte, FormaPuntuacion formaPuntuacion, Usuario usuario,
+			String nombre, Boolean permiteEmpate, Date fechaInicio, Date fechaFin, Date fechaBaja, String estado,
+			String reglamento, ArrayList<Participante> participantes, Set fixtures,
+			Set<DisponiblePara> disponibleParas) {
+		super();
+		this.idCompetencia = idCompetencia;
+		this.deporte = deporte;
+		this.formaPuntuacion = formaPuntuacion;
+		this.usuario = usuario;
+		this.nombre = nombre;
+		this.permiteEmpate = permiteEmpate;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.fechaBaja = fechaBaja;
+		this.estado = estado;
+		this.reglamento = reglamento;
+		this.participantes = participantes;
+		this.fixtures = fixtures;
+		this.disponibleParas = disponibleParas;
+	}
+
 	public Competencia(String nombre, boolean permite_empate, Usuario usuario, Deporte deporte,
 			FormaPuntuacion forma, Set<DisponiblePara> disponibilidades) {
 		this.nombre = nombre;
@@ -67,6 +92,14 @@ public class Competencia implements java.io.Serializable {
 		this.usuario = usuario;
 		this.nombre = nombre;
 		this.permiteEmpate = permite_empate;
+		this.estado = estado;
+	}
+
+	
+
+	public Competencia(Deporte deporte, String nombre, String estado) {
+		this.deporte = deporte;
+		this.nombre = nombre;
 		this.estado = estado;
 	}
 
