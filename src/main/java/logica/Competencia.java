@@ -24,10 +24,22 @@ public class Competencia implements java.io.Serializable {
 	private String estado;
 	private String reglamento;
 	private ArrayList<Participante> participantes;
-	
+	private Fixture fixture;
 	private Set fixtures = new HashSet(0);
 	private Set<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>(0);
 	public Competencia() {
+	}
+
+	public Fixture getFixture() {
+		return fixture;
+	}
+
+	public void setFixture(Fixture fixture) {
+		this.fixture = fixture;
+	}
+
+	public void setParticipantes(ArrayList<Participante> participantes) {
+		this.participantes = participantes;
 	}
 
 	public Competencia(int idCompetencia) {
@@ -208,5 +220,10 @@ public class Competencia implements java.io.Serializable {
 	
 	public void setReglamento(String reglamento) {
 		this.reglamento = reglamento;
+	}
+
+	public ArrayList<Participante> getParticipantes() {
+		// TODO Auto-generated method stub
+		return this.participantes;
 	}
 }

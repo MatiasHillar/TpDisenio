@@ -23,13 +23,37 @@ public class CompetenciaDTO {
 	private String fechaBaja;
 	private String estado;
 	private String reglamento;
-	
+	private String modalidad;
 	private String[][] fixture;
 	private String[][] disponiblePara;
 	private String[][] participantes;
 	
 	
 	
+	public String getModalidad() {
+		return modalidad;
+	}
+
+
+
+	public void setModalidad(String modalidad) {
+		this.modalidad = modalidad;
+	}
+
+
+
+	public String[][] getParticipantes() {
+		return participantes;
+	}
+
+
+
+	public void setParticipantes(String[][] participantes) {
+		this.participantes = participantes;
+	}
+
+
+
 	public CompetenciaDTO(Integer idCompetencia, String deporte, String nombre, String estado) {
 		super();
 		this.idCompetencia = idCompetencia;
@@ -99,6 +123,12 @@ public class CompetenciaDTO {
 
 	
 	
+	public CompetenciaDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public Integer getIdCompetencia() {
 		return idCompetencia;
 	}

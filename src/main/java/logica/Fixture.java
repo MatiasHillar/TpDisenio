@@ -9,5 +9,16 @@ public class Fixture {
 	private TablaDePosiciones tablaDePosiciones;
 	private Competencia competencia; 
 
-	private Set ronda = new HashSet(0);	
+	private Set<Ronda> ronda = new HashSet(0);
+
+	public Set<Ronda> getRonda() {
+		return ronda;
+	}
+
+	public void setRonda(Set<Ronda> ronda) {
+		this.ronda = ronda;
+	}	
+	
+	
+	
 }

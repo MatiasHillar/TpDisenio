@@ -4,6 +4,8 @@
 package logica;
 
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import acceso.CompetenciaDAOimpl;
 import acceso.DisponibilidadDAOimpl;
@@ -211,9 +214,54 @@ public class GestorCompetencia {
 	
 
 	
-	public static Competencia buscarCompetencia(int id_competencia) {
+	public static CompetenciaDTO buscarCompetencia(int id_competencia) {
 		Competencia c = (new CompetenciaDAOimpl()).buscarPorId(id_competencia);
-		return c;
+		CompetenciaDTO dto = new CompetenciaDTO();
+		
+		dto.setNombre(c.getNombre());
+		dto.setDeporte(c.getDeporte().getNombreDeporte());
+		dto.setEstado(c.getEstado());
+		
+		ArrayList<Participante> participantes = c.getParticipantes();
+		String[][] parString = new String[participantes.size()][2];
+		int i=0;
+		
+		for(Participante p:participantes) {
+			parString[i][0] = p.getNombre();
+			parString[i][1] = p.getEmail();
+			i++;
+ 		}
+		
+		dto.setParticipantes(parString);
+		
+		ArrayList<Encuentro> encuentros;
+		ArrayList<Ronda> rondas = new ArrayList<Ronda>(c.getFixture().getRonda());
+		encuentros = (ArrayList<Encuentro>) rondas.stream().map(r -> r.getEncuentros()).
+				flatMap(e -> e.stream()).filter(e -> e.getFecha().after(Date.from(Instant.now()))).collect(Collectors.toList());
+		
+		i=0;
+		String[][] fixture = new String[encuentros.size()][3];
+		
+		for(Encuentro e: encuentros) {
+			fixture[i][0] = e.getParticipante1().getNombre(); 
+			fixture[i][1] = e.getParticipante2().getNombre(); 
+			fixture[i][2] = e.getLugar().getNombre(); 
+			i++;
+		}
+		
+		dto.setFixture(fixture);
+		
+		if(c instanceof Liga)
+			dto.setModalidad("Liga");
+		else
+			if(c instanceof EliminacionSimple)
+				dto.setModalidad("Eliminacion Simple");
+			else
+				dto.setModalidad("Eliminacion Doble");
+		
+		
+		
+		return dto;
 		
 		
 		
