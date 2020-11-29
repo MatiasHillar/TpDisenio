@@ -6,14 +6,18 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import logica.Competencia;
+import logica.Deporte;
 import logica.DisponiblePara;
+import logica.EliminacionDoble;
 import logica.EliminacionSimple;
 import logica.Liga;
+import logica.Participante;
 
 
 
@@ -21,6 +25,8 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 
 	private static final String SELECT_COMPETENCIA = "SELECT * FROM pruebacomp.COMPETENCIA"
 			+ " WHERE 'id_competencia = ?";
+	
+	private static final String SELECT_BY_FILTERS = "SELECT * FROM pruebacomp.COMPETENCIA as COM ";
 	
 	private static final String INSERT_COMPETENCIA = "INSERT INTO pruebacomp.COMPETENCIA "
 
@@ -135,6 +141,75 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public List<Competencia> selectCompetenciaByFilters(Competencia c){
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		List<Competencia> competencias = new ArrayList<Competencia>();
+		//NOMBRE DEPORTE MODALIDAD ESTADO
+		try {
+			String filtros = "";
+			if(c.getEstado() != null) 
+				filtros += "estado=" + c.getEstado() + " ";
+			
+			if(c.getNombre() != null) 
+				filtros += "nombre=" + c.getNombre() + " ";
+			
+			if(c.getDeporte() != null) 
+				filtros += "nombre_deporte=" + c.getDeporte().getNombreDeporte() + " ";
+			
+			if(c instanceof Liga) {
+				pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
+			}
+			else {
+				if(c instanceof EliminacionSimple) {
+					pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
+				}
+				else {
+					if(c instanceof EliminacionDoble) {
+						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
+					}
+					else {
+						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "WHERE " + filtros);
+					}
+				}
+			}
+			
+			
+			ResultSet res = pstmt.executeQuery();
+			
+			if(!res.next())
+				return competencias;
+			else {
+				do {
+					//Nombre deporte modalidad y estado
+					Competencia comp = new Competencia();
+					comp.setIdCompetencia(res.getInt(1));
+					comp.setNombre(res.getString(2));
+					comp.setDeporte(new Deporte(res.getString(8)));
+					comp.setEstado(res.getString(10));
+					
+					competencias.add(comp);
+					
+				} while(res.next());				
+			}		
+			
+			
+			conn.commit();
+			
+			
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return competencias;
+		
+	}
+	
 	
 //	public Integer saveOrUpdate(Competencia c) {
 //		Connection conn = DB.getConexion();

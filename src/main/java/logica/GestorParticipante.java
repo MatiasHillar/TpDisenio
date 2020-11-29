@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import acceso.ParticipanteDAOimpl;
+
 /**
  * @author Pichi
  *
@@ -31,9 +33,9 @@ public class GestorParticipante {
 		
 		p.setNombre(nombre_participante);
 		p.setEmail(email_participante);
-		
+		p.setCompetencia(new Competencia(id_competencia));
 		try {
-			(new ParticipanteDAOimpl()).saveOrUpdate(p, id_competencia);
+			(new ParticipanteDAOimpl()).saveOrUpdate(p);
 		}
 		catch(SQLException e) {
 			return "Hubo un error al guardar el participante";
