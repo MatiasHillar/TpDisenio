@@ -11,11 +11,11 @@ import javax.swing.SpringLayout;
 
 public class PanelListarParticipantes extends JPanel{
 	JLabel labelPartic;
-	JLabel labelNomComp;
 	JButton buttonAgregarP;
 	JButton buttonModificarP;
 	JButton buttonEliminarP;
 	JTable tablaPartic;
+	String nombreC;
 	public PanelListarParticipantes() {
 		super();
 		inicializarComponentes();
@@ -23,8 +23,8 @@ public class PanelListarParticipantes extends JPanel{
 	}
 	private void inicializarComponentes() {
 	//Labels
-	labelPartic = new JLabel("Participantes de Competencia: ");
-	labelNomComp = new JLabel("<HTML><B> COMPE </B> </HTML>");
+	nombreC="";
+	labelPartic = new JLabel("<HTML>Participantes de Competencia: <B>"+nombreC+"</B> </HTML>");
 	//Buttons
 	buttonAgregarP = new JButton("Agregar Nuevo Participante");
 	buttonModificarP = new JButton("Modificar Participante");
@@ -50,9 +50,6 @@ public class PanelListarParticipantes extends JPanel{
 	add(labelPartic);
 	sLayout.putConstraint(SpringLayout.WEST,labelPartic,15,SpringLayout.WEST,this);
 	sLayout.putConstraint(SpringLayout.NORTH,labelPartic,35,SpringLayout.NORTH,this);
-	add(labelNomComp);
-	sLayout.putConstraint(SpringLayout.WEST,labelNomComp,10,SpringLayout.EAST,labelPartic);
-	sLayout.putConstraint(SpringLayout.NORTH,labelNomComp,0,SpringLayout.NORTH,labelPartic);
 	add(tablaPartic);
 	sLayout.putConstraint(SpringLayout.WEST,tablaPartic,100,SpringLayout.WEST,this);
 	sLayout.putConstraint(SpringLayout.NORTH,tablaPartic,100,SpringLayout.NORTH,this);
