@@ -22,7 +22,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
+import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.table.JTableHeader;
 
 
 
@@ -59,15 +61,16 @@ public class PanelVerCompetencia extends JPanel {
 	//Variables
 	ArrayList<String> columnasTablaEncuentros;
 	Integer paginaSeleccionada;
-	public PanelVerCompetencia(boolean modal) {
+	public PanelVerCompetencia() {
 		super();
 		inicializarComponentes();
 		armarPanel();
 	}
 	private void inicializarComponentes() {
-		//VARIABLES
+		
+		//Variables
 		paginaSeleccionada = 1;
-		//LABELS
+		//Labels
 		labelDatosComp = new JLabel("<HTML><B><U>Datos de la competencia: </U></B></HTML>");
 		labelNombreC = new JLabel("<HTML><B><U>Nombre: </U></B></HTML> ");
 		labelMod = new JLabel("<HTML><B><U>Modalidad: </U></B></HTML>");
@@ -80,7 +83,7 @@ public class PanelVerCompetencia extends JPanel {
 		campoDeporte =  new JLabel("EL DEPORTE");
 		campoEstado = new JLabel("EL ESTADO");
 		labelPaginador = new JLabel("<HTML> <B> PAGINA "+ (paginaSeleccionada)+"</B> </HTML>");
-		//BUTTONS
+		//Buttons
 		 botonModComp = new JButton("Modificar Competencia");
 		 botonElimComp = new JButton("Eliminar Competencia");
 		 botonMostrarFixture = new JButton("Mostrar Fixture");
@@ -101,11 +104,26 @@ public class PanelVerCompetencia extends JPanel {
 		 botonPagDer = new JButton();
 		 botonPagDer.setIcon(new ImageIcon("src/main/java/interfaz/flechaDer.png"));
 		 botonPagDer.setPreferredSize(new Dimension(25,25));
-		 //TABLAS
+		 //Color buttons
+		 botonElimComp.setBackground(Color.decode("#112349"));
+		 botonElimComp.setForeground(Color.white);
+		 botonMostrarFixture.setBackground(Color.decode("#112349"));
+		 botonMostrarFixture.setForeground(Color.white);
+		 botonMostrarTabla.setBackground(Color.decode("#112349"));
+		 botonMostrarTabla.setForeground(Color.white);
+		 botonGenFixture.setBackground(Color.decode("#112349"));
+		 botonGenFixture.setForeground(Color.white);
+		 botonVerPartic.setBackground(Color.decode("#112349"));
+		 botonVerPartic.setForeground(Color.white);
+		 botonCancelar.setBackground(Color.decode("#112349"));
+		 botonCancelar.setForeground(Color.white);
+		 
+		 //Tablas
 		 tablaEncuentros = new JTable(3,3);
 		 tablaEncuentros.setPreferredSize(new Dimension(270,210));
 		 tablaParticipantes = new JTable(3,3);
 		 tablaParticipantes.setSize(70,140);
+		 tablaParticipantes.getTableHeader().setForeground(Color.decode("#112349"));
 		 scrollPaneParticipantes = new JScrollPane(tablaParticipantes);
 		 scrollPaneParticipantes.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);  
 		 scrollPaneParticipantes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
@@ -161,7 +179,10 @@ public class PanelVerCompetencia extends JPanel {
 		
 		armarPanelIzq();
 		armarPanelDer();
-
+		//Colores Paneles
+		panel.setBackground(Color.decode("#21489c"));
+		panelIzq.setBackground(Color.decode("#21489c"));
+		panelDer.setBackground(Color.decode("#21489c"));
 	}
 	private void armarPanelIzq() {
 		SpringLayout sLayout = new SpringLayout();
@@ -220,7 +241,9 @@ public class PanelVerCompetencia extends JPanel {
 		sLayout.putConstraint(SpringLayout.NORTH,labelParticipantes,15,SpringLayout.NORTH,panelDer);
 		sLayout.putConstraint(SpringLayout.WEST,scrollPaneParticipantes,45,SpringLayout.WEST,panelDer);
 		sLayout.putConstraint(SpringLayout.NORTH,scrollPaneParticipantes,15,SpringLayout.SOUTH,labelParticipantes);
-
+		botonModComp.setBackground(Color.decode("#112349"));
+		botonModComp.setForeground(Color.white);
+		
 		panelDer.add(botonModComp);
 		sLayout.putConstraint(SpringLayout.WEST,botonModComp,45,SpringLayout.WEST,panelDer);
 		sLayout.putConstraint(SpringLayout.NORTH,botonModComp,35,SpringLayout.SOUTH,scrollPaneParticipantes);
@@ -258,10 +281,12 @@ public class PanelVerCompetencia extends JPanel {
 		 tablaEncuentros.getColumnModel().getColumn(1).setCellRenderer(new GestionCeldasGen("texto"));
 		 tablaEncuentros.getColumnModel().getColumn(2).setCellRenderer(new GestionCeldasGen("texto"));
 		 
+		 
 		 tablaEncuentros.getTableHeader().setReorderingAllowed(false);
 		 tablaEncuentros.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		 tablaEncuentros.setRowHeight(35);
 		 tablaEncuentros.setGridColor(Color.BLACK);
+		
 
 		 tablaEncuentros.getColumnModel().getColumn(0).setPreferredWidth(10);
 		 tablaEncuentros.getColumnModel().getColumn(1).setPreferredWidth(15);
