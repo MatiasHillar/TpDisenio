@@ -84,15 +84,10 @@ public class PanelAltaCompetencia extends JPanel{
 	ArrayList<Deporte> deportes;
 	HashMap<LugarRealizacion,Integer> lugaresElegidos;
 	boolean permiteEmpate;
-	public PanelAltaCompetencia(boolean modal) {
+	public PanelAltaCompetencia() {
 		super();
 		inicializarComponentes();
 		armarPanel();
-	/*	this.setContentPane(panel);
-		this.setSize(1024,720);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
-		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);*/
 	}
 	private void inicializarComponentes() {
 		 deportes=GestorDeporte.buscarTodos();
@@ -111,6 +106,16 @@ public class PanelAltaCompetencia extends JPanel{
 		 agregarSede.setPreferredSize(new Dimension(100,30));
 		 borrarSede = new JButton("Borrar Sede");
 		 borrarSede.setPreferredSize(new Dimension(100,30));
+		 //Color buttons
+		 cancelar.setBackground(Color.decode("#112349"));
+		 cancelar.setForeground(Color.white);
+		 aceptar.setBackground(Color.decode("#112349"));
+		 aceptar.setForeground(Color.white);
+		 agregarSede.setBackground(Color.decode("#112349"));
+		 agregarSede.setForeground(Color.white);
+		 borrarSede.setBackground(Color.decode("#112349"));
+		 borrarSede.setForeground(Color.white);
+		 
 		 //Labels
 		 datosC = new JLabel("<HTML><U><B>Datos de la competencia:</U></B></HTML>");
 		 nombre = new JLabel("Nombre:");
@@ -358,6 +363,17 @@ public class PanelAltaCompetencia extends JPanel{
 		panelDer.add(obligatorio);
 		layout.putConstraint(SpringLayout.WEST,obligatorio,10,SpringLayout.WEST,panelDer);
 		layout.putConstraint(SpringLayout.NORTH,obligatorio,2,SpringLayout.SOUTH,cancelar);
+		
+		//Colores Paneles
+		panel.setBackground(Color.decode("#21489c"));
+		panelDer.setBackground(Color.decode("#21489c"));
+		panelIzq.setBackground(Color.decode("#21489c"));
+		basico.setBackground(Color.decode("#21489c"));
+		cartas.setBackground(Color.decode("#21489c"));
+		cartaLigaP.setBackground(Color.decode("#21489c"));
+		cartaLigaS.setBackground(Color.decode("#21489c"));
+		cartaElimS.setBackground(Color.decode("#21489c"));
+		vacio.setBackground(Color.decode("#21489c"));
 	}
 	
 	private JPanel panelBasico() {

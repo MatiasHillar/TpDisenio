@@ -39,7 +39,7 @@ public class AppPrueba {
 		    // handle exception
 		}
 		JFrame ventana = new JFrame();
-		ventana.setContentPane(new PanelPrincipal());
+		ventana.setContentPane(new PanelListarParticipantes());
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.pack();
 		ventana.setSize(1024,655);

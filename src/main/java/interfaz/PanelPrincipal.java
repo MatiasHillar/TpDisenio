@@ -1,6 +1,7 @@
 package interfaz;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -27,8 +28,13 @@ public class PanelPrincipal extends JPanel{
 		buttonAltaCompetencia = new JButton("Alta de Competencia");
 		buttonListarCompetencias.setPreferredSize(new Dimension(200,50));
 		buttonAltaCompetencia.setPreferredSize(new Dimension(200,50));
+		buttonListarCompetencias.setBackground(Color.decode("#112349"));
+		buttonListarCompetencias.setForeground(Color.white);
+		buttonAltaCompetencia.setBackground(Color.decode("#112349"));
+		buttonAltaCompetencia.setForeground(Color.white);
 	}
 	void armarPanel() {
+		this.setBackground(Color.decode("#21489c"));
 		this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
 		this.add(buttonAltaCompetencia);
 		buttonAltaCompetencia.setAlignmentX(CENTER_ALIGNMENT);
