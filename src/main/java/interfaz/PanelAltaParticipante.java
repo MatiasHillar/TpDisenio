@@ -1,6 +1,7 @@
 package interfaz;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
@@ -9,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+
+import logica.GestorCompetencia;
 
 public class PanelAltaParticipante extends JPanel {
 	JLabel labelAñadir;
@@ -31,7 +34,7 @@ public class PanelAltaParticipante extends JPanel {
 	}
 	private void inicializarComponentes() {
 		//Labels
-		nombreC  = "";
+		nombreC = GestorCompetencia.buscarCompetencia(23).getNombre();
 		labelAñadir = new JLabel("<HTML>Añadir participante a competencia: <B>"+nombreC+"</B> </HTML>");
 		labelDatosP = new JLabel("<HTML> <B> <U> Datos del participante:</U></B>");
 		labelNombre = new JLabel("Nombre: ");
@@ -42,16 +45,24 @@ public class PanelAltaParticipante extends JPanel {
 		//Buttons
 		buttonCancelar = new JButton("Cancelar");
 		buttonAceptar = new JButton("Aceptar");
+		buttonCancelar.setPreferredSize(new Dimension(120,30));
+		buttonAceptar.setPreferredSize(new Dimension(120,30));
+		//Color Buttons
+		buttonCancelar.setBackground(Color.decode("#112349"));
+		buttonCancelar.setForeground(Color.white);
+		buttonAceptar.setBackground(Color.decode("#112349"));
+		buttonAceptar.setForeground(Color.white);
 		//Campos
 		textNombre = new JTextField(10);
 		textCorreo = new JTextField(10);
+		
 	}
 	private void armarPanel() {
 		SpringLayout sLayout = new SpringLayout();
 		SpringLayout s2Layout = new SpringLayout();
 		this.setLayout(s2Layout);
 		JPanel panelInt = new JPanel();
-		panelInt.setPreferredSize(new Dimension(300,200));
+		panelInt.setPreferredSize(new Dimension(450,300));
 		this.add(panelInt, BorderLayout.CENTER);
 		panelInt.setLayout(sLayout);
 		panelInt.add(labelAñadir);
@@ -75,9 +86,14 @@ public class PanelAltaParticipante extends JPanel {
 		sLayout.putConstraint(SpringLayout.WEST,textCorreo,0,SpringLayout.WEST,textNombre);
 		sLayout.putConstraint(SpringLayout.NORTH,textCorreo,-5,SpringLayout.NORTH,labelCorreo);
 		panelInt.add(buttonCancelar);
-		sLayout.putConstraint(SpringLayout.WEST,textCorreo,0,SpringLayout.WEST,textNombre);
-		sLayout.putConstraint(SpringLayout.NORTH,textCorreo,-5,SpringLayout.NORTH,labelCorreo);
+		sLayout.putConstraint(SpringLayout.WEST,buttonCancelar,30,SpringLayout.WEST,panelInt);
+		sLayout.putConstraint(SpringLayout.NORTH,buttonCancelar,35,SpringLayout.SOUTH,textCorreo);
 		panelInt.add(buttonAceptar);
+		sLayout.putConstraint(SpringLayout.WEST,buttonAceptar,70,SpringLayout.EAST,buttonCancelar);
+		sLayout.putConstraint(SpringLayout.NORTH,buttonAceptar,0,SpringLayout.NORTH,buttonCancelar);
+		
+		this.setBackground(Color.decode("#21489c"));
+		panelInt.setBackground(Color.decode("#21489c"));
 	}
 }
 

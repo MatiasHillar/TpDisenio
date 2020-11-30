@@ -24,7 +24,7 @@ import logica.Participante;
 public class CompetenciaDAOimpl implements CompetenciaDAO{
 
 	private static final String SELECT_COMPETENCIA = "SELECT * FROM pruebacomp.COMPETENCIA"
-			+ " WHERE 'id_competencia = ?";
+			+ " WHERE id_competencia = ?";
 	
 	private static final String SELECT_BY_FILTERS = "SELECT * FROM pruebacomp.COMPETENCIA as COM ";
 	
@@ -325,12 +325,12 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 			rs = pstmt.executeQuery();
 			if(!rs.first()) System.out.println("no existe");
 			c = new Competencia();
-		c.setIdCompetencia(rs.getInt("ID"));
+		c.setIdCompetencia(rs.getInt("ID_COMPETENCIA"));
 		c.setFechaInicio(rs.getDate("FECHA_INICIO"));
 		c.setFechaFin(rs.getDate("FECHA_FIN"));
 		c.setNombre(rs.getString("NOMBRE"));
 		c.setPermiteEmpate(rs.getBoolean("PERMITE_EMPATE"));
-	
+		c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
