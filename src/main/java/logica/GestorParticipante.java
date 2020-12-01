@@ -20,7 +20,7 @@ public class GestorParticipante {
 	
 	
 	public static String saveParticipante(int id_competencia, String nombre_participante, String email_participante ) {
-		Participante p = null;
+		Participante p = new Participante();
 		if(nombre_participante.trim().length() == 0) {
 			return "El nombre del participante no puede estar en blanco";
 		}

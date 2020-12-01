@@ -33,6 +33,9 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 			+ "(ESTADO, NOMBRE_DEPORTE, USUARIO_DUENO, PERMITE_EMPATE, NOMBRE, FORMA_PUNTUACION, REGLAMENTO)"
 			+ " VALUES(?, ?, ?, ?, ?, ?, ?)";
 
+	
+	private static final String SELECT_NOMBRE_COMPETENCIA = "SELECT nombre FROM pruebacomp.COMPETENCIA WHERE "
+			+ "id_competencia = ?";
 	private static final String INSERT_LIGA = "INSERT INTO pruebacomp.LIGA VALUES"
 			+ "(?, ?, ?)";
 	
@@ -357,6 +360,32 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 				e.printStackTrace();
 			}
 		}
+		return c;
+	}
+
+
+	public Competencia buscarNombreYParticipantes(int idCompetencia) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Competencia c = new Competencia();
+		try {
+			pstmt = conn.prepareStatement(SELECT_NOMBRE_COMPETENCIA,ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
+			pstmt.setInt(1, idCompetencia);
+			rs = pstmt.executeQuery();
+			if(!rs.first()) System.out.println("no existe");
+			
+			c.setIdCompetencia(idCompetencia);
+			c.setNombre(rs.getString("nombre"));
+			c.setParticipantes((ArrayList<Participante>) (new ParticipanteDAOimpl()).buscar(idCompetencia));
+			
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 		return c;
 	}
 		

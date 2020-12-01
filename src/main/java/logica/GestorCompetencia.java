@@ -28,7 +28,27 @@ import acceso.FormaDePuntuacionDAOimpl;
 public class GestorCompetencia {
 	
 	
-	
+	public static CompetenciaDTO buscarNombreYParticipantes(int idCompetencia) {
+		CompetenciaDTO dto = new CompetenciaDTO();
+		Competencia c = (new CompetenciaDAOimpl()).buscarNombreYParticipantes(idCompetencia);
+			
+		dto.setNombre(c.getNombre());
+		
+		ArrayList<Participante> participantes = c.getParticipantes();
+		String[][] parString = new String[participantes.size()][2];
+		int i=0;
+		
+		for(Participante p:participantes) {
+			parString[i][0] = p.getNombre();
+			parString[i][1] = p.getEmail();
+			i++;
+ 		}
+		
+		dto.setParticipantes(parString);
+		
+		
+		return dto;
+	}
 	
 	
 	public static String saveCompetencia(String nombre, String deporte, HashMap<LugarRealizacion,Integer> lugares,
@@ -261,10 +281,7 @@ public class GestorCompetencia {
 		
 		
 		
-		return dto;
-		
-		
-		
+		return dto;	
 	}
 	
 }
