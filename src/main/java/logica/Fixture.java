@@ -1,5 +1,6 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +32,10 @@ public class Fixture {
 	
 	public Fixture() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public Fixture(ArrayList<Ronda> rondas) {
+		this.ronda = new HashSet<Ronda>(rondas);
 	}
 
 	public void setRonda(Set<Ronda> ronda) {

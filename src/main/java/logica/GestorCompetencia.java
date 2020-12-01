@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -282,6 +283,162 @@ public class GestorCompetencia {
 		
 		
 		return dto;	
+	}
+	
+	
+	public static String generarFixture(CompetenciaDTO compe) {
+		Competencia competencia = (new CompetenciaDAOimpl()).buscarPorId(compe.getIdCompetencia());
+		int cantEncuentrosDisponibles = 0;
+		
+		for(DisponiblePara dispo: competencia.getDisponibleParas()) 
+			cantEncuentrosDisponibles += dispo.getCantidadEncuentros();
+		
+		ArrayList<DisponiblePara> disponibilidadesAAsignar = new ArrayList<DisponiblePara>(competencia.getDisponibleParas());
+		
+		if(competencia.getClass() == Liga.class) {
+			if(competencia.getParticipantes().size()%2==0) {
+				
+				int cantEquipos = competencia.getParticipantes().size();
+				if(cantEncuentrosDisponibles<(cantEquipos-1)*(cantEquipos/2))
+					return "La cantidad de encuentros disponible en los lugares de realizacion es insuficiente. Agregue mas lugares";
+				
+				ArrayList<Ronda> rondas = new ArrayList<Ronda>();
+				for(int i=0,k = 0; i<cantEquipos; i++) {
+					Encuentro[] encuentros = new Encuentro[cantEquipos/2];
+					
+					for(int j=0; j<cantEquipos/2; j++) {
+						encuentros[j] = new Encuentro();
+						encuentros[j].setParticipante1(competencia.getParticipantes().get(k));
+						encuentros[j].setLugar(disponibilidadesAAsignar.get(0).getLugarRealizacion());
+						disponibilidadesAAsignar.get(0).setCantidadEncuentros(
+								disponibilidadesAAsignar.get(0).getCantidadEncuentros()-1);
+						
+						if(disponibilidadesAAsignar.get(0).getCantidadEncuentros()==0)
+							disponibilidadesAAsignar.remove(0);
+						
+						k++;
+						
+						if(k==cantEquipos-1)
+							k=0;
+					}		
+					
+					
+					Ronda ronda = new Ronda();
+					ArrayList<Encuentro> listaEncuentros = new 	ArrayList<Encuentro>();
+					Collections.addAll(listaEncuentros, encuentros);
+					ronda.setEncuentros(listaEncuentros);
+					rondas.add(ronda);
+				}
+				
+				for(int i=0; i<cantEquipos-1; i++) {
+					if(i%2==0)
+						rondas.get(i).getEncuentros().get(0)
+						.setParticipante2(competencia.getParticipantes().get(cantEquipos-1));
+					else {
+						rondas.get(i).getEncuentros().get(0)
+						.setParticipante2(rondas.get(i).getEncuentros().get(0).getParticipante1());
+						
+						rondas.get(i).getEncuentros().get(0).setParticipante1(competencia.getParticipantes().get(cantEquipos-1));
+					}
+				}
+				
+				int equipoImparMasAlto = cantEquipos-2;
+				
+				for(int i=0, k=equipoImparMasAlto; i<cantEquipos-1; i++) {
+					for(int j=1; j<cantEquipos/2; j++) {
+						rondas.get(i).getEncuentros().get(j)
+						.setParticipante2(competencia.getParticipantes().get(k));
+						k--;
+						
+						if(k==-1)
+							k = equipoImparMasAlto;
+					}
+				}
+				
+				Fixture fixture = new Fixture(rondas);
+				for(Ronda ronda: rondas)
+					ronda.setFixture(fixture);
+				competencia.setFixture(fixture);
+				try {
+					(new CompetenciaDAOimpl()).saveOrUpdate(competencia);
+				}
+				catch(SQLException e) {
+					return "Hubo un error al guardar el fixture en la base de datos.";
+				}
+				
+				
+				return "Se generó el fixture exitosamente.";
+				
+			}
+			else {
+				int cantEquipos = competencia.getParticipantes().size();
+				if(cantEncuentrosDisponibles<(cantEquipos)*((cantEquipos-1)/2))
+					return "La cantidad de encuentros disponible en los lugares de realizacion es insuficiente. Agregue mas lugares";
+				
+				
+				ArrayList<Ronda> rondas = new ArrayList<Ronda>();
+				for(int i=0,k = 0; i<cantEquipos; i++) {
+					Encuentro[] encuentros = new Encuentro[cantEquipos/2];
+					
+					for(int j=-1; j<cantEquipos/2; j++) {
+						
+						if(j>=0) {
+						encuentros[j] = new Encuentro();
+						encuentros[j].setParticipante1(competencia.getParticipantes().get(k));
+						encuentros[j].setLugar(disponibilidadesAAsignar.get(0).getLugarRealizacion());
+						disponibilidadesAAsignar.get(0).setCantidadEncuentros(
+								disponibilidadesAAsignar.get(0).getCantidadEncuentros()-1);
+						
+						if(disponibilidadesAAsignar.get(0).getCantidadEncuentros()==0)
+							disponibilidadesAAsignar.remove(0);
+						}
+						k++;
+						
+						if(k==cantEquipos)
+							k=0;
+					}		
+					
+					
+					Ronda ronda = new Ronda();
+					ArrayList<Encuentro> listaEncuentros = new 	ArrayList<Encuentro>();
+					Collections.addAll(listaEncuentros, encuentros);
+					ronda.setEncuentros(listaEncuentros);
+					rondas.add(ronda);
+				}
+				
+				
+				int equipoMasAlto = cantEquipos-1;
+				
+				for(int i=0, k=equipoMasAlto; i<cantEquipos; i++) {
+					for(int j=1; j<cantEquipos/2; j++) {
+						rondas.get(i).getEncuentros().get(j)
+						.setParticipante2(competencia.getParticipantes().get(k));
+						k--;
+						
+						if(k==-1)
+							k = equipoMasAlto;
+					}
+				}
+				
+				Fixture fixture = new Fixture(rondas);
+				for(Ronda ronda: rondas)
+					ronda.setFixture(fixture);
+				competencia.setFixture(fixture);
+				try {
+					(new CompetenciaDAOimpl()).saveOrUpdate(competencia);
+				}
+				catch(SQLException e) {
+					return "Hubo un error al guardar el fixture en la base de datos.";
+				}
+				
+				
+				return "Se generó el fixture exitosamente.";
+				
+			}	
+		}
+		
+		
+		return "Aun no implementado";
 	}
 	
 }
