@@ -3,6 +3,10 @@ package interfaz;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -32,15 +36,31 @@ public class PanelAltaParticipante extends JPanel {
 		inicializarComponentes();
 		armarPanel();
 	}
+	
+	 @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Graphics2D g2d = (Graphics2D) g;
+	        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+	        int w = getWidth();
+	        int h = getHeight();
+	        Color color1 = Color.decode("#2148bc");
+	        Color color2 = Color.decode("#10104a");
+	        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
+	        g2d.setPaint(gp);
+	        g2d.fillRect(0, 0, w, h);
+	    }
 	private void inicializarComponentes() {
 		//Labels
 		//nombreC = GestorCompetencia.buscarCompetencia(23).getNombre();
+
 		nombreC = GestorCompetencia.buscarNombreYParticipantes(23).getNombre();
-		labelAñadir = new JLabel("<HTML>Añadir participante a competencia: <B>"+nombreC+"</B> </HTML>");
+		labelAñadir = new JLabel("<HTML><B>Añadir participante a competencia: <font color='gray'>"+nombreC+"</font color='gray'></B> </HTML>");
+
 		labelDatosP = new JLabel("<HTML> <B> <U> Datos del participante:</U></B>");
 		labelNombre = new JLabel("Nombre: ");
 		labelCorreo = new JLabel("Direccion de correo electronico:");
-		labelCamposOb = new JLabel("<HTML> Todos los campos marcados con <font color='red'> (*) <font colot='black'> son obligatorios");
+		labelCamposOb = new JLabel("<HTML><B> <font color='gray'>Todos los campos marcados con </font color='gray'><font color='red'> (*) <font color='gray'> son obligatorios</B></font color='gray'>");
 		labelOblig1 = new JLabel("<HTML><font color='red'> (*) </HTML>");
 		labelOblig2 = new JLabel("<HTML><font color='red'> (*) </HTML>");
 		//Buttons
@@ -92,9 +112,12 @@ public class PanelAltaParticipante extends JPanel {
 		panelInt.add(buttonAceptar);
 		sLayout.putConstraint(SpringLayout.WEST,buttonAceptar,70,SpringLayout.EAST,buttonCancelar);
 		sLayout.putConstraint(SpringLayout.NORTH,buttonAceptar,0,SpringLayout.NORTH,buttonCancelar);
-		
-		this.setBackground(Color.decode("#21489c"));
-		panelInt.setBackground(Color.decode("#21489c"));
+		panelInt.add(labelCamposOb);
+		sLayout.putConstraint(SpringLayout.WEST,labelCamposOb,0,SpringLayout.WEST,labelCorreo);
+		sLayout.putConstraint(SpringLayout.NORTH,labelCamposOb,10,SpringLayout.SOUTH,buttonCancelar);
+
+
+		panelInt.setOpaque(false);
 	}
 }
 
