@@ -165,13 +165,13 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		//NOMBRE DEPORTE MODALIDAD ESTADO
 		try {
 			String filtros = "";
-			if(c.getEstado() != null) 
+			if(c.getEstado() != "<Ninguno>") 
 				filtros += "estado=" + c.getEstado() + " ";
 			
-			if(c.getNombre() != null) 
+			if(!c.getNombre().equals("")) 
 				filtros += "nombre=" + c.getNombre() + " ";
 			
-			if(c.getDeporte() != null) 
+			if(c.getDeporte().getNombreDeporte() != "<Ninguno>") 
 				filtros += "nombre_deporte=" + c.getDeporte().getNombreDeporte() + " ";
 			
 			if(c instanceof Liga) {

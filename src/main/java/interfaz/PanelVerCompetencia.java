@@ -3,9 +3,13 @@ package interfaz;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -25,6 +29,8 @@ import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.JTableHeader;
+
+import logica.GestorCompetencia;
 
 
 
@@ -60,16 +66,30 @@ public class PanelVerCompetencia extends JPanel {
 	JScrollPane scrollPaneParticipantes;
 	//Variables
 	ArrayList<String> columnasTablaEncuentros;
+	
 	Integer paginaSeleccionada;
 	public PanelVerCompetencia() {
 		super();
 		inicializarComponentes();
 		armarPanel();
 	}
+	protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        int w = getWidth();
+        int h = getHeight();
+        Color color1 = Color.decode("#2148bc");
+        Color color2 = Color.decode("#10104a");
+        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, w, h);
+    }
 	private void inicializarComponentes() {
 		
 		//Variables
 		paginaSeleccionada = 1;
+		
 		//Labels
 		labelDatosComp = new JLabel("<HTML><B><U>Datos de la competencia: </U></B></HTML>");
 		labelNombreC = new JLabel("<HTML><B><U>Nombre: </U></B></HTML> ");
@@ -159,8 +179,10 @@ public class PanelVerCompetencia extends JPanel {
 				}
 			};
 			botonPagIzq.addActionListener(pagIzqListener);
-			 construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros());
+			//construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros());
+			construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
 	}
+	
 	private void armarPanel() {
 		this.setLayout(new BorderLayout());
 		panel = new JPanel();
@@ -321,4 +343,31 @@ public class PanelVerCompetencia extends JPanel {
 		return null;
 	}
 	
+	private void construirTablaParticipantes(String[] columna,
+			Object[][] datosParticipantes) {
+		 ModeloTablaParticipantes model = new ModeloTablaParticipantes(datosParticipantes,columna);
+		 tablaParticipantes.setModel(model);
+		
+		
+		 tablaParticipantes.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasGen("texto"));
+
+		 tablaParticipantes.getTableHeader().setReorderingAllowed(false);
+		 tablaParticipantes.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+		 tablaParticipantes.setRowHeight(35);
+		 tablaParticipantes.setGridColor(Color.BLACK);
+		
+
+		 tablaParticipantes.getColumnModel().getColumn(0).setPreferredWidth(100);
+
+	}
+	private Object[][] obtenerArrayDatosParticipantes() {
+		String[][] nombresParticipantes = new String[GestorCompetencia.buscarNombreYParticipantes(23).getParticipantes().length][2];
+		nombresParticipantes = GestorCompetencia.buscarNombreYParticipantes(23).getParticipantes();
+		return nombresParticipantes;
+	}
+	private String[] setearColumnasParticipantes() {
+		String[] Columna = new String[1]; 
+		Columna[0] = "Nombre Participante";
+		return Columna;
+	}
 }

@@ -194,6 +194,11 @@ public class GestorCompetencia {
 		
 		List<Competencia> competenciaObj = new ArrayList<Competencia>();
 		CompetenciaDAOimpl daoComp = new CompetenciaDAOimpl();
+		
+		if(nombre.equals("") && deporte.equals("<Ninguno>") && modalidad.equals("<Ninguna>") && estado.equals("<Ninguna>")) {
+			competenciaObj = daoComp.buscar();
+		}
+		else {
 		switch(modalidad) {
 		case "Liga":
 			Liga l = new Liga(new Deporte(deporte), nombre,  estado);
@@ -218,8 +223,8 @@ public class GestorCompetencia {
 			Competencia c = new Competencia(new Deporte(deporte), nombre,  estado);
 			competenciaObj = daoComp.selectCompetenciaByFilters(c);
 			
+			}
 		}
-		
 		List<CompetenciaDTO> resultado = new ArrayList<CompetenciaDTO>();
 		
 		for(Competencia comp:competenciaObj) {

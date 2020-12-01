@@ -52,8 +52,6 @@ public class PanelAltaParticipante extends JPanel {
 	    }
 	private void inicializarComponentes() {
 		//Labels
-		//nombreC = GestorCompetencia.buscarCompetencia(23).getNombre();
-
 		nombreC = GestorCompetencia.buscarNombreYParticipantes(23).getNombre();
 		labelAñadir = new JLabel("<HTML><B>Añadir participante a competencia: <font color='gray'>"+nombreC+"</font color='gray'></B> </HTML>");
 

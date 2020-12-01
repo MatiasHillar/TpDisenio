@@ -1,5 +1,7 @@
 package interfaz;
 
+import java.awt.Color;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -38,8 +40,8 @@ public class AppPrueba {
 		} catch (IllegalAccessException e) {
 		    // handle exception
 		}
-		JFrame ventana = new JFrame();
-		ventana.setContentPane(new PanelAltaParticipante());
+		JFrame ventana = new JFrame();	
+		ventana.setContentPane(new PanelPrincipal());
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.pack();
 		ventana.setSize(1024,655);
