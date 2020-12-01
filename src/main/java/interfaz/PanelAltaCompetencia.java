@@ -6,10 +6,15 @@ import java.awt.Color;
 import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.List;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -40,6 +45,8 @@ import javax.swing.MutableComboBoxModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -89,6 +96,21 @@ public class PanelAltaCompetencia extends JPanel{
 		inicializarComponentes();
 		armarPanel();
 	}
+	
+	
+	@Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        int w = getWidth();
+        int h = getHeight();
+        Color color1 = Color.decode("#2148bc");
+        Color color2 = Color.decode("#10104a");
+        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, w, h);
+    }
 	private void inicializarComponentes() {
 		 deportes=GestorDeporte.buscarTodos();
 		 panelDer=new JPanel();
@@ -123,11 +145,11 @@ public class PanelAltaCompetencia extends JPanel{
 		 sedes = new JLabel("Sedes:");
 		 modalidad = new JLabel("Modalidad: ");
 		 reglamento = new JLabel("<HTML><B>Reglamento:</B></HTML>");
-		 obligatorio = new JLabel("<HTML>Todos los campos marcados con <FONT COLOR=RED>(*) </FONT COLOR=RED> son obligatorios</HTML>");
+		 obligatorio = new JLabel("<HTML><B><FONT COLOR=GRAY>Todos los campos marcados con </FONT COLOR=GRAY><FONT COLOR=RED>(*) </FONT COLOR=RED> <FONT COLOR=GRAY>son obligatorios </FONT COLOR=GRAY> </B></HTML>");
 		 formaPunt = new JLabel("<HTML>Forma de <br> Puntuacion: </HTML>");
 		 
 		 //Campos y modelos
-		 campoReglamento = new JTextArea("<< Aquí escriba el reglamento >>",20,30);
+		 campoReglamento = new JTextArea("<< Aquí escriba el reglamento >>",20,20);
 		 campoNombre = new JTextField(5);
 		 campoDeporte = new JComboBox();
 		 for (Deporte d : deportes) {
@@ -231,8 +253,10 @@ public class PanelAltaCompetencia extends JPanel{
 	        };
 	     ActionListener cancelarListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*dispose();*/
-				System.exit(0);
+				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+				ventana.setContentPane(new PanelPrincipal());
+				ventana.revalidate();
+				ventana.repaint();
 			}
 		}; 
 		 ActionListener agregarSedeListener = new ActionListener() {
@@ -347,7 +371,6 @@ public class PanelAltaCompetencia extends JPanel{
 		layout.putConstraint(SpringLayout.WEST,cartas,1,SpringLayout.WEST,splitVertical);
 		layout.putConstraint(SpringLayout.NORTH,cartas,10,SpringLayout.NORTH,splitVertical);
 		//PANEL REGLAMENTO
-
 		panelDer.add(aceptar);
 		layout.putConstraint(SpringLayout.WEST,aceptar,230,SpringLayout.WEST,panelDer);
 		layout.putConstraint(SpringLayout.NORTH,aceptar,540,SpringLayout.NORTH,panelDer);
@@ -361,19 +384,27 @@ public class PanelAltaCompetencia extends JPanel{
 		layout.putConstraint(SpringLayout.WEST,scrollTexto,45,SpringLayout.WEST,panelDer);
 		layout.putConstraint(SpringLayout.NORTH,scrollTexto,20,SpringLayout.SOUTH,reglamento);
 		panelDer.add(obligatorio);
-		layout.putConstraint(SpringLayout.WEST,obligatorio,10,SpringLayout.WEST,panelDer);
+		layout.putConstraint(SpringLayout.WEST,obligatorio,0,SpringLayout.WEST,scrollTexto);
 		layout.putConstraint(SpringLayout.NORTH,obligatorio,2,SpringLayout.SOUTH,cancelar);
 		
 		//Colores Paneles
-		panel.setBackground(Color.decode("#21489c"));
-		panelDer.setBackground(Color.decode("#21489c"));
+		panel.setOpaque(false);
+		panelDer.setOpaque(false);
+		panelIzq.setOpaque(false);
+		basico.setOpaque(false);
+		cartas.setOpaque(false);
+		cartaLigaP.setOpaque(false);
+		cartaLigaS.setOpaque(false);
+		cartaElimS.setOpaque(false);
+		vacio.setOpaque(false);
+		/*panelDer.setBackground(Color.decode("#21489c"));
 		panelIzq.setBackground(Color.decode("#21489c"));
 		basico.setBackground(Color.decode("#21489c"));
 		cartas.setBackground(Color.decode("#21489c"));
 		cartaLigaP.setBackground(Color.decode("#21489c"));
 		cartaLigaS.setBackground(Color.decode("#21489c"));
 		cartaElimS.setBackground(Color.decode("#21489c"));
-		vacio.setBackground(Color.decode("#21489c"));
+		vacio.setBackground(Color.decode("#21489c"));*/
 	}
 	
 	private JPanel panelBasico() {
