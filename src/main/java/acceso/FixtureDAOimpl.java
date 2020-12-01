@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
 
+import logica.Competencia;
 import logica.Fixture;
+import logica.Participante;
 import logica.Ronda;
 
 public class FixtureDAOimpl implements FixtureDAO {
@@ -17,6 +19,8 @@ public class FixtureDAOimpl implements FixtureDAO {
 			+ " WHERE id_fixture = ?";
 	
 	private static final String DELETE_FIXTURE = "DELETE FROM pruebacomp.FIXTURE WHERE id_competencia = ?";
+	
+	private static final String SELECT_FIXTURE_COMP = "SELECT * FROM pruebacomp.FIXTURE WHERE id_competencia = ?";
 	
 	private RondaDAO daoR = new RondaDAOimpl();
 	
@@ -78,6 +82,37 @@ public class FixtureDAOimpl implements FixtureDAO {
 	public Fixture buscarPorId(int id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	
+	public Fixture buscarPorIdCompetencia(int idCompetencia) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Fixture f = new Fixture();
+		
+		try {
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(SELECT_FIXTURE_COMP);
+			pstmt.setInt(1, idCompetencia);
+			ResultSet res = pstmt.executeQuery();
+			
+			
+			if(res.next()) {
+				
+				f = new Fixture(res.getInt(1), ((RondaDAOimpl) daoR).buscarPorIdFixture(res.getInt(1)));
+			}
+			conn.commit();
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return f;
+		
+		
 	}
 
 }

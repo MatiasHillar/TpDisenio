@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Fixture {
@@ -13,6 +14,23 @@ public class Fixture {
 
 	public Set<Ronda> getRonda() {
 		return ronda;
+	}
+	
+	public Fixture(Integer idFixture) {
+		this.idFixture = idFixture;
+	}
+	
+	
+	public Fixture(Integer idFixture, List<Ronda> rondas) {
+		this.idFixture = idFixture;
+		this.ronda = new HashSet<Ronda>(rondas);
+		
+	}
+	
+	
+	
+	public Fixture() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public void setRonda(Set<Ronda> ronda) {

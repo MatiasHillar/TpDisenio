@@ -344,6 +344,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		c.setPermiteEmpate(rs.getBoolean("PERMITE_EMPATE"));
 		c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 		c.setParticipantes((ArrayList<Participante>) (new ParticipanteDAOimpl()).buscar(c.getIdCompetencia()));
+		c.setFixture((new FixtureDAOimpl()).buscarPorIdCompetencia(id));
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
