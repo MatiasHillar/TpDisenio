@@ -4,6 +4,8 @@ public class Resultado {
 private Integer id;
 private Participante p1;
 private Participante p2;
+private Encuentro e;
+
 public Participante getP1() {
 	return p1;
 }
@@ -18,6 +20,12 @@ public void setP2(Participante p2) {
 }
 public Integer getId() {
 	return id;
+}
+public Encuentro getE() {
+	return e;
+}
+public void setE(Encuentro e) {
+	this.e = e;
 }
 
 }

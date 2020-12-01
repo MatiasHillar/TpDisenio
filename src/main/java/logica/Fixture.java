@@ -17,6 +17,30 @@ public class Fixture {
 
 	public void setRonda(Set<Ronda> ronda) {
 		this.ronda = ronda;
+	}
+
+	public Competencia getCompetencia() {
+		return competencia;
+	}
+
+	public void setCompetencia(Competencia competencia) {
+		this.competencia = competencia;
+	}
+
+	public Integer getIdFixture() {
+		return idFixture;
+	}
+
+	public void setIdFixture(Integer idFixture) {
+		this.idFixture = idFixture;
+	}
+
+	public TablaDePosiciones getTablaDePosiciones() {
+		return tablaDePosiciones;
+	}
+
+	public void setTablaDePosiciones(TablaDePosiciones tablaDePosiciones) {
+		this.tablaDePosiciones = tablaDePosiciones;
 	}	
 	
 	

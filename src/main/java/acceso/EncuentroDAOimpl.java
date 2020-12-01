@@ -1,0 +1,60 @@
+package acceso;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import logica.Encuentro;
+
+public class EncuentroDAOimpl implements EncuentroDAO{
+
+	private static final String INSERT_ENCUENTRO = "INSERT INTO pruebacomp.ENCUENTRO = (id_ronda)";
+
+	private static final String UPDATE_ENCUENTRO = "UPDATE pruebacomp.ENCUENTRO SET id_resultado = ?"
+			+ " WHERE id_encuentro = ?";
+	
+	private ResultadoDAO daoRes = new ResultadoDAOimpl();
+	
+	@Override
+	public Encuentro saveOrUpdate(Connection conn, Encuentro e) {
+		PreparedStatement pstmt = null;
+		ResultSet generatedKeys = null;
+		try {
+			if(e.getIdEncuentro()==null) {
+				pstmt = conn.prepareStatement(INSERT_ENCUENTRO, Statement.RETURN_GENERATED_KEYS);
+				pstmt.setInt(1, e.getRonda().getIdRonda());
+				pstmt.executeUpdate();
+			}
+			else {
+				pstmt = conn.prepareStatement(UPDATE_ENCUENTRO);
+				pstmt.setInt(1, e.getResultado().getId());
+				pstmt.setInt(2, e.getIdEncuentro());
+			}
+			generatedKeys = pstmt.getGeneratedKeys();
+			if(generatedKeys.next()) e.setIdEncuentro(generatedKeys.getInt(1));
+			daoRes.saveOrUpdate(conn, e.getResultado());
+			
+		}
+		catch(SQLException e2) {
+			e2.printStackTrace();
+		}
+	finally {
+		try {
+			if(pstmt!=null) pstmt.close();	
+		}
+		catch(SQLException e2){
+			e2.printStackTrace();
+		}
+	}
+		return e;
+	}
+
+	@Override
+	public void delete(Connection conn, int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

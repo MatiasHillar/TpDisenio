@@ -24,7 +24,6 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 	
 	private static final String SELECT_COMP_PARTICIPANTES = "SELECT * FROM pruebacomp.PARTICIPANTE"
 			+ " WHERE id_competencia=?";
-			
 	
 	private static final String INSERT_PARTICIPANTE = "INSERT INTO pruebacomp.PARTICIPANTE (nombre, email, id_competencia) "
 			+ "VALUES(?,?,?)";
@@ -106,6 +105,7 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 		
 	}
 
+	//busca por competencia
 	@Override
 	public List<Participante> buscar(int idCompetencia) {
 		Connection conn = DB.getConexion();

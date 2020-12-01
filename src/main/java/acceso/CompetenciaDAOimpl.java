@@ -56,6 +56,8 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 	
 	private FormaDePuntuacionDAO daoFP = new FormaDePuntuacionDAOimpl();
 	private DisponibilidadDAO daoDisp = new DisponibilidadDAOimpl();
+	private ParticipanteDAO daoP = new ParticipanteDAOimpl();
+	private FixtureDAO daoF = new FixtureDAOimpl();
 	
 	public void saveOrUpdate(Competencia c) throws SQLException{
 		Connection conn = DB.getConexion();
@@ -86,6 +88,8 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					pstmt1.setInt(2, ((Liga)c).getPuntosPartidoEmpatado());
 					pstmt1.setInt(3, c.getIdCompetencia());
 					pstmt1.executeUpdate();
+					//borrar fixture si se cambió de estado
+					daoF.delete(conn, c.getIdCompetencia());
 				}	
 			}
 			else {
@@ -117,6 +121,8 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					c.setIdCompetencia(keyComp);
 					pstmt1.setInt(1, keyComp);
 					pstmt1.execute();
+					//agregar fixture
+					daoF.saveOrUpdate(conn, c.getFixture());
 			}
 				
 			}
@@ -126,6 +132,12 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 				System.out.println(c.getIdCompetencia());
 				daoDisp.saveOrUpdate(disp, conn);
 			}
+			
+			for(Participante p : c.getParticipantes()) {
+				daoP.saveOrUpdate(p);
+			}
+				
+			
 			
 			conn.commit();
 		}

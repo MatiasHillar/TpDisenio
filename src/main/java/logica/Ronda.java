@@ -6,6 +6,7 @@ public class Ronda {
 	private Integer idRonda;
 	private TIPO_RONDA tipo;
 	private ArrayList<Encuentro> encuentros;
+	private Fixture fixture;
 
 	public TIPO_RONDA getTipo() {
 		return tipo;
@@ -29,6 +30,14 @@ public class Ronda {
 
 	public void setEncuentros(ArrayList<Encuentro> encuentros) {
 		this.encuentros = encuentros;
+	}
+
+	public Fixture getFixture() {
+		return fixture;
+	}
+
+	public void setFixture(Fixture fixture) {
+		this.fixture = fixture;
 	}
 	
 	
