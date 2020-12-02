@@ -67,6 +67,19 @@ public class GestorUsuario {
 		
 		
 		return "Usuario registrado con exito!";
+	}
+	
+	
+	public static int autenticarUsuario(String password, String email) {
+		int id = (new UsuarioDAOimpl()).autenticarUsuario(email, password);
+		if(id != -1)
+			setUsuarioAutenticado(id);
+		
+		
+		return id;
+		
 		
 	}
+	
+	
 }

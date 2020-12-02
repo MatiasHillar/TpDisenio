@@ -21,7 +21,7 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	private static final String SELECT_USUARIO = "SELECT * FROM pruebacomp.usuario WHERE"
 			+ " ID_USUARIO = ?";
 	
-	private static final String AUTENTICAR_USER = "SELECT password=crypt(?, password) AND email=crypt(?, email) FROM pruebacomp.usuario";
+	private static final String AUTENTICAR_USER = "SELECT id_usuario FROM pruebacomp.usuario WHERE password=crypt(?, password) AND email=crypt(?, email);";
 	
 	private static final String CHECK_EXISTENCE = "SELECT email=crypt(?, email) FROM pruebacomp.usuario";
 	
@@ -129,29 +129,28 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	
 	
 	
-	public boolean autenticarUsuario(String email, String password) {
+	public int autenticarUsuario(String email, String password) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+		int id = -1;
 		try {
 			pstmt = conn.prepareStatement(AUTENTICAR_USER);
 			pstmt.setString(1, password);
 			pstmt.setString(2, email);
 			rs = pstmt.executeQuery();
 			
-			if(rs.getBoolean(1))
-				return true;
-			else
-				return false;
+			if(rs.first())
+				id = rs.getInt(1);
+				
+			
 			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
-			return false;
 		}
 		
-		
+		return id;
 		
 		
 	}
