@@ -1,6 +1,7 @@
 package acceso;
 
 import java.beans.Statement;
+import java.io.Closeable;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import logica.Competencia;
+import logica.CompetenciaDTO;
 import logica.Deporte;
 import logica.DisponiblePara;
 import logica.EliminacionDoble;
@@ -23,7 +25,7 @@ import logica.Participante;
 
 public class CompetenciaDAOimpl implements CompetenciaDAO{
 
-	private static final String SELECT_COMPETENCIA = "SELECT * FROM pruebacomp.COMPETENCIA"
+	private static final String SELECT_COMPETENCIA = "SELECT * FROM pruebacomp.COMPETENCIA, pruebacomp.?"
 			+ " WHERE id_competencia = ?";
 	
 	private static final String SELECT_BY_FILTERS = "SELECT * FROM pruebacomp.COMPETENCIA as COM ";
@@ -36,6 +38,11 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 	
 	private static final String SELECT_NOMBRE_COMPETENCIA = "SELECT nombre FROM pruebacomp.COMPETENCIA WHERE "
 			+ "id_competencia = ?";
+	
+	private static final String SELECT_COMPETENCIA_BYUSR = "SELECT nombre, estado, deporte,"
+			+ " id_competencia FROM pruebacomp.COMPETENCIA, pruebacomp.?"
+			+ " WHERE usuario_dueno = ?";
+	
 	private static final String INSERT_LIGA = "INSERT INTO pruebacomp.LIGA VALUES"
 			+ "(?, ?, ?)";
 	
@@ -57,10 +64,13 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 	private static final String DELETE_COMPETENCIA = "DELETE FROM pruebacomp.COMPETENCIA WHERE "
 			+ "'id_competencia' = ?";
 	
+	
+	
 	private FormaDePuntuacionDAO daoFP = new FormaDePuntuacionDAOimpl();
 	private DisponibilidadDAO daoDisp = new DisponibilidadDAOimpl();
 	private ParticipanteDAO daoP = new ParticipanteDAOimpl();
 	private FixtureDAO daoF = new FixtureDAOimpl();
+	private DeporteDAO daoD = new DeporteDAOimpl();
 	
 	public void saveOrUpdate(Competencia c) throws SQLException{
 		Connection conn = DB.getConexion();
@@ -94,6 +104,11 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					//borrar fixture si se cambió de estado
 					daoF.delete(conn, c.getIdCompetencia());
 				}	
+			
+				for(Participante p : c.getParticipantes()) {
+				daoP.saveOrUpdate(p);
+			}
+				
 			}
 			else {
 				pstmt = conn.prepareStatement(INSERT_COMPETENCIA, java.sql.Statement.RETURN_GENERATED_KEYS);
@@ -124,8 +139,6 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					c.setIdCompetencia(keyComp);
 					pstmt1.setInt(1, keyComp);
 					pstmt1.execute();
-					//agregar fixture
-					//daoF.saveOrUpdate(conn, c.getFixture());
 			}
 				
 			}
@@ -136,9 +149,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 				daoDisp.saveOrUpdate(disp, conn);
 			}
 			
-			/*for(Participante p : c.getParticipantes()) {
-				daoP.saveOrUpdate(p);
-			}*/
+		
 				
 			
 			
@@ -300,7 +311,71 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 //		
 //		return key;
 //	}
-
+	
+	//@Override
+	public List<Competencia> buscarPorUsr(int id_participante){
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Competencia> lista = new ArrayList<Competencia>();
+		try {
+			pstmt = conn.prepareStatement(SELECT_COMPETENCIA_BYUSR);
+			pstmt.setString(1, "LIGA");
+			pstmt.setInt(2, id_participante);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				while(rs.next()) {
+					Competencia c = new Liga();
+					c.setNombre(rs.getString("NOMBRE"));
+					c.setEstado(rs.getString("ESTADO"));
+					c.setIdCompetencia(rs.getInt("ID_COMPETENCIA"));
+					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
+					lista.add(c);
+				}
+			}
+			pstmt.setString(1, "ELIMINACION_SIMPLE");
+			pstmt.setInt(2, id_participante);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				while(rs.next()) {
+					Competencia c = new EliminacionSimple();
+					c.setNombre(rs.getString("NOMBRE"));
+					c.setEstado(rs.getString("ESTADO"));
+					c.setIdCompetencia(rs.getInt("ID_COMPETENCIA"));
+					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
+					lista.add(c);
+				}
+			}
+			pstmt.setString(1, "ELIMINACION_DOBLE");
+			pstmt.setInt(2, id_participante);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				while(rs.next()) {
+					Competencia c = new EliminacionDoble();
+					c.setNombre(rs.getString("NOMBRE"));
+					c.setEstado(rs.getString("ESTADO"));
+					c.setIdCompetencia(rs.getInt("ID_COMPETENCIA"));
+					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
+					lista.add(c);
+				}
+			}
+			
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(pstmt!=null)pstmt.close();
+				if(conn!=null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
+	}
+	
 	public void delete(int id) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
@@ -336,16 +411,38 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		Competencia c = null;
 		try {
 			pstmt = conn.prepareStatement(SELECT_COMPETENCIA,ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
-			pstmt.setInt(1, id);
+			
+			pstmt.setString(1, "LIGA");
+			pstmt.setInt(2, id);
 			rs = pstmt.executeQuery();
-			if(!rs.first()) System.out.println("no existe");
-			c = new Competencia();
+			if(rs.next()) {
+				c = new Liga();
+				((Liga)c).setPuntosPartidoGanado(rs.getInt("PUNTOS_PARTIDO_GANADO"));
+				((Liga)c).setPuntosPartidoEmpatado(rs.getInt("PUNTOS_PARTIDO_EMPATADO"));
+			}
+			else {
+				pstmt.setString(1, "ELIMINACION_SIMPLE");
+				pstmt.setInt(2, id);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					c = new EliminacionSimple();
+				}
+				else {
+					pstmt.setString(1, "ELIMINACION_DOBLE");
+					pstmt.setInt(2, id);
+					rs = pstmt.executeQuery();
+					if(rs.next()) {
+						c = new EliminacionDoble();
+				}
+			}
+			}
 		c.setIdCompetencia(rs.getInt("ID_COMPETENCIA"));
 		c.setFechaInicio(rs.getDate("FECHA_INICIO"));
 		c.setFechaFin(rs.getDate("FECHA_FIN"));
 		c.setNombre(rs.getString("NOMBRE"));
 		c.setPermiteEmpate(rs.getBoolean("PERMITE_EMPATE"));
 		c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
+		c.setEstado(rs.getString("ESTADO"));
 		c.setParticipantes((ArrayList<Participante>) (new ParticipanteDAOimpl()).buscar(c.getIdCompetencia()));
 		c.setFixture((new FixtureDAOimpl()).buscarPorIdCompetencia(id));
 		}

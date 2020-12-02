@@ -33,7 +33,8 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 	
 	private static final String DELETE_PARTICIPANTE = "DELETE FROM pruebacomp.PARTICIPANTE WHERE id_participante=?";
 	
-	
+	private static final String DELETE_BY_FILTERS = "DELETE FROM pruebacomp.PARTICIPANTE WHERER"
+			+ " nombre = ? AND email = ?";
 	
 	
 	@Override
@@ -105,6 +106,33 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 		
 	}
 
+	@Override
+	public void deleteByFilters(String nombre, String email) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(DELETE_BY_FILTERS);
+			pstmt.setString(1, nombre);
+			pstmt.setString(2, email);
+			pstmt.execute();
+			
+			conn.commit();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			if(pstmt!=null)pstmt.close();
+			if(conn!=null)conn.close();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	//busca por competencia
 	@Override
 	public List<Participante> buscar(int idCompetencia) {
