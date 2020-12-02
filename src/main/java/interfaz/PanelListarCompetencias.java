@@ -147,7 +147,25 @@ public class PanelListarCompetencias extends JPanel {
             	}
         };
         buttonCancelar.addActionListener(cancelarListener);
- 
+        /*
+         * 
+         * TODO: EL COSO DE DESHABILITAR
+         * EL BOTON DE VER COMPETENCIA
+         * 
+         * 
+         * 
+         */
+        
+        ActionListener altaCompetenciaListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+				ventana.setContentPane(new PanelAltaCompetencia());
+				ventana.revalidate();
+				ventana.setLocationRelativeTo(null);
+				ventana.repaint();
+            	}
+        };
+        buttonCrearComp.addActionListener(altaCompetenciaListener);
         construirTablaCompetencias(setearColumnasCompetencias(),obtenerMatrizCompetencias());
 	}
 	

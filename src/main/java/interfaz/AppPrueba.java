@@ -5,6 +5,9 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
+import logica.GestorCompetencia;
+
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class AppPrueba {
@@ -41,10 +44,17 @@ public class AppPrueba {
 		    // handle exception
 		}
 		JFrame ventana = new JFrame();	
-		ventana.setContentPane(new PanelPrincipal());
+		ventana.setContentPane(new PanelListarParticipantes(GestorCompetencia.buscarCompetencia(23)));
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.pack();
 		ventana.setSize(1024,655);
+		ventana.setLocationRelativeTo(null);
 		ventana.setVisible(true);
+		/*FUNCIONES PARA LAS VENTANAS
+		 * ventana.setContentPane(new PanelListarParticipantes(GestorCompetencia.buscarNombreYParticipantes(23)));
+		 * 
+		 * 
+		 * 
+		 */
 	}
 }

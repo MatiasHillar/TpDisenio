@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -35,8 +37,9 @@ public class PanelListarParticipantes extends JPanel{
 	JScrollPane scrollPaneParticipantes;
 	CompetenciaDTO dtoComp;
 	String nombreC;
-	public PanelListarParticipantes() {
+	public PanelListarParticipantes(CompetenciaDTO dtoC) {
 		super();
+		dtoComp = dtoC;
 		inicializarComponentes();
 		armarPanel();
 	}
@@ -55,8 +58,6 @@ public class PanelListarParticipantes extends JPanel{
     }
 	private void inicializarComponentes() {
 	//Labels
-	dtoComp = GestorCompetencia.buscarNombreYParticipantes(23);
-	UIManager.put("nimbusBase", Color.decode("#0c053b"));
 	nombreC=dtoComp.getNombre();
 	labelPartic = new JLabel("<HTML>Participantes de Competencia: <B>"+nombreC+"</B> </HTML>");
 	labelPartic.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
@@ -99,7 +100,18 @@ public class PanelListarParticipantes extends JPanel{
 			//ParticipanteDAO.delete(SELECCIONADO);
 		}
 	};
-	
+	ActionListener AgregarParticipanteListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			//ParticipanteDAO.delete(SELECCIONADO);
+			JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+			ventana.setContentPane(new PanelAltaParticipante(dtoComp));
+			ventana.setSize(new Dimension(400,350));
+			ventana.setLocationRelativeTo(null);
+			ventana.revalidate();
+			ventana.repaint();
+		}
+	};
+	buttonAgregarP.addActionListener(AgregarParticipanteListener);
 	}
 	
 	private void armarPanel() {
