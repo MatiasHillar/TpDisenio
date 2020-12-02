@@ -65,4 +65,47 @@ public class LocalidadDAOimpl implements LocalidadDAO {
 		return localidades;
 	}
 
+	public int buscarId(String nombreLocalidad, String nombreProvincia) {
+		HttpURLConnection conn = null;
+		int id = -1;
+		try {
+			URL url = new URL("https://apis.datos.gob.ar/georef/api/localidades-censales?orden=nombre&aplanar=true&"
+					+ "campos=basico&max=5000&exacto=true&provincia=" + nombreProvincia + "&nombre=" + nombreLocalidad);
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			InputStream is = conn.getInputStream();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+			StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
+		    String line;
+		    while ((line = rd.readLine()) != null) {
+		        response.append(line);
+		        response.append('\r');
+		      }
+		      rd.close();
+		    
+		      Object obj = new JSONParser().parse(response.toString());
+		      JSONObject json = (JSONObject) obj;
+		      if(((int) json.get("cantidad"))!=1)
+		    	  System.out.println("EXISTE MAS DE UNA CIUDAD CON EL MISMO NOMBRE EN LA PROVINCIA");
+		      
+		      JSONArray array = (JSONArray) json.get("localidades_censales");
+		      
+		     
+		      JSONObject jsonob = (JSONObject) array.get(0);
+		      id = ((int) jsonob.get("id"));
+		      
+		      
+		      
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(conn != null)
+			conn.disconnect();
+		}
+		
+		return id;
+	}
+
 }

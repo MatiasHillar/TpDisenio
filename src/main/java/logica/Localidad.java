@@ -25,7 +25,11 @@ public class Localidad implements java.io.Serializable {
 	public Localidad(String nombre) {
 		this.nombre = nombre;
 	}
-
+	
+	public Localidad(String nombre, Integer idLocalidad) {
+		this.idLocalidad = idLocalidad;
+		this.nombre = nombre;
+	}
 	public Localidad(Integer idLocalidad, String nombre, Set usuarios) {
 		this.idLocalidad = idLocalidad;
 		//this.provincia = provincia;

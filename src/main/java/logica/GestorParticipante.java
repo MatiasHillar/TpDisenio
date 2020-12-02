@@ -45,7 +45,7 @@ public class GestorParticipante {
 		return "Exito";
 	}
 	
-	private static boolean validarEmail(String email) {
+	public static boolean validarEmail(String email) {
 		Matcher matcher = patron_email_valido.matcher(email);
 		return matcher.find();
 	}

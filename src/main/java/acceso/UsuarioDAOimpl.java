@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import excepciones.UsuarioExistenteException;
 import logica.Usuario;
 
 public class UsuarioDAOimpl implements UsuarioDAO {
@@ -20,20 +21,29 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	private static final String SELECT_USUARIO = "SELECT * FROM pruebacomp.usuario WHERE"
 			+ " ID_USUARIO = ?";
 	
-	private static final String AUTENTICAR_USER = "SELECT password=crypt(?, password) AND email=crypt(?, email) FROM pruebacomp.usuario";
+	private static final String AUTENTICAR_USER = "SELECT id_usuario FROM pruebacomp.usuario WHERE password=crypt(?, password) AND email=crypt(?, email);";
 	
+	private static final String CHECK_EXISTENCE = "SELECT email=crypt(?, email) FROM pruebacomp.usuario";
 	
-	public Usuario saveOrUpdate(Usuario u) {
+	public Usuario saveOrUpdate(Usuario u) throws UsuarioExistenteException {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
 			if(u.getIdUsuario() == null) {
-				pstmt = conn.prepareStatement(INSERT_USUARIO);
-				pstmt.setString(1, u.getNombre());
-				pstmt.setString(2, u.getNombre());
-				pstmt.setString(3, u.getEmail());
-				pstmt.setString(4, u.getPassword());
-				pstmt.setString(5, u.getLocalidad().getNombre());
+				
+				pstmt = conn.prepareStatement(CHECK_EXISTENCE);
+				pstmt.setString(1, u.getEmail());
+				ResultSet rs = pstmt.executeQuery();
+				if(!rs.getBoolean(1))
+					throw (new UsuarioExistenteException());
+				else {
+					pstmt = conn.prepareStatement(INSERT_USUARIO);
+					pstmt.setString(1, u.getNombre());
+					pstmt.setString(2, u.getNombre());
+					pstmt.setString(3, u.getEmail());
+					pstmt.setString(4, u.getPassword());
+					pstmt.setString(5, u.getLocalidad().getNombre());
+				}
 			}
 			else {
 				pstmt = conn.prepareStatement(UPDATE_USUARIO);
@@ -119,29 +129,28 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	
 	
 	
-	public boolean autenticarUsuario(String email, String password) {
+	public int autenticarUsuario(String email, String password) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+		int id = -1;
 		try {
 			pstmt = conn.prepareStatement(AUTENTICAR_USER);
 			pstmt.setString(1, password);
 			pstmt.setString(2, email);
 			rs = pstmt.executeQuery();
 			
-			if(rs.getBoolean(1))
-				return true;
-			else
-				return false;
+			if(rs.first())
+				id = rs.getInt(1);
+				
+			
 			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
-			return false;
 		}
 		
-		
+		return id;
 		
 		
 	}
