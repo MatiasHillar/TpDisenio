@@ -11,14 +11,17 @@ import logica.Usuario;
 public class UsuarioDAOimpl implements UsuarioDAO {
 	private static final String INSERT_USUARIO = "INSERT INTO pruebacomp.usuario (NOMBRE, APELLIDO, "
 			+ "EMAIL, PASSWORD, LOCALIDAD) "
-			+ "VALUES (?, ?, ?, ?, ?)";
+			+ "VALUES (?, ?, crypt(?, 'bf'), crypt(?, 'bf'), ?)";
 	private static final String UPDATE_USUARIO = "UPDATE pruebacomp.usuario SET NOMBRE = ?, APELLIDO = ?"
-			+ ", EMAIL = ?, PASSWORD = ?, LOCALIDAD = ?"
+			+ ", EMAIL = crypt(?, 'bf'), PASSWORD = crypt(?, 'bf'), LOCALIDAD = ?"
 			+ " WHERE ID_USUARIO = ?"; 
 	private static final String DELETE_USUARIO = "DELETE FROM pruebacomp.usuario WHERE "
 			+ "ID_USUARIO = ?";
 	private static final String SELECT_USUARIO = "SELECT * FROM pruebacomp.usuario WHERE"
 			+ " ID_USUARIO = ?";
+	
+	private static final String AUTENTICAR_USER = "SELECT password=crypt(?, password) AND email=crypt(?, email) FROM pruebacomp.usuario";
+	
 	
 	public Usuario saveOrUpdate(Usuario u) {
 		Connection conn = DB.getConexion();
@@ -112,6 +115,35 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 			}
 		}
 		return us;
+	}
+	
+	
+	
+	public boolean autenticarUsuario(String email, String password) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(AUTENTICAR_USER);
+			pstmt.setString(1, password);
+			pstmt.setString(2, email);
+			rs = pstmt.executeQuery();
+			
+			if(rs.getBoolean(1))
+				return true;
+			else
+				return false;
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		
+		
+		
 	}
 		
 

@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class Localidad implements java.io.Serializable {
 
-	private String idLocalidad;
+	private Integer idLocalidad;
 	//private Provincia provincia;
 	private String nombre;
 	private Set usuarios = new HashSet(0);
@@ -18,22 +18,26 @@ public class Localidad implements java.io.Serializable {
 	public Localidad() {
 	}
 
-	public Localidad(String idLocalidad) {
+	public Localidad(Integer idLocalidad) {
 		this.idLocalidad = idLocalidad;
 	}
+	
+	public Localidad(String nombre) {
+		this.nombre = nombre;
+	}
 
-	public Localidad(String idLocalidad, String nombre, Set usuarios) {
+	public Localidad(Integer idLocalidad, String nombre, Set usuarios) {
 		this.idLocalidad = idLocalidad;
 		//this.provincia = provincia;
 		this.nombre = nombre;
 		this.usuarios = usuarios;
 	}
 
-	public String getIdLocalidad() {
+	public Integer getIdLocalidad() {
 		return this.idLocalidad;
 	}
 
-	public void setIdLocalidad(String idLocalidad) {
+	public void setIdLocalidad(Integer idLocalidad) {
 		this.idLocalidad = idLocalidad;
 	}
 

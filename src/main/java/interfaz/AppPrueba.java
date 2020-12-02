@@ -1,9 +1,15 @@
 package interfaz;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import acceso.ProvinciaDAOimpl;
+import logica.Localidad;
+import logica.Provincia;
 
 public class AppPrueba {
 	public static void main(String[] args) {
