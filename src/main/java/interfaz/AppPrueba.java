@@ -1,15 +1,18 @@
 package interfaz;
 
+
 import java.util.ArrayList;
+import java.awt.Color;
+
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
+import logica.GestorCompetencia;
+
 import javax.swing.UnsupportedLookAndFeelException;
 
-import acceso.ProvinciaDAOimpl;
-import logica.Localidad;
-import logica.Provincia;
 
 public class AppPrueba {
 	public static void main(String[] args) {
@@ -44,11 +47,18 @@ public class AppPrueba {
 		} catch (IllegalAccessException e) {
 		    // handle exception
 		}
-		JFrame ventana = new JFrame();
-		ventana.setContentPane(new PanelAltaParticipante());
+		JFrame ventana = new JFrame();	
+		ventana.setContentPane(new PanelListarParticipantes(GestorCompetencia.buscarCompetencia(23)));
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.pack();
 		ventana.setSize(1024,655);
+		ventana.setLocationRelativeTo(null);
 		ventana.setVisible(true);
+		/*FUNCIONES PARA LAS VENTANAS
+		 * ventana.setContentPane(new PanelListarParticipantes(GestorCompetencia.buscarNombreYParticipantes(23)));
+		 * 
+		 * 
+		 * 
+		 */
 	}
 }

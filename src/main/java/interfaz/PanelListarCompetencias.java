@@ -10,7 +10,9 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -22,7 +24,11 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
+
+
+import logica.CompetenciaDTO;
 import logica.Deporte;
+import logica.GestorCompetencia;
 import logica.GestorDeporte;
 import logica.GestorUsuario;
 import logica.Usuario;
@@ -106,6 +112,7 @@ public class PanelListarCompetencias extends JPanel {
 		comboMod.setPreferredSize(new Dimension(125,30));
 		comboEstado.setPreferredSize(new Dimension(125,30));
 		textfNombre = new JTextField(10);
+		textfNombre.setText("");
 		
 		//Cargo Comboboxes
 		comboDep.addItem("<Ninguno>");
@@ -116,7 +123,7 @@ public class PanelListarCompetencias extends JPanel {
 		comboMod.addItem("Liga");
 		comboMod.addItem("Elimin. Simple");
 		comboMod.addItem("Elimin. Doble");
-		comboEstado.addItem("<Ninguna>");
+		comboEstado.addItem("<Ninguno>");
 		comboEstado.addItem("Creada");
 		comboEstado.addItem("Planificada");
 		comboEstado.addItem("En Disputa");
@@ -140,7 +147,28 @@ public class PanelListarCompetencias extends JPanel {
             	}
         };
         buttonCancelar.addActionListener(cancelarListener);
+        /*
+         * 
+         * TODO: EL COSO DE DESHABILITAR
+         * EL BOTON DE VER COMPETENCIA
+         * 
+         * 
+         * 
+         */
+        
+        ActionListener altaCompetenciaListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+				ventana.setContentPane(new PanelAltaCompetencia());
+				ventana.revalidate();
+				ventana.setLocationRelativeTo(null);
+				ventana.repaint();
+            	}
+        };
+        buttonCrearComp.addActionListener(altaCompetenciaListener);
+        construirTablaCompetencias(setearColumnasCompetencias(),obtenerMatrizCompetencias());
 	}
+	
 	private void armarPanel() {
 	this.setBackground(Color.decode("#21489c"));
 	SpringLayout sLayout = new SpringLayout();
@@ -190,6 +218,51 @@ public class PanelListarCompetencias extends JPanel {
 	add(buttonVerComp);
 	sLayout.putConstraint(SpringLayout.EAST,buttonVerComp,-15,SpringLayout.EAST,scrollPaneCompetencias);
 	sLayout.putConstraint(SpringLayout.NORTH,buttonVerComp,20,SpringLayout.SOUTH,scrollPaneCompetencias);
+	}
+	
+	private void construirTablaCompetencias(String[] columnas, Object[][] datos) {
+		// TODO Auto-generated method stub
+		ModeloTablaCompetencias model = new ModeloTablaCompetencias(datos,columnas);
+		tablaCompetencias.setModel(model);
+		
+		
+		tablaCompetencias.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasGen("texto"));
+		tablaCompetencias.getColumnModel().getColumn(1).setCellRenderer(new GestionCeldasGen("texto"));
+		tablaCompetencias.getColumnModel().getColumn(2).setCellRenderer(new GestionCeldasGen("texto"));
+		tablaCompetencias.getColumnModel().getColumn(3).setCellRenderer(new GestionCeldasGen("texto"));
+
+		tablaCompetencias.getTableHeader().setReorderingAllowed(false);
+		tablaCompetencias.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+		tablaCompetencias.setRowHeight(35);
+		tablaCompetencias.setGridColor(Color.BLACK);
+		
+		tablaCompetencias.getColumnModel().getColumn(0).setPreferredWidth(250);
+		tablaCompetencias.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tablaCompetencias.getColumnModel().getColumn(2).setPreferredWidth(250);
+		tablaCompetencias.getColumnModel().getColumn(3).setPreferredWidth(250);
+		
+	}
+	private Object[][] obtenerMatrizCompetencias() {
+		List<CompetenciaDTO> listaComps = new ArrayList<CompetenciaDTO>();
+		System.out.println("ESTE ES EL TXT:"+textfNombre.getText().trim()+"A");
+		listaComps = GestorCompetencia.buscarCompetenciaPorFiltros(textfNombre.getText().trim(),comboDep.getSelectedItem().toString(),comboMod.getSelectedItem().toString(),comboEstado.getSelectedItem().toString());
+		String[][] matrizCompetencias = new String[listaComps.size()][4];
+		int i=0;
+		for (CompetenciaDTO cDTO : listaComps) {
+			matrizCompetencias[i][0] = cDTO.getNombre();
+			matrizCompetencias[i][1] = cDTO.getDeporte();
+			matrizCompetencias[i][2] = cDTO.getModalidad();
+			matrizCompetencias[i][3] = cDTO.getEstado();
+		}
+		return matrizCompetencias;
+	}
+	private String[] setearColumnasCompetencias() {
+		String[] columnas = new String[4];
+		columnas[0] = "Nombre";
+		columnas[1] = "Deporte";
+		columnas[2] = "Modalidad";
+		columnas[3] = "Estado";
+		return columnas;
 	}
 	
 }
