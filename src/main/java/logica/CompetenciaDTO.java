@@ -132,7 +132,9 @@ public class CompetenciaDTO {
 	public Integer getIdCompetencia() {
 		return idCompetencia;
 	}
-
+	public void setIdCompetencia(Integer idComp) {
+		 this.idCompetencia = idComp;
+	}
 
 	public String getDeporte() {
 		return deporte;

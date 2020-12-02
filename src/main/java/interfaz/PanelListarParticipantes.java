@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
@@ -59,15 +60,15 @@ public class PanelListarParticipantes extends JPanel{
 	private void inicializarComponentes() {
 	//Labels
 	nombreC=dtoComp.getNombre();
-	labelPartic = new JLabel("<HTML>Participantes de Competencia: <B>"+nombreC+"</B> </HTML>");
+	labelPartic = new JLabel("<HTML>Participantes de Competencia: <B>"+nombreC+"</B> </HTML>",SwingConstants.CENTER);
 	labelPartic.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
 	//Buttons
 	buttonAgregarP = new JButton("Agregar Nuevo Participante");
 	buttonModificarP = new JButton("Modificar Participante");
 	buttonEliminarP = new JButton("Eliminar Participante");
-	buttonAgregarP.setPreferredSize(new Dimension(240,30));
-	buttonModificarP.setPreferredSize(new Dimension(240,30));
-	buttonEliminarP.setPreferredSize(new Dimension(240,30));
+	buttonAgregarP.setPreferredSize(new Dimension(200,30));
+	buttonModificarP.setPreferredSize(new Dimension(200,30));
+	buttonEliminarP.setPreferredSize(new Dimension(200,30));
 	//Color Buttons
 	buttonModificarP.setEnabled(false);
 	buttonEliminarP.setEnabled(false);
@@ -80,11 +81,11 @@ public class PanelListarParticipantes extends JPanel{
 	
 	//Tablas
 	tablaParticipantes = new JTable();
-	tablaParticipantes.setPreferredSize(new Dimension(824,200));
+	tablaParticipantes.setPreferredSize(new Dimension(400,200));
 	scrollPaneParticipantes = new JScrollPane(tablaParticipantes);
 	scrollPaneParticipantes.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);  
 	scrollPaneParticipantes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
-	scrollPaneParticipantes.setPreferredSize(new Dimension(824,200));
+	scrollPaneParticipantes.setPreferredSize(new Dimension(400,200));
 	construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
 	
 	//Listeners
@@ -118,21 +119,20 @@ public class PanelListarParticipantes extends JPanel{
 	SpringLayout sLayout = new SpringLayout();
 	this.setLayout(sLayout);
 	add(labelPartic);
-	sLayout.putConstraint(SpringLayout.WEST,labelPartic,15,SpringLayout.WEST,this);
-	sLayout.putConstraint(SpringLayout.NORTH,labelPartic,35,SpringLayout.NORTH,this);
-	
+	sLayout.putConstraint(SpringLayout.WEST,labelPartic,45,SpringLayout.WEST,this);
+	sLayout.putConstraint(SpringLayout.NORTH,labelPartic,50,SpringLayout.NORTH,this);
 	add(scrollPaneParticipantes);
-	sLayout.putConstraint(SpringLayout.WEST,scrollPaneParticipantes,100,SpringLayout.WEST,this);
+	sLayout.putConstraint(SpringLayout.WEST,scrollPaneParticipantes,50,SpringLayout.WEST,this);
 	sLayout.putConstraint(SpringLayout.NORTH,scrollPaneParticipantes,100,SpringLayout.NORTH,this);
 	add(buttonAgregarP);
-	sLayout.putConstraint(SpringLayout.WEST,buttonAgregarP,292,SpringLayout.WEST,scrollPaneParticipantes);
-	sLayout.putConstraint(SpringLayout.NORTH,buttonAgregarP,30,SpringLayout.SOUTH,scrollPaneParticipantes);
+	sLayout.putConstraint(SpringLayout.WEST,buttonAgregarP,100,SpringLayout.WEST,scrollPaneParticipantes);
+	sLayout.putConstraint(SpringLayout.NORTH,buttonAgregarP,20,SpringLayout.SOUTH,scrollPaneParticipantes);
 	add(buttonModificarP);
 	sLayout.putConstraint(SpringLayout.WEST,buttonModificarP,0,SpringLayout.WEST,buttonAgregarP);
-	sLayout.putConstraint(SpringLayout.NORTH,buttonModificarP,30,SpringLayout.SOUTH,buttonAgregarP);
+	sLayout.putConstraint(SpringLayout.NORTH,buttonModificarP,20,SpringLayout.SOUTH,buttonAgregarP);
 	add(buttonEliminarP);
 	sLayout.putConstraint(SpringLayout.WEST,buttonEliminarP,0,SpringLayout.WEST,buttonAgregarP);
-	sLayout.putConstraint(SpringLayout.NORTH,buttonEliminarP,30,SpringLayout.SOUTH,buttonModificarP);
+	sLayout.putConstraint(SpringLayout.NORTH,buttonEliminarP,20,SpringLayout.SOUTH,buttonModificarP);
 	//Colores
 	this.setBackground(Color.decode("#21489c"));
 	}

@@ -12,8 +12,7 @@ public class GestorUsuario {
 	
 	
 	public static String[] obtenerProvincias() {
-		
-		
+		return null;
 	}
 	
 }

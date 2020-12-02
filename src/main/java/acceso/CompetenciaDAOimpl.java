@@ -125,7 +125,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					pstmt1.setInt(1, keyComp);
 					pstmt1.execute();
 					//agregar fixture
-					daoF.saveOrUpdate(conn, c.getFixture());
+					//daoF.saveOrUpdate(conn, c.getFixture());
 			}
 				
 			}
@@ -136,9 +136,9 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 				daoDisp.saveOrUpdate(disp, conn);
 			}
 			
-			for(Participante p : c.getParticipantes()) {
+			/*for(Participante p : c.getParticipantes()) {
 				daoP.saveOrUpdate(p);
-			}
+			}*/
 				
 			
 			

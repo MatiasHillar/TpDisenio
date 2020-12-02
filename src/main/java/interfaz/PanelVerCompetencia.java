@@ -26,10 +26,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.JTableHeader;
 
+import logica.CompetenciaDTO;
 import logica.GestorCompetencia;
 
 
@@ -66,10 +68,12 @@ public class PanelVerCompetencia extends JPanel {
 	JScrollPane scrollPaneParticipantes;
 	//Variables
 	ArrayList<String> columnasTablaEncuentros;
+	CompetenciaDTO dtoCompetencia;
 	
 	Integer paginaSeleccionada;
-	public PanelVerCompetencia() {
+	public PanelVerCompetencia(CompetenciaDTO dtoComp) {
 		super();
+		dtoCompetencia = dtoComp;
 		inicializarComponentes();
 		armarPanel();
 	}
@@ -98,10 +102,10 @@ public class PanelVerCompetencia extends JPanel {
 		labelEstado = new JLabel("<HTML><B><U>Estado de la <br> Competencia: </U></B></HTML>");
 		labelProxEnc = new JLabel("<HTML><B><U>Proximos encuentros: </U></B></HTML> ");
 		labelParticipantes = new JLabel("<HTML><B><U>Participantes: </U></B></HTML> ");
-		campoNombre = new JLabel("NOMBRE COMPE");
-		campoMod = new JLabel("LA MODALIDAD");
-		campoDeporte =  new JLabel("EL DEPORTE");
-		campoEstado = new JLabel("EL ESTADO");
+		campoNombre = new JLabel(dtoCompetencia.getNombre());
+		campoMod = new JLabel(dtoCompetencia.getModalidad());
+		campoDeporte =  new JLabel(dtoCompetencia.getDeporte());
+		campoEstado = new JLabel(dtoCompetencia.getEstado());
 		labelPaginador = new JLabel("<HTML> <B> PAGINA "+ (paginaSeleccionada)+"</B> </HTML>");
 		//Buttons
 		 botonModComp = new JButton("Modificar Competencia");
@@ -179,6 +183,19 @@ public class PanelVerCompetencia extends JPanel {
 				}
 			};
 			botonPagIzq.addActionListener(pagIzqListener);
+			
+			ActionListener verParticipantesListener = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+					ventana.setContentPane(new PanelListarParticipantes(dtoCompetencia));
+					ventana.revalidate();
+					ventana.setSize(500,600);
+					ventana.setLocationRelativeTo(null);
+					ventana.repaint();
+				}
+			};
+			botonVerPartic.addActionListener(verParticipantesListener);
+			
 			//construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros());
 			construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
 	}
@@ -198,7 +215,6 @@ public class PanelVerCompetencia extends JPanel {
 		splitHorizontal.setRightComponent(panelDer);
 		panelIzq.setPreferredSize(new Dimension(580,290));
 		panelDer.setPreferredSize(new Dimension(380,290));
-		
 		armarPanelIzq();
 		armarPanelDer();
 		//Colores Paneles
@@ -361,8 +377,8 @@ public class PanelVerCompetencia extends JPanel {
 
 	}
 	private Object[][] obtenerArrayDatosParticipantes() {
-		String[][] nombresParticipantes = new String[GestorCompetencia.buscarNombreYParticipantes(23).getParticipantes().length][2];
-		nombresParticipantes = GestorCompetencia.buscarNombreYParticipantes(23).getParticipantes();
+		String[][] nombresParticipantes = new String[dtoCompetencia.getParticipantes().length][2];
+		nombresParticipantes = dtoCompetencia.getParticipantes();
 		return nombresParticipantes;
 	}
 	private String[] setearColumnasParticipantes() {

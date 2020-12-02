@@ -1,6 +1,3 @@
-/**
- * 
- */
 package logica;
 
 import java.sql.SQLException;
@@ -244,6 +241,7 @@ public class GestorCompetencia {
 		Competencia c = (new CompetenciaDAOimpl()).buscarPorId(id_competencia);
 		CompetenciaDTO dto = new CompetenciaDTO();
 		
+		dto.setIdCompetencia(c.getIdCompetencia());
 		dto.setNombre(c.getNombre());
 		dto.setDeporte(c.getDeporte().getNombreDeporte());
 		dto.setEstado(c.getEstado());
