@@ -39,10 +39,11 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 	private static final String SELECT_NOMBRE_COMPETENCIA = "SELECT nombre FROM pruebacomp.COMPETENCIA WHERE "
 			+ "id_competencia = ?";
 	
-	private static final String SELECT_COMPETENCIA_BYUSR = "SELECT nombre, estado, deporte,"
-			+ " id_competencia FROM pruebacomp.COMPETENCIA, pruebacomp.?"
-			+ " WHERE usuario_dueno = ?";
+	private static final String SELECT_COMPETENCIA_BYUSR = "SELECT nombre, estado, nombre_deporte,"
+			+ " Com.id_competencia FROM pruebacomp.COMPETENCIA as Com, pruebacomp.";
 	
+	private static final String SELECT_COMPETENCIA_BYUSR2 = " as Li" + 
+			" WHERE usuario_dueno = ? AND Com.id_competencia=Li.id_competencia";
 	private static final String INSERT_LIGA = "INSERT INTO pruebacomp.LIGA VALUES"
 			+ "(?, ?, ?)";
 	
@@ -317,43 +318,54 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		String query;
 		List<Competencia> lista = new ArrayList<Competencia>();
 		try {
-			pstmt = conn.prepareStatement(SELECT_COMPETENCIA_BYUSR);
-			pstmt.setString(1, "LIGA");
-			pstmt.setInt(2, id_participante);
+			
+			query = SELECT_COMPETENCIA_BYUSR + "LIGA" + SELECT_COMPETENCIA_BYUSR2;
+			pstmt = conn.prepareStatement(query);
+			//pstmt.setString(1, "LIGA");
+			pstmt.setInt(1, id_participante);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				while(rs.next()) {
 					Competencia c = new Liga();
 					c.setNombre(rs.getString("NOMBRE"));
+					System.out.println(rs.getString("NOMBRE"));
 					c.setEstado(rs.getString("ESTADO"));
 					c.setIdCompetencia(rs.getInt("ID_COMPETENCIA"));
 					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 					lista.add(c);
 				}
 			}
+
 			else {
-			pstmt.setString(1, "ELIMINACION_SIMPLE");
-			pstmt.setInt(2, id_participante);
+			query = SELECT_COMPETENCIA_BYUSR + "ELIMINACION_SIMPLE" + SELECT_COMPETENCIA_BYUSR2;
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, id_participante);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				while(rs.next()) {
 					Competencia c = new EliminacionSimple();
 					c.setNombre(rs.getString("NOMBRE"));
+					System.out.println(rs.getString("NOMBRE"));
 					c.setEstado(rs.getString("ESTADO"));
 					c.setIdCompetencia(rs.getInt("ID_COMPETENCIA"));
 					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 					lista.add(c);
 				}
 			}
+
 			else {
-			pstmt.setString(1, "ELIMINACION_DOBLE");
-			pstmt.setInt(2, id_participante);
+
+			query = SELECT_COMPETENCIA_BYUSR + "ELIMINACION_DOBLE" + SELECT_COMPETENCIA_BYUSR2;
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, id_participante);
 			rs = pstmt.executeQuery();
 				while(rs.next()) {
 					Competencia c = new EliminacionDoble();
 					c.setNombre(rs.getString("NOMBRE"));
+					System.out.println(rs.getString("NOMBRE"));
 					c.setEstado(rs.getString("ESTADO"));
 					c.setIdCompetencia(rs.getInt("ID_COMPETENCIA"));
 					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));

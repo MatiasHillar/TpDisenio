@@ -64,10 +64,10 @@ public class PanelAltaParticipante extends PanelGenerico {
 		buttonCancelar.setPreferredSize(new Dimension(120,30));
 		buttonAceptar.setPreferredSize(new Dimension(120,30));
 		//Color Buttons
-		buttonCancelar.setBackground(Color.decode("#112349"));
-		buttonCancelar.setForeground(Color.white);
-		buttonAceptar.setBackground(Color.decode("#112349"));
-		buttonAceptar.setForeground(Color.white);
+		buttonCancelar.setBackground(colorFondoBoton);
+		buttonCancelar.setForeground(colorTextoBoton);
+		buttonAceptar.setBackground(colorFondoBoton);
+		buttonAceptar.setForeground(colorTextoBoton);
 		//Campos
 		textNombre = new JTextField(10);
 		textCorreo = new JTextField(10);

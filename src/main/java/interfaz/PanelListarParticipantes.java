@@ -32,8 +32,8 @@ import logica.GestorCompetencia;
 public class PanelListarParticipantes extends PanelGenerico{
 	JLabel labelPartic;
 	JButton buttonAgregarP;
-	JButton buttonModificarP;
-	JButton buttonEliminarP;
+	ButtonGenerico buttonModificarP;
+	ButtonGenerico buttonEliminarP;
 	JTable tablaParticipantes;
 	JScrollPane scrollPaneParticipantes;
 	CompetenciaDTO dtoComp;
@@ -52,8 +52,8 @@ public class PanelListarParticipantes extends PanelGenerico{
 	labelPartic.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
 	//Buttons
 	buttonAgregarP = new JButton("Agregar Nuevo Participante");
-	buttonModificarP = new JButton("Modificar Participante");
-	buttonEliminarP = new JButton("Eliminar Participante");
+	buttonModificarP = new ButtonGenerico("Modificar Participante");
+	buttonEliminarP = new ButtonGenerico("Eliminar Participante");
 	buttonAgregarP.setPreferredSize(new Dimension(200,30));
 	buttonModificarP.setPreferredSize(new Dimension(200,30));
 	buttonEliminarP.setPreferredSize(new Dimension(200,30));
@@ -94,7 +94,7 @@ public class PanelListarParticipantes extends PanelGenerico{
 			//ParticipanteDAO.delete(SELECCIONADO);
 			JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 			ventana.setContentPane(new PanelAltaParticipante(dtoComp));
-			ventana.setSize(new Dimension(400,350));
+			ventana.setSize(tamAltaPartic);
 			ventana.setLocationRelativeTo(null);
 			ventana.revalidate();
 			ventana.repaint();

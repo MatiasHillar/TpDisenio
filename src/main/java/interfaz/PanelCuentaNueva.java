@@ -5,12 +5,16 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class PanelCuentaNueva extends PanelGenerico {
 		
@@ -37,7 +41,6 @@ public class PanelCuentaNueva extends PanelGenerico {
 			armarPanel();
 			}
 		
-		
 
 		private void inicializarComponentes() {
 			//Labels
@@ -48,21 +51,25 @@ public class PanelCuentaNueva extends PanelGenerico {
 			labelPais= new JLabel("<HTML><B>Pais:</B></HTML>");
 			labelProvincia= new JLabel("<HTML><B>Provincia:</B></HTML>");
 			labelLocalidad= new JLabel("<HTML><B>Localidad</B></HTML>");
+			
 			//Buttons
 			buttonCancelar = new JButton("Cancelar");
 			buttonAceptar = new JButton("Aceptar");
 			buttonCancelar.setPreferredSize(new Dimension(100,30));
 			buttonAceptar.setPreferredSize(new Dimension(120,30));
+			
 			//Color buttons
-			buttonCancelar.setBackground(Color.decode("#112349"));
-			buttonCancelar.setForeground(Color.white);
-			buttonAceptar.setBackground(Color.decode("#112349"));
-			buttonAceptar.setForeground(Color.white);
+			buttonCancelar.setBackground(colorFondoBoton);
+			buttonCancelar.setForeground(colorTextoBoton);
+			buttonAceptar.setBackground(colorFondoBoton);
+			buttonAceptar.setForeground(colorTextoBoton);
+			
 			//Campos
 			campoNombre = new JTextField(10);
 			campoApellido = new JTextField(10);
 			campoCorreo = new JTextField(10);
 			campoContraseña = new JPasswordField(10);
+			
 			//Combos
 			comboPais = new JComboBox<String>();
 			comboProvincia = new JComboBox<String>();
@@ -70,10 +77,22 @@ public class PanelCuentaNueva extends PanelGenerico {
 			comboPais.addItem("<Ninguno>");
 			comboProvincia.addItem("<Ninguna>");
 			comboLocalidad.addItem("<Ninguna>");
+			
+			//Listeners
+			ActionListener cancelarListener = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+					ventana.setContentPane(new PanelPrincipal());
+					ventana.setSize(PanelGenerico.tamPrincipal);
+					ventana.setLocationRelativeTo(null);
+					ventana.revalidate();
+					ventana.repaint();
+				}
+			}; 
+			buttonCancelar.addActionListener(cancelarListener);
 		}
-
-
-
+		
 		private void armarPanel() {
 			GridBagConstraints gbc = new GridBagConstraints();
 			gbc.anchor= GridBagConstraints.WEST;
