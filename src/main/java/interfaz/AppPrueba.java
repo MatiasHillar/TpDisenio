@@ -48,10 +48,10 @@ public class AppPrueba {
 		    // handle exception
 		}
 		JFrame ventana = new JFrame();	
-		ventana.setContentPane(new PanelVerCompetencia(GestorCompetencia.buscarNombreYParticipantes(26)));
+		ventana.setContentPane(new PanelPrincipal());
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.pack();
-		ventana.setSize(1024,655);
+		ventana.setSize(300,450);
 		ventana.setLocationRelativeTo(null);
 		ventana.setVisible(true);
 		/*FUNCIONES PARA LAS VENTANAS

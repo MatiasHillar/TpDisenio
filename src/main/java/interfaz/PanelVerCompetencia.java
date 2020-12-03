@@ -36,7 +36,7 @@ import logica.GestorCompetencia;
 
 
 
-public class PanelVerCompetencia extends JPanel {
+public class PanelVerCompetencia extends PanelGenerico {
 	//Componentes Swing
 	JLabel labelDatosComp;
 	JLabel labelNombreC;

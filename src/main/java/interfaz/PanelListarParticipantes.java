@@ -29,7 +29,7 @@ import acceso.ParticipanteDAO;
 import logica.CompetenciaDTO;
 import logica.GestorCompetencia;
 
-public class PanelListarParticipantes extends JPanel{
+public class PanelListarParticipantes extends PanelGenerico{
 	JLabel labelPartic;
 	JButton buttonAgregarP;
 	JButton buttonModificarP;
@@ -44,19 +44,7 @@ public class PanelListarParticipantes extends JPanel{
 		inicializarComponentes();
 		armarPanel();
 	}
-	@Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        int w = getWidth();
-        int h = getHeight();
-        Color color1 = Color.decode("#2148bc");
-        Color color2 = Color.decode("#10104a");
-        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
-        g2d.setPaint(gp);
-        g2d.fillRect(0, 0, w, h);
-    }
+	
 	private void inicializarComponentes() {
 	//Labels
 	nombreC=dtoComp.getNombre();
