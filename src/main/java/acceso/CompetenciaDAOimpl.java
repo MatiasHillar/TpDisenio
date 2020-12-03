@@ -322,13 +322,13 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		List<Competencia> lista = new ArrayList<Competencia>();
 		try {
 			
-			query = SELECT_COMPETENCIA_BYUSR + "LIGA" + SELECT_COMPETENCIA_BYUSR2;
-			pstmt = conn.prepareStatement(query);
+			query = SELECT_COMPETENCIA_BYUSR + "LIGA" + SELECT_COMPETENCIA_BYUSR2;		
+			System.out.println(query);
+			pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
 			//pstmt.setString(1, "LIGA");
 			pstmt.setInt(1, id_participante);
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				while(rs.next()) {
+			while(rs.next()) {
 					Competencia c = new Liga();
 					c.setNombre(rs.getString("NOMBRE"));
 					System.out.println(rs.getString("NOMBRE"));
@@ -337,15 +337,15 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 					lista.add(c);
 				}
-			}
 
-			else {
+
+
 			query = SELECT_COMPETENCIA_BYUSR + "ELIMINACION_SIMPLE" + SELECT_COMPETENCIA_BYUSR2;
-			pstmt = conn.prepareStatement(query);
+			System.out.println(query);
+			pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
 			pstmt.setInt(1, id_participante);
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				while(rs.next()) {
+			while(rs.next()) {
 					Competencia c = new EliminacionSimple();
 					c.setNombre(rs.getString("NOMBRE"));
 					System.out.println(rs.getString("NOMBRE"));
@@ -354,12 +354,12 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 					lista.add(c);
 				}
-			}
 
-			else {
+
 
 			query = SELECT_COMPETENCIA_BYUSR + "ELIMINACION_DOBLE" + SELECT_COMPETENCIA_BYUSR2;
-			pstmt = conn.prepareStatement(query);
+			System.out.println(query);
+			pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
 			pstmt.setInt(1, id_participante);
 			rs = pstmt.executeQuery();
 				while(rs.next()) {
@@ -371,8 +371,8 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 					lista.add(c);
 				}
-			}
-			}
+			
+			
 			
 		}
 		catch(SQLException e) {
@@ -386,6 +386,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 				e.printStackTrace();
 			}
 		}
+		System.out.println(lista.size());
 		return lista;
 	}
 	

@@ -220,8 +220,17 @@ public class GestorCompetencia {
 		}
 		for(Competencia comp:competenciaObj) {
 			CompetenciaDTO dto = new CompetenciaDTO(comp.getIdCompetencia(), comp.getDeporte().getNombreDeporte(),  comp.getNombre(), comp.getEstado());
+			if(comp.getClass() == Liga.class)
+				dto.setModalidad("Liga");
+			else
+				if(comp.getClass() == EliminacionSimple.class)
+					dto.setModalidad("Eliminacion Simple");
+				else
+					dto.setModalidad("Eliminacion Doble");
 			resultado.add(dto);
 		}
+		
+		System.out.println(resultado.size());
 		return resultado;
 		
 	}
