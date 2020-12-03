@@ -24,42 +24,54 @@ import javax.swing.SwingUtilities;
 public class PanelPrincipal extends PanelGenerico{
 
 	JLabel titulo;
-	JButton iniciarSesion;
-	JButton crearCuenta;
+	JButton buttonIniciarSesion;
+	JButton buttonCrearCuenta;
 	JButton buttonListarCompetencias;
 	JButton buttonAltaCompetencia;
+	JButton buttonSalir;
+	Dimension tamBotonesGen;
 	PanelPrincipal(){
 		super();
 		inicializarComponentes();
 		armarPanel();
 	}
 	void inicializarComponentes() {
+		//Variables
+		tamBotonesGen = new Dimension(200,45);
 		//Labels
 		titulo = new JLabel("<HTML><B><font color = 'white'>&emsp;&emsp;BIENVENIDO A <br><font size=> COMPETITION MANAGER  </B></HTML>");
 		//Buttons
-		iniciarSesion = new JButton("Iniciar Sesion");
-		crearCuenta = new JButton("Crear una cuenta nueva");
-		iniciarSesion.setPreferredSize(new Dimension(200,50));
-		crearCuenta.setPreferredSize(new Dimension(200,50));
+		buttonIniciarSesion = new JButton("Iniciar Sesion");
+		buttonCrearCuenta = new JButton("Crear una cuenta nueva");
 		buttonListarCompetencias = new JButton("Listar Competencias");
 		buttonAltaCompetencia = new JButton("Alta de Competencia");
-		buttonListarCompetencias.setPreferredSize(new Dimension(200,50));
-		buttonAltaCompetencia.setPreferredSize(new Dimension(200,50));
+		buttonSalir = new JButton("Salir");
+		
+		buttonIniciarSesion.setPreferredSize(tamBotonesGen);
+		buttonCrearCuenta.setPreferredSize(tamBotonesGen);
+		buttonListarCompetencias.setPreferredSize(tamBotonesGen);
+		buttonAltaCompetencia.setPreferredSize(tamBotonesGen);
+		buttonSalir.setPreferredSize(tamBotonesGen);
+		
 		//Color buttons
-		iniciarSesion.setBackground(Color.decode("#112349"));
-		iniciarSesion.setForeground(Color.white);
-		crearCuenta.setBackground(Color.decode("#112349"));
-		crearCuenta.setForeground(Color.white);
-		buttonListarCompetencias.setBackground(Color.decode("#112349"));
-		buttonListarCompetencias.setForeground(Color.white);
-		buttonAltaCompetencia.setBackground(Color.decode("#112349"));
-		buttonAltaCompetencia.setForeground(Color.white);
+		buttonIniciarSesion.setBackground(PanelGenerico.colorFondoBoton);
+		buttonIniciarSesion.setForeground(PanelGenerico.colorTextoBoton);
+		buttonCrearCuenta.setBackground(PanelGenerico.colorFondoBoton);
+		buttonCrearCuenta.setForeground(PanelGenerico.colorTextoBoton);
+		buttonListarCompetencias.setBackground(PanelGenerico.colorFondoBoton);
+		buttonListarCompetencias.setForeground(PanelGenerico.colorTextoBoton);
+		buttonAltaCompetencia.setBackground(PanelGenerico.colorFondoBoton);
+		buttonAltaCompetencia.setForeground(PanelGenerico.colorTextoBoton);
+		buttonSalir.setBackground(PanelGenerico.colorFondoBoton);
+		buttonSalir.setForeground(PanelGenerico.colorTextoBoton);
+		
+		
 		//Listeners
 		ActionListener listarCompListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelListarCompetencias());
-				ventana.setSize(new Dimension(1000,650));
+				ventana.setSize(PanelGenerico.tamListarComp);
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();
@@ -71,7 +83,7 @@ public class PanelPrincipal extends PanelGenerico{
             public void actionPerformed(ActionEvent e) {
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelAltaCompetencia());
-				ventana.setSize(new Dimension(1000,650));
+				ventana.setSize(PanelGenerico.tamAltaComp);
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();
@@ -83,24 +95,32 @@ public class PanelPrincipal extends PanelGenerico{
             public void actionPerformed(ActionEvent e) {
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelInicioSesion());
-				ventana.setSize(new Dimension(300,300));
+				ventana.setSize(PanelGenerico.tamIniciarSesion);
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();
             	}
         };
-        iniciarSesion.addActionListener(iniciarSesionListener);
+        buttonIniciarSesion.addActionListener(iniciarSesionListener);
         ActionListener cuentaNuevaListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelCuentaNueva());
-				ventana.setSize(new Dimension(300,400));
+				ventana.setSize(PanelGenerico.tamCuentaNueva);
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();
             	}
         };
-        crearCuenta.addActionListener(cuentaNuevaListener);
+        buttonCrearCuenta.addActionListener(cuentaNuevaListener);
+        ActionListener salirListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+				ventana.dispose();
+            	}
+        };
+        buttonSalir.addActionListener(salirListener);
+        
 	}
 	void armarPanel() {
 		SpringLayout sLayout = new SpringLayout();
@@ -108,17 +128,20 @@ public class PanelPrincipal extends PanelGenerico{
 		this.add(titulo);
 		sLayout.putConstraint(SpringLayout.WEST,titulo,80,SpringLayout.WEST,this);
 		sLayout.putConstraint(SpringLayout.NORTH,titulo,40,SpringLayout.NORTH,this);
-		this.add(iniciarSesion);
-		sLayout.putConstraint(SpringLayout.WEST,iniciarSesion,45,SpringLayout.WEST,this);
-		sLayout.putConstraint(SpringLayout.NORTH,iniciarSesion,90,SpringLayout.NORTH,this);
-		this.add(crearCuenta);
-		sLayout.putConstraint(SpringLayout.WEST,crearCuenta,45,SpringLayout.WEST,this);
-		sLayout.putConstraint(SpringLayout.NORTH,crearCuenta,20,SpringLayout.SOUTH,iniciarSesion);
+		this.add(buttonIniciarSesion);
+		sLayout.putConstraint(SpringLayout.WEST,buttonIniciarSesion,45,SpringLayout.WEST,this);
+		sLayout.putConstraint(SpringLayout.NORTH,buttonIniciarSesion,90,SpringLayout.NORTH,this);
+		this.add(buttonCrearCuenta);
+		sLayout.putConstraint(SpringLayout.WEST,buttonCrearCuenta,45,SpringLayout.WEST,this);
+		sLayout.putConstraint(SpringLayout.NORTH,buttonCrearCuenta,15,SpringLayout.SOUTH,buttonIniciarSesion);
 		this.add(buttonAltaCompetencia);
 		sLayout.putConstraint(SpringLayout.WEST,buttonAltaCompetencia,45,SpringLayout.WEST,this);
-		sLayout.putConstraint(SpringLayout.NORTH,buttonAltaCompetencia,20,SpringLayout.SOUTH,crearCuenta);
+		sLayout.putConstraint(SpringLayout.NORTH,buttonAltaCompetencia,15,SpringLayout.SOUTH,buttonCrearCuenta);
 		this.add(buttonListarCompetencias);	
 		sLayout.putConstraint(SpringLayout.WEST,buttonListarCompetencias,45,SpringLayout.WEST,this);
-		sLayout.putConstraint(SpringLayout.NORTH,buttonListarCompetencias,20,SpringLayout.SOUTH,buttonAltaCompetencia);
+		sLayout.putConstraint(SpringLayout.NORTH,buttonListarCompetencias,15,SpringLayout.SOUTH,buttonAltaCompetencia);
+		this.add(buttonSalir);
+		sLayout.putConstraint(SpringLayout.WEST,buttonSalir,45,SpringLayout.WEST,this);
+		sLayout.putConstraint(SpringLayout.NORTH,buttonSalir,15,SpringLayout.SOUTH,buttonListarCompetencias);
 	}
 }

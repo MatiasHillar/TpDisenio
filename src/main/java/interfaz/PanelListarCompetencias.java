@@ -58,8 +58,11 @@ public class PanelListarCompetencias extends PanelGenerico {
 		armarPanel();
 	}
 	private void inicializarComponentes() {
-		//Variables cargadas
+		//Variables
 		deportes = GestorDeporte.buscarTodos();
+		Dimension tamCombo = new Dimension(125,30);
+		Dimension tamBotGrande = new Dimension(270,30);
+		Dimension tamBotChico = new Dimension(150,30);
 		//Labels
 		labelCompetencias = new JLabel("Competencias creadas por el usuario: "+GestorUsuario.usuario_autenticado);
 		labelCompetencias.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
@@ -67,37 +70,38 @@ public class PanelListarCompetencias extends PanelGenerico {
 		labelDep = new JLabel("Deporte: ");
 		labelMod = new JLabel("Modalidad: ");
 		labelEstado = new JLabel("Estado: ");
+		
 		//Buttons
 		buttonBuscar = new JButton("Buscar");
-		buttonBuscar.setPreferredSize(new Dimension(150,30));
+		buttonBuscar.setPreferredSize(tamBotChico);
 		buttonLimpiar = new JButton("Limpiar Filtros");
-		buttonLimpiar.setPreferredSize(new Dimension(150,30));
+		buttonLimpiar.setPreferredSize(tamBotChico);
 		buttonCancelar = new JButton("Cancelar");
 		buttonCrearComp = new JButton("Crear Nueva Competencia");
 		buttonVerComp = new JButton("Ver Competencia");
-		buttonCancelar.setPreferredSize(new Dimension(270,30));
-		buttonCrearComp.setPreferredSize(new Dimension(270,30));
-		buttonVerComp.setPreferredSize(new Dimension(270,30));
+		buttonCancelar.setPreferredSize(tamBotGrande);
+		buttonCrearComp.setPreferredSize(tamBotGrande);
+		buttonVerComp.setPreferredSize(tamBotGrande);
 		
 		//Color Buttons
-		buttonBuscar.setBackground(Color.decode("#112349"));
-		buttonBuscar.setForeground(Color.white);
-		buttonLimpiar.setBackground(Color.decode("#112349"));
-		buttonLimpiar.setForeground(Color.white);
-		buttonCancelar.setBackground(Color.decode("#112349"));
-		buttonCancelar.setForeground(Color.white);
-		buttonCrearComp.setBackground(Color.decode("#112349"));
-		buttonCrearComp.setForeground(Color.white);
-		buttonVerComp.setBackground(Color.decode("#112349"));
-		buttonVerComp.setForeground(Color.white);
+		buttonBuscar.setBackground(colorFondoBoton);
+		buttonBuscar.setForeground(colorTextoBoton);
+		buttonLimpiar.setBackground(colorFondoBoton);
+		buttonLimpiar.setForeground(colorTextoBoton);
+		buttonCancelar.setBackground(colorFondoBoton);
+		buttonCancelar.setForeground(colorTextoBoton);
+		buttonCrearComp.setBackground(colorFondoBoton);
+		buttonCrearComp.setForeground(colorTextoBoton);
+		buttonVerComp.setBackground(colorFondoBoton);
+		buttonVerComp.setForeground(colorTextoBoton);
 		
 		//Campos y comboboxes
 		comboDep = new JComboBox();
 		comboMod = new JComboBox();
 		comboEstado = new JComboBox();
-		comboDep.setPreferredSize(new Dimension(125,30));
-		comboMod.setPreferredSize(new Dimension(125,30));
-		comboEstado.setPreferredSize(new Dimension(125,30));
+		comboDep.setPreferredSize(tamCombo);
+		comboMod.setPreferredSize(tamCombo);
+		comboEstado.setPreferredSize(tamCombo);
 		textfNombre = new JTextField(10);
 		textfNombre.setText("");
 		
@@ -159,7 +163,6 @@ public class PanelListarCompetencias extends PanelGenerico {
 	}
 	
 	private void armarPanel() {
-	this.setBackground(Color.decode("#21489c"));
 	SpringLayout sLayout = new SpringLayout();
 	this.setLayout(sLayout);
 	add(labelCompetencias);

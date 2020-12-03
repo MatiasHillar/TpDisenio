@@ -113,15 +113,16 @@ public class PanelAltaCompetencia extends PanelGenerico{
 		 agregarSede.setPreferredSize(new Dimension(100,30));
 		 borrarSede = new JButton("Borrar Sede");
 		 borrarSede.setPreferredSize(new Dimension(100,30));
+		 
 		 //Color buttons
-		 cancelar.setBackground(Color.decode("#112349"));
-		 cancelar.setForeground(Color.white);
-		 aceptar.setBackground(Color.decode("#112349"));
-		 aceptar.setForeground(Color.white);
-		 agregarSede.setBackground(Color.decode("#112349"));
-		 agregarSede.setForeground(Color.white);
-		 borrarSede.setBackground(Color.decode("#112349"));
-		 borrarSede.setForeground(Color.white);
+		 cancelar.setBackground(colorFondoBoton);
+		 cancelar.setForeground(colorTextoBoton);
+		 aceptar.setBackground(colorFondoBoton);
+		 aceptar.setForeground(colorTextoBoton);
+		 agregarSede.setBackground(colorFondoBoton);
+		 agregarSede.setForeground(colorTextoBoton);
+		 borrarSede.setBackground(colorFondoBoton);
+		 borrarSede.setForeground(colorTextoBoton);
 		 
 		 //Labels
 		 datosC = new JLabel("<HTML><U><B>Datos de la competencia:</U></B></HTML>");
@@ -136,7 +137,7 @@ public class PanelAltaCompetencia extends PanelGenerico{
 		 //Campos y modelos
 		 campoReglamento = new JTextArea("<< Aquí escriba el reglamento >>",20,20);
 		 campoNombre = new JTextField(5);
-		 campoDeporte = new JComboBox();
+		 campoDeporte = new JComboBox<String>();
 		 for (Deporte d : deportes) {
 			campoDeporte.addItem(d.getNombreDeporte());
 		}
@@ -240,6 +241,8 @@ public class PanelAltaCompetencia extends PanelGenerico{
 			public void actionPerformed(ActionEvent e) {
 				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelPrincipal());
+				ventana.setSize(tamPrincipal);
+				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();
 			}

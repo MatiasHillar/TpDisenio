@@ -38,6 +38,13 @@ public class PanelInicioSesion extends PanelGenerico{
 		buttonIniciar = new JButton("Iniciar Sesión");
 		buttonCancelar.setPreferredSize(new Dimension(120,30));
 		buttonIniciar.setPreferredSize(new Dimension(120,30));
+		
+		//Color Buttons
+		buttonCancelar.setBackground(colorFondoBoton);
+		buttonCancelar.setForeground(colorTextoBoton);
+		buttonIniciar.setBackground(colorFondoBoton);
+		buttonIniciar.setForeground(colorTextoBoton);
+		
 		//Campos
 		campoEmail = new JTextField(10);
 		campoContraseña = new JPasswordField(10);
@@ -56,7 +63,7 @@ public class PanelInicioSesion extends PanelGenerico{
 		            public void actionPerformed(ActionEvent e) {
 		            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 						ventana.setContentPane(new PanelPrincipal());
-						ventana.setSize(new Dimension(300,450));
+						ventana.setSize(tamPrincipal);
 						ventana.setLocationRelativeTo(null);
 						ventana.revalidate();
 						ventana.repaint();
@@ -76,13 +83,13 @@ public class PanelInicioSesion extends PanelGenerico{
 		sLayout.putConstraint(SpringLayout.NORTH,labelEmail,80,SpringLayout.NORTH,this);
 		this.add(labelContraseña);
 		sLayout.putConstraint(SpringLayout.WEST,labelContraseña,20,SpringLayout.WEST,this);
-		sLayout.putConstraint(SpringLayout.NORTH,labelContraseña,50,SpringLayout.SOUTH,labelEmail);
+		sLayout.putConstraint(SpringLayout.NORTH,labelContraseña,40,SpringLayout.SOUTH,labelEmail);
 		this.add(campoEmail);
 		sLayout.putConstraint(SpringLayout.WEST,campoEmail,40,SpringLayout.EAST,labelEmail);
 		sLayout.putConstraint(SpringLayout.NORTH,campoEmail,90,SpringLayout.NORTH,this);
 		this.add(campoContraseña);
 		sLayout.putConstraint(SpringLayout.WEST,campoContraseña,0,SpringLayout.WEST,campoEmail);
-		sLayout.putConstraint(SpringLayout.NORTH,campoContraseña,40,SpringLayout.SOUTH,campoEmail);
+		sLayout.putConstraint(SpringLayout.NORTH,campoContraseña,30,SpringLayout.SOUTH,campoEmail);
 		this.add(buttonCancelar);
 		sLayout.putConstraint(SpringLayout.WEST,buttonCancelar,10,SpringLayout.WEST,this);
 		sLayout.putConstraint(SpringLayout.NORTH,buttonCancelar,25,SpringLayout.SOUTH,campoContraseña);
