@@ -141,8 +141,6 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 			
 			if(rs.first())
 				id = rs.getInt(1);
-				
-			
 			
 		}
 		catch(SQLException e) {

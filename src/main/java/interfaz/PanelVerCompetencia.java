@@ -59,9 +59,9 @@ public class PanelVerCompetencia extends PanelGenerico {
 	JButton botonCancelar;
 	JButton botonPagIzq;
 	JButton botonPagDer;
-	JPanel panel;
-	JPanel panelIzq;
-	JPanel panelDer;
+	PanelGenerico panel;
+	PanelGenerico panelIzq;
+	PanelGenerico panelDer;
 	JTable tablaEncuentros;
 	JTable tablaParticipantes;
 	JSplitPane splitHorizontal;
@@ -77,18 +77,8 @@ public class PanelVerCompetencia extends PanelGenerico {
 		inicializarComponentes();
 		armarPanel();
 	}
-	protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        int w = getWidth();
-        int h = getHeight();
-        Color color1 = Color.decode("#2148bc");
-        Color color2 = Color.decode("#10104a");
-        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
-        g2d.setPaint(gp);
-        g2d.fillRect(0, 0, w, h);
-    }
+	
+	
 	private void inicializarComponentes() {
 		
 		//Variables
@@ -202,25 +192,21 @@ public class PanelVerCompetencia extends PanelGenerico {
 	
 	private void armarPanel() {
 		this.setLayout(new BorderLayout());
-		panel = new JPanel();
+		panel = new PanelGenerico();
 		this.add(panel,BorderLayout.CENTER);
 		SpringLayout layout = new SpringLayout();
 		panel.setLayout(layout);
 		panel.add(splitHorizontal);
 		layout.putConstraint(SpringLayout.WEST,splitHorizontal,5,SpringLayout.WEST,panel);
 		layout.putConstraint(SpringLayout.NORTH,splitHorizontal,10,SpringLayout.NORTH,panel);
-		panelIzq = new JPanel();
-		panelDer = new JPanel();
+		panelIzq = new PanelGenerico();
+		panelDer = new PanelGenerico();
 		splitHorizontal.setLeftComponent(panelIzq);
 		splitHorizontal.setRightComponent(panelDer);
 		panelIzq.setPreferredSize(new Dimension(580,290));
 		panelDer.setPreferredSize(new Dimension(380,290));
 		armarPanelIzq();
 		armarPanelDer();
-		//Colores Paneles
-		panel.setBackground(Color.decode("#21489c"));
-		panelIzq.setBackground(Color.decode("#21489c"));
-		panelDer.setBackground(Color.decode("#21489c"));
 	}
 	private void armarPanelIzq() {
 		SpringLayout sLayout = new SpringLayout();

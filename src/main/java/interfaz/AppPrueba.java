@@ -51,7 +51,7 @@ public class AppPrueba {
 		ventana.setContentPane(new PanelPrincipal());
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.pack();
-		ventana.setSize(300,450);
+		ventana.setSize(PanelGenerico.tamPrincipal);
 		ventana.setLocationRelativeTo(null);
 		ventana.setVisible(true);
 		/*FUNCIONES PARA LAS VENTANAS
