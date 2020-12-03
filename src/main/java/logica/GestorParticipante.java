@@ -49,4 +49,11 @@ public class GestorParticipante {
 		Matcher matcher = patron_email_valido.matcher(email);
 		return matcher.find();
 	}
+	
+	
+	
+	public static void deleteParticipante(String id) {
+		(new ParticipanteDAOimpl()).delete(Integer.valueOf(id));
+		
+	}
 }
