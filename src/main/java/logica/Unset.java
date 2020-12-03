@@ -4,6 +4,8 @@ public class Unset {
 private Integer idSet;
 private Integer tantosParticipante1;
 private Integer tantosParticipante2;
+private ResultadoSet resultado;
+
 public Integer getTantosParticipante1() {
 	return tantosParticipante1;
 }
@@ -22,5 +24,12 @@ public Integer getIdSet() {
 public void setIdSet(Integer idSet) {
 	this.idSet = idSet;
 }
+public ResultadoSet getResultado() {
+	return resultado;
+}
+public void setResultado(ResultadoSet resultado) {
+	this.resultado = resultado;
+}
+
 
 }
