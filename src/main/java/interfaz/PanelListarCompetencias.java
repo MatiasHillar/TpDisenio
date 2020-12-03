@@ -129,6 +129,14 @@ public class PanelListarCompetencias extends PanelGenerico {
 		scrollPaneCompetencias.setPreferredSize(new Dimension(900,270));
 		
 		//Listeners
+		ActionListener buscarListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	construirTablaCompetencias(setearColumnasCompetencias(),obtenerMatrizCompetencias());
+            	}
+        };
+        buttonBuscar.addActionListener(buscarListener);
+        
+        
 		ActionListener cancelarListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
@@ -236,7 +244,6 @@ public class PanelListarCompetencias extends PanelGenerico {
 	}
 	private Object[][] obtenerMatrizCompetencias() {
 		List<CompetenciaDTO> listaComps = new ArrayList<CompetenciaDTO>();
-		System.out.println("ESTE ES EL TXT:"+textfNombre.getText().trim()+"A");
 		listaComps = GestorCompetencia.buscarCompetenciaPorFiltros(textfNombre.getText().trim(),comboDep.getSelectedItem().toString(),comboMod.getSelectedItem().toString(),comboEstado.getSelectedItem().toString());
 		String[][] matrizCompetencias = new String[listaComps.size()][4];
 		int i=0;
@@ -245,8 +252,8 @@ public class PanelListarCompetencias extends PanelGenerico {
 			matrizCompetencias[i][1] = cDTO.getDeporte();
 			matrizCompetencias[i][2] = cDTO.getModalidad();
 			matrizCompetencias[i][3] = cDTO.getEstado();
+			i++;
 		}
-		System.out.println(matrizCompetencias[0][0]);
 		return matrizCompetencias;
 	}
 	private String[] setearColumnasCompetencias() {
