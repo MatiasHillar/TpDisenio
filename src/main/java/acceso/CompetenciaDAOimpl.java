@@ -333,6 +333,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					lista.add(c);
 				}
 			}
+			else {
 			pstmt.setString(1, "ELIMINACION_SIMPLE");
 			pstmt.setInt(2, id_participante);
 			rs = pstmt.executeQuery();
@@ -346,10 +347,10 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					lista.add(c);
 				}
 			}
+			else {
 			pstmt.setString(1, "ELIMINACION_DOBLE");
 			pstmt.setInt(2, id_participante);
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
 				while(rs.next()) {
 					Competencia c = new EliminacionDoble();
 					c.setNombre(rs.getString("NOMBRE"));
@@ -359,7 +360,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					lista.add(c);
 				}
 			}
-			
+			}
 			
 		}
 		catch(SQLException e) {
