@@ -246,6 +246,7 @@ public class PanelListarCompetencias extends PanelGenerico {
 			matrizCompetencias[i][2] = cDTO.getModalidad();
 			matrizCompetencias[i][3] = cDTO.getEstado();
 		}
+		System.out.println(matrizCompetencias[0][0]);
 		return matrizCompetencias;
 	}
 	private String[] setearColumnasCompetencias() {

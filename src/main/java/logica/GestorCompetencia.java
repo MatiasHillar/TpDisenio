@@ -189,12 +189,13 @@ public class GestorCompetencia {
 	}
 	
 	public static List<CompetenciaDTO> buscarCompetenciaPorFiltros(String nombre, String deporte, String modalidad, String estado){
-		
+		List<CompetenciaDTO> resultado = new ArrayList<CompetenciaDTO>();
 		List<Competencia> competenciaObj = new ArrayList<Competencia>();
 		CompetenciaDAOimpl daoComp = new CompetenciaDAOimpl();
-		
-		if(nombre.equals("") && deporte.equals("<Ninguno>") && modalidad.equals("<Ninguna>") && estado.equals("<Ninguna>")) {
-			competenciaObj = daoComp.buscar();
+		System.out.println(nombre + deporte + modalidad + estado);
+		if(nombre.equals("") && deporte.equals("<Ninguno>") && modalidad.equals("<Ninguna>") && estado.equals("<Ninguno>")) {
+			System.out.println("SIN FILTROS");
+			competenciaObj = daoComp.buscarPorUsr(GestorUsuario.usuario_autenticado);
 		}
 		else {
 		switch(modalidad) {
@@ -215,22 +216,12 @@ public class GestorCompetencia {
 			EliminacionDoble ed = new EliminacionDoble(new Deporte(deporte), nombre,  estado);
 			competenciaObj = daoComp.selectCompetenciaByFilters(ed);
 			break;
-			
-			
-		default:
-			Competencia c = new Competencia(new Deporte(deporte), nombre,  estado);
-			competenciaObj = daoComp.selectCompetenciaByFilters(c);
-			
-			}
 		}
-		List<CompetenciaDTO> resultado = new ArrayList<CompetenciaDTO>();
-		
+		}
 		for(Competencia comp:competenciaObj) {
 			CompetenciaDTO dto = new CompetenciaDTO(comp.getIdCompetencia(), comp.getDeporte().getNombreDeporte(),  comp.getNombre(), comp.getEstado());
 			resultado.add(dto);
 		}
-		
-		
 		return resultado;
 		
 	}
