@@ -65,7 +65,7 @@ public class GestorUsuario {
 	    }
 	    
 	    if(password.length()<8)
-	      return "Su contrase\\u00F1a debe tener minimo 8 caracteres";
+	      return "Su contrase\u00F1a debe tener minimo 8 caracteres";
 	    
 	    if(!GestorParticipante.validarEmail(email))
 	      return "El email ingresado no es valido";
