@@ -7,10 +7,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
+
+import acceso.UsuarioDAOimpl;
 
 
 public class PanelInicioSesion extends PanelGenerico{
@@ -52,13 +55,26 @@ public class PanelInicioSesion extends PanelGenerico{
 		ActionListener iniciarSesionListener = new ActionListener() {
 		            public void actionPerformed(ActionEvent e) {
 		            	//INICIAR SESION Y AUTENTICAR,POPUPS TMB
-		            	/*
+		            	
 		            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
-						ventana.setContentPane(new PanelGeneral?NOSEEE());
+		            	/*ventana.setContentPane(new PanelGeneral?NOSEEE());
 						ventana.revalidate();
 						ventana.repaint();*/
+		            	int exito=0;
+		            	exito = (new UsuarioDAOimpl()).autenticarUsuario(campoEmail.getText().trim(),campoContraseña.getPassword().toString());
+		            	if(exito==0) {
+		            		JOptionPane.showMessageDialog(ventana,"Ta rotisimo");
+		            		}
+		            	else if(exito==2) {
+		            		JOptionPane.showMessageDialog(ventana,"VAMO VICENTE");
+		            		}
+		            	else {
+		            		JOptionPane.showMessageDialog(ventana,"kien so vo");
+		            	}
+		            	
 		            	}
 		        };
+		 buttonIniciar.addActionListener(iniciarSesionListener);
 		 ActionListener cancelarListener = new ActionListener() {
 		            public void actionPerformed(ActionEvent e) {
 		            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));

@@ -25,8 +25,9 @@ import logica.Participante;
 
 public class CompetenciaDAOimpl implements CompetenciaDAO{
 
-	private static final String SELECT_COMPETENCIA = "SELECT * FROM pruebacomp.COMPETENCIA, pruebacomp.?"
-			+ " WHERE id_competencia = ?";
+	private static final String SELECT_COMPETENCIA = "SELECT * FROM pruebacomp.COMPETENCIA, pruebacomp.";
+	
+	private static final String SELECT_COMPETENCIA2 = " WHERE id_competencia = ?";
 	
 	private static final String SELECT_BY_FILTERS = "SELECT * FROM pruebacomp.COMPETENCIA as COM ";
 	
@@ -430,29 +431,31 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Competencia c = null;
+		String query;
 		try {
-			pstmt = conn.prepareStatement(SELECT_COMPETENCIA,ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
-			
-			pstmt.setString(1, "LIGA");
-			pstmt.setInt(2, id);
+			query = SELECT_COMPETENCIA + "LIGA" + SELECT_COMPETENCIA2;		
+			pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
+			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if(rs.first()) {
 				c = new Liga();
 				((Liga)c).setPuntosPartidoGanado(rs.getInt("PUNTOS_PARTIDO_GANADO"));
 				((Liga)c).setPuntosPartidoEmpatado(rs.getInt("PUNTOS_PARTIDO_EMPATADO"));
 			}
 			else {
-				pstmt.setString(1, "ELIMINACION_SIMPLE");
-				pstmt.setInt(2, id);
+				query = SELECT_COMPETENCIA + "ELIMINACION_SIMPLE" + SELECT_COMPETENCIA2;		
+				pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
+				pstmt.setInt(1, id);
 				rs = pstmt.executeQuery();
-				if(rs.next()) {
+				if(rs.first()) {
 					c = new EliminacionSimple();
 				}
 				else {
-					pstmt.setString(1, "ELIMINACION_DOBLE");
-					pstmt.setInt(2, id);
+					query = SELECT_COMPETENCIA + "ELIMINACION_DOBLEs" + SELECT_COMPETENCIA2;		
+					pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
+					pstmt.setInt(1, id);
 					rs = pstmt.executeQuery();
-					if(rs.next()) {
+					if(rs.first()) {
 						c = new EliminacionDoble();
 				}
 			}

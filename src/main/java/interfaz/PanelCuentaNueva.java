@@ -16,6 +16,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import acceso.UsuarioDAOimpl;
+import excepciones.UsuarioExistenteException;
+import logica.Usuario;
+
 public class PanelCuentaNueva extends PanelGenerico {
 		
 		JLabel labelNombre;
@@ -91,6 +95,20 @@ public class PanelCuentaNueva extends PanelGenerico {
 				}
 			}; 
 			buttonCancelar.addActionListener(cancelarListener);
+			ActionListener cuentaNuevaListener = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Usuario u = new Usuario(campoNombre.getText().trim(),campoApellido.getText().trim()
+							,campoCorreo.getText().trim(),campoContraseña.getPassword().toString());
+					try {
+						(new UsuarioDAOimpl()).saveOrUpdate(u);
+					} catch (UsuarioExistenteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			};
+			buttonAceptar.addActionListener(cuentaNuevaListener);
 		}
 		
 		private void armarPanel() {
