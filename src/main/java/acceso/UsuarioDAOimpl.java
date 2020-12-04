@@ -28,33 +28,40 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
+			System.out.println(u.getIdUsuario());
 			if(u.getIdUsuario() == null) {
-				
-				pstmt = conn.prepareStatement(CHECK_EXISTENCE);
+				System.out.println("Ambort puto");
+				pstmt = conn.prepareStatement(CHECK_EXISTENCE,ResultSet.TYPE_SCROLL_INSENSITIVE,  ResultSet.CONCUR_UPDATABLE);
 				pstmt.setString(1, u.getEmail());
 				ResultSet rs = pstmt.executeQuery();
-				if(!rs.getBoolean(1))
-					throw (new UsuarioExistenteException());
-				else {
+				if(rs.first()) {
+					
+					if(rs.getBoolean(1)) {
+					throw (new UsuarioExistenteException());}
+					System.out.println("Entro a este pero sin excepcion");
+				//	}
+				//else {
 					pstmt = conn.prepareStatement(INSERT_USUARIO);
 					pstmt.setString(1, u.getNombre());
-					pstmt.setString(2, u.getNombre());
+					pstmt.setString(2, u.getApellido());
 					pstmt.setString(3, u.getEmail());
 					pstmt.setString(4, u.getPassword());
 					pstmt.setString(5, u.getLocalidad().getNombre());
+					pstmt.execute();
 				}
-			}
+			//}
 			else {
 				pstmt = conn.prepareStatement(UPDATE_USUARIO);
 				pstmt.setString(1, u.getNombre());
-				pstmt.setString(2, u.getNombre());
+				pstmt.setString(2, u.getApellido());
 				pstmt.setString(3, u.getEmail());
 				pstmt.setString(4, u.getPassword());
 				pstmt.setString(5, u.getLocalidad().getNombre());
 				pstmt.setInt(6, u.getIdUsuario());
+				
 			}
-			pstmt.executeUpdate();
-		}
+			//pstmt.executeUpdate();
+		}}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}

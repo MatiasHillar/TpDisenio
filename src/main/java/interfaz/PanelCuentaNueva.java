@@ -12,12 +12,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import acceso.UsuarioDAOimpl;
 import excepciones.UsuarioExistenteException;
+import logica.GestorUsuario;
 import logica.Usuario;
 
 public class PanelCuentaNueva extends PanelGenerico {
@@ -80,7 +82,9 @@ public class PanelCuentaNueva extends PanelGenerico {
 			comboLocalidad = new JComboBox<String>();
 			comboPais.addItem("<Ninguno>");
 			comboProvincia.addItem("<Ninguna>");
+			comboProvincia.addItem("Salta");
 			comboLocalidad.addItem("<Ninguna>");
+			comboLocalidad.addItem("Salta");
 			
 			//Listeners
 			ActionListener cancelarListener = new ActionListener() {
@@ -98,14 +102,12 @@ public class PanelCuentaNueva extends PanelGenerico {
 			ActionListener cuentaNuevaListener = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Usuario u = new Usuario(campoNombre.getText().trim(),campoApellido.getText().trim()
-							,campoCorreo.getText().trim(),campoContraseña.getPassword().toString());
-					try {
-						(new UsuarioDAOimpl()).saveOrUpdate(u);
-					} catch (UsuarioExistenteException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+					String respuesta = "";
+					respuesta=GestorUsuario.registrarUsuario(comboProvincia.getSelectedItem().toString(),comboLocalidad.getSelectedItem().toString()
+							,campoNombre.getText(),campoApellido.getText(),campoCorreo.getText(),String.valueOf(campoContraseña.getPassword()));
+					JOptionPane.showMessageDialog(ventana,respuesta);
+					
 				}
 			};
 			buttonAceptar.addActionListener(cuentaNuevaListener);
