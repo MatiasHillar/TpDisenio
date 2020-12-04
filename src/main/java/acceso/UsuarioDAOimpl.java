@@ -103,8 +103,11 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 		pstmt.setString(1, u.getEmail());
 		
 		ResultSet rs = pstmt.executeQuery()	;
-		if(rs.next())
-		 return rs.getBoolean(1);
+		while(rs.next()) {
+			if(rs.getBoolean(1))
+				return true;
+		}
+		
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
