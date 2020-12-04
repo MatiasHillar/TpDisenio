@@ -205,14 +205,14 @@ public class GestorCompetencia {
 			break;
 			
 			
-		case "Eliminacion Simple":
+		case "Elimin. Simple":
 			EliminacionSimple es = new EliminacionSimple(new Deporte(deporte), nombre,  estado);
 			competenciaObj = daoComp.selectCompetenciaByFilters(es);
 			break;
 			
 			
 			
-		case "Eliminacion Doble":
+		case "Elimin. Doble":
 			EliminacionDoble ed = new EliminacionDoble(new Deporte(deporte), nombre,  estado);
 			competenciaObj = daoComp.selectCompetenciaByFilters(ed);
 			break;
@@ -223,10 +223,10 @@ public class GestorCompetencia {
 		}
 		for(Competencia comp:competenciaObj) {
 			CompetenciaDTO dto = new CompetenciaDTO(comp.getIdCompetencia(), comp.getDeporte().getNombreDeporte(),  comp.getNombre(), comp.getEstado());
-			if(comp.getClass() == Liga.class)
+			if(comp instanceof Liga)
 				dto.setModalidad("Liga");
 			else
-				if(comp.getClass() == EliminacionSimple.class)
+				if(comp instanceof EliminacionSimple)
 					dto.setModalidad("Eliminacion Simple");
 				else
 					dto.setModalidad("Eliminacion Doble");

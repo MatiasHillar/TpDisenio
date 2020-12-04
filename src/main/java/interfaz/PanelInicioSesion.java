@@ -61,7 +61,7 @@ public class PanelInicioSesion extends PanelGenerico{
 						ventana.revalidate();
 						ventana.repaint();*/
 		            	int exito=0;
-		            	exito = (new UsuarioDAOimpl()).autenticarUsuario(campoEmail.getText().trim(),campoContraseña.getPassword().toString());
+		            	exito = (new UsuarioDAOimpl()).autenticarUsuario(campoEmail.getText().trim(),String.valueOf(campoContraseña.getPassword()));
 		            	if(exito==0) {
 		            		JOptionPane.showMessageDialog(ventana,"Ta rotisimo");
 		            		}

@@ -18,6 +18,7 @@ import logica.Deporte;
 import logica.DisponiblePara;
 import logica.EliminacionDoble;
 import logica.EliminacionSimple;
+import logica.GestorUsuario;
 import logica.Liga;
 import logica.Participante;
 
@@ -176,59 +177,61 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		PreparedStatement pstmt = null;
 		List<Competencia> competencias = new ArrayList<Competencia>();
 		String query;
+		ResultSet res = null;
 		//NOMBRE DEPORTE MODALIDAD ESTADO
 		try {
 			conn.setAutoCommit(false);
 			String filtros = "";
-			if(c.getEstado() != "<Ninguno>") 
-				filtros += "estado='" + c.getEstado().toUpperCase() + "' ";
+			if(c.getEstado() != "<Ninguno>") {
+				filtros += "AND estado='" + c.getEstado().toUpperCase() + "' ";
+			}
+				
 			
-			if(!c.getNombre().equals("")) 
-				filtros += "nombre='" + c.getNombre() + "' ";
+			if(!c.getNombre().equals("")) {
+					filtros += "AND nombre='" + c.getNombre() + "' ";
+
+			}
+				
 			
-			if(c.getDeporte().getNombreDeporte() != "<Ninguno>") 
-				filtros += "nombre_deporte='" + c.getDeporte().getNombreDeporte() + "' ";
+			if(c.getDeporte().getNombreDeporte() != "<Ninguno>") {
+					filtros += "AND nombre_deporte='" + c.getDeporte().getNombreDeporte() + "' ";
+			}
+				
 			
 			if(c instanceof Liga) {
-				pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
-				query = SELECT_BY_FILTERS + "WHERE " + filtros;
+				pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " " + filtros );	
+				res = pstmt.executeQuery();
+				competencias.addAll(armarListaDeCompes(res, "Liga"));
 			}
 			else {
 				if(c instanceof EliminacionSimple) {
-					pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
-					query = SELECT_BY_FILTERS + "WHERE " + filtros;
+					pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " "+ filtros );	
+					res = pstmt.executeQuery();
+					competencias.addAll(armarListaDeCompes(res, "Eliminacion Simple"));
+
 				}
 				else {
 					if(c instanceof EliminacionDoble) {
-						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
-						query = SELECT_BY_FILTERS + "WHERE " + filtros;
+						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " "+ filtros );
+						res = pstmt.executeQuery();
+						competencias.addAll(armarListaDeCompes(res, "Eliminacion Doble"));
+
 					}
 					else {
-						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "WHERE " + filtros);
-						query = SELECT_BY_FILTERS + "WHERE " + filtros;
+							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " " + filtros);
+							res = pstmt.executeQuery();
+							competencias.addAll(armarListaDeCompes(res, "Liga"));
+							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " " + filtros );
+							res = pstmt.executeQuery();
+							competencias.addAll(armarListaDeCompes(res, "Eliminacion Simple"));
+							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " " + filtros );
+							res = pstmt.executeQuery();
+							competencias.addAll(armarListaDeCompes(res, "Eliminacion Doble"));
+							
+						
 					}
 				}
 			}
-			System.out.println(query);
-			ResultSet res = pstmt.executeQuery();
-			
-			if(!res.next())
-				return competencias;
-			else {
-				do {
-					//Nombre deporte modalidad y estado
-					
-					Competencia comp = new Competencia();
-					
-					comp.setIdCompetencia(res.getInt(1));
-					comp.setNombre(res.getString(2));
-					comp.setDeporte(new Deporte(res.getString(8)));
-					comp.setEstado(res.getString(10));
-					
-					competencias.add(comp);
-					
-				} while(res.next());				
-			}		
 			
 			
 			conn.commit();
@@ -245,6 +248,45 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		
 	}
 	
+	
+	private List<Competencia> armarListaDeCompes(ResultSet res, String modalidad){
+		List<Competencia> competencias = new ArrayList<Competencia>();
+		try {
+			if(!res.next())
+				return competencias;
+			else {
+				do {
+					//Nombre deporte modalidad y estado
+					Competencia comp = null;
+					switch(modalidad) {
+					case "Liga":
+						comp = new Liga();
+						break;
+					case "Eliminacion Simple":
+						comp = new EliminacionSimple();
+						break;
+					case "Eliminacion Doble":
+						comp = new EliminacionDoble();
+						break;
+					}
+					
+					
+					comp.setIdCompetencia(res.getInt(1));
+					comp.setNombre(res.getString(2));
+					comp.setDeporte(new Deporte(res.getString(8)));
+					comp.setEstado(res.getString(10));
+					
+					competencias.add(comp);
+					
+				} while(res.next());				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return competencias;
+	}
 	
 //	public Integer saveOrUpdate(Competencia c) {
 //		Connection conn = DB.getConexion();
