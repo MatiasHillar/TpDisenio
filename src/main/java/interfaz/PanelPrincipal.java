@@ -20,15 +20,17 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
+import logica.GestorUsuario;
+
 
 public class PanelPrincipal extends PanelGenerico{
 
 	JLabel titulo;
-	JButton buttonIniciarSesion;
-	JButton buttonCrearCuenta;
-	JButton buttonListarCompetencias;
-	JButton buttonAltaCompetencia;
-	JButton buttonSalir;
+	ButtonGenerico buttonIniciarSesion;
+	ButtonGenerico buttonCrearCuenta;
+	ButtonGenerico buttonListarCompetencias;
+	ButtonGenerico buttonAltaCompetencia;
+	ButtonGenerico buttonSalir;
 	Dimension tamBotonesGen;
 	PanelPrincipal(){
 		super();
@@ -36,23 +38,31 @@ public class PanelPrincipal extends PanelGenerico{
 		armarPanel();
 	}
 	void inicializarComponentes() {
+		System.out.println("ESTE ES GESTORUSUARIO: "+GestorUsuario.usuario_autenticado);
 		//Variables
 		tamBotonesGen = new Dimension(200,45);
 		//Labels
 		titulo = new JLabel("<HTML><B><font color = 'white'>&emsp;&emsp;BIENVENIDO A <br><font size=> COMPETITION MANAGER  </B></HTML>");
 		//Buttons
-		buttonIniciarSesion = new JButton("Iniciar Sesion");
-		buttonCrearCuenta = new JButton("Crear una cuenta nueva");
-		buttonListarCompetencias = new JButton("Listar Competencias");
-		buttonAltaCompetencia = new JButton("Alta de Competencia");
-		buttonSalir = new JButton("Salir");
+		buttonIniciarSesion = new ButtonGenerico("Iniciar Sesion");
+		buttonCrearCuenta = new ButtonGenerico("Crear una cuenta nueva");
+		buttonListarCompetencias = new ButtonGenerico("Listar Competencias");
+		buttonAltaCompetencia = new ButtonGenerico("Alta de Competencia");
+		buttonSalir = new ButtonGenerico("Salir");
 		
 		buttonIniciarSesion.setPreferredSize(tamBotonesGen);
 		buttonCrearCuenta.setPreferredSize(tamBotonesGen);
 		buttonListarCompetencias.setPreferredSize(tamBotonesGen);
 		buttonAltaCompetencia.setPreferredSize(tamBotonesGen);
 		buttonSalir.setPreferredSize(tamBotonesGen);
-		
+		if(GestorUsuario.usuario_autenticado==-1) {
+			buttonAltaCompetencia.setEnabled(false);
+			buttonListarCompetencias.setEnabled(false);
+		}
+		else {
+			buttonAltaCompetencia.setEnabled(true);
+			buttonListarCompetencias.setEnabled(true);
+		}
 		//Color buttons
 		buttonIniciarSesion.setBackground(PanelGenerico.colorFondoBoton);
 		buttonIniciarSesion.setForeground(PanelGenerico.colorTextoBoton);

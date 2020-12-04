@@ -26,9 +26,9 @@ import logica.Participante;
 
 public class CompetenciaDAOimpl implements CompetenciaDAO{
 
-	private static final String SELECT_COMPETENCIA = "SELECT * FROM pruebacomp.COMPETENCIA, pruebacomp.";
+	private static final String SELECT_COMPETENCIA = "SELECT * FROM pruebacomp.COMPETENCIA as COM, pruebacomp.";
 	
-	private static final String SELECT_COMPETENCIA2 = " WHERE id_competencia = ?";
+	private static final String SELECT_COMPETENCIA2 = " WHERE COM.id_competencia = ?";
 	
 	private static final String SELECT_BY_FILTERS = "SELECT * FROM pruebacomp.COMPETENCIA as COM ";
 	

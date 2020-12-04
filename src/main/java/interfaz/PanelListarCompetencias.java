@@ -52,6 +52,7 @@ public class PanelListarCompetencias extends PanelGenerico {
 	JTable tablaCompetencias;
 	JScrollPane scrollPaneCompetencias;
 	ArrayList<Deporte> deportes;
+	List<CompetenciaDTO> listaComps;
 	public PanelListarCompetencias() {
 		super();
 		inicializarComponentes();
@@ -63,6 +64,7 @@ public class PanelListarCompetencias extends PanelGenerico {
 		Dimension tamCombo = new Dimension(125,30);
 		Dimension tamBotGrande = new Dimension(270,30);
 		Dimension tamBotChico = new Dimension(150,30);
+		listaComps = new ArrayList<CompetenciaDTO>();
 		//Labels
 		labelCompetencias = new JLabel("Competencias creadas por el usuario: "+GestorUsuario.usuario_autenticado);
 		labelCompetencias.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
@@ -167,6 +169,21 @@ public class PanelListarCompetencias extends PanelGenerico {
             	}
         };
         buttonCrearComp.addActionListener(altaCompetenciaListener);
+        
+        ActionListener verCompetenciaListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println("PICHI DEJA DE BARDEAR A MATI: "+GestorCompetencia.buscarCompetencia(listaComps.get(tablaCompetencias.getSelectedRow()).getIdCompetencia()));
+            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+				ventana.setContentPane(new PanelVerCompetencia(GestorCompetencia.buscarCompetencia(listaComps.get(tablaCompetencias.getSelectedRow()).getIdCompetencia())));
+				ventana.setPreferredSize(new Dimension(500,500));
+				ventana.revalidate();
+				ventana.setLocationRelativeTo(null);
+				ventana.repaint();
+            	}
+        };
+        buttonVerComp.addActionListener(verCompetenciaListener);
+        buttonBuscar.addActionListener(buscarListener);
+        
         construirTablaCompetencias(setearColumnasCompetencias(),obtenerMatrizCompetencias());
 	}
 	
@@ -243,7 +260,6 @@ public class PanelListarCompetencias extends PanelGenerico {
 		
 	}
 	private Object[][] obtenerMatrizCompetencias() {
-		List<CompetenciaDTO> listaComps = new ArrayList<CompetenciaDTO>();
 		listaComps = GestorCompetencia.buscarCompetenciaPorFiltros(textfNombre.getText().trim(),comboDep.getSelectedItem().toString(),comboMod.getSelectedItem().toString(),comboEstado.getSelectedItem().toString());
 		String[][] matrizCompetencias = new String[listaComps.size()][4];
 		int i=0;

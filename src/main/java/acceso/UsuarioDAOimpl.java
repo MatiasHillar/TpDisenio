@@ -28,9 +28,7 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
-			System.out.println(u.getIdUsuario());
 			if(u.getIdUsuario() == null) {
-				System.out.println("Ambort puto");
 				if(checkExistence(u))
 					throw (new UsuarioExistenteException());
 				else {
@@ -51,9 +49,9 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 				pstmt.setString(4, u.getPassword());
 				pstmt.setString(5, u.getLocalidad().getNombre());
 				pstmt.setInt(6, u.getIdUsuario());
-				
+				pstmt.executeUpdate();
+
 			}
-			//pstmt.executeUpdate();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -158,11 +156,9 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 		int id = -1;
 		try {
 			pstmt = conn.prepareStatement(AUTENTICAR_USER, ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
-			System.out.println(password + email);
 			pstmt.setString(1, password);
 			pstmt.setString(2, email);
 			rs = pstmt.executeQuery();
-			System.out.println(rs.getFetchSize());;
 			if(rs.first())
 				id = rs.getInt(1);
 			
