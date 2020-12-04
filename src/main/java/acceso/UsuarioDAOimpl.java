@@ -31,16 +31,9 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 			System.out.println(u.getIdUsuario());
 			if(u.getIdUsuario() == null) {
 				System.out.println("Ambort puto");
-				pstmt = conn.prepareStatement(CHECK_EXISTENCE,ResultSet.TYPE_SCROLL_INSENSITIVE,  ResultSet.CONCUR_UPDATABLE);
-				pstmt.setString(1, u.getEmail());
-				ResultSet rs = pstmt.executeQuery();
-				if(rs.first()) {
-					
-					if(rs.getBoolean(1)) {
-					throw (new UsuarioExistenteException());}
-					System.out.println("Entro a este pero sin excepcion");
-				//	}
-				//else {
+				if(checkExistence(u))
+					throw (new UsuarioExistenteException());
+				else {
 					pstmt = conn.prepareStatement(INSERT_USUARIO);
 					pstmt.setString(1, u.getNombre());
 					pstmt.setString(2, u.getApellido());
@@ -49,7 +42,7 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 					pstmt.setString(5, u.getLocalidad().getNombre());
 					pstmt.execute();
 				}
-			//}
+			}
 			else {
 				pstmt = conn.prepareStatement(UPDATE_USUARIO);
 				pstmt.setString(1, u.getNombre());
@@ -61,7 +54,7 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 				
 			}
 			//pstmt.executeUpdate();
-		}}
+		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -100,7 +93,27 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	
+	private Boolean checkExistence(Usuario u) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		try {
+		pstmt = conn.prepareStatement(CHECK_EXISTENCE);
+		pstmt.setString(1, u.getEmail());
+		
+		ResultSet rs = pstmt.executeQuery()	;
+		if(rs.next())
+		 return rs.getBoolean(1);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	public Usuario buscarPorId(int id) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;

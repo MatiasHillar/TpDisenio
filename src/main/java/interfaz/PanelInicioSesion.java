@@ -14,6 +14,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
 import acceso.UsuarioDAOimpl;
+import logica.GestorUsuario;
 
 
 public class PanelInicioSesion extends PanelGenerico{
@@ -60,17 +61,9 @@ public class PanelInicioSesion extends PanelGenerico{
 		            	/*ventana.setContentPane(new PanelGeneral?NOSEEE());
 						ventana.revalidate();
 						ventana.repaint();*/
-		            	int exito=0;
-		            	exito = (new UsuarioDAOimpl()).autenticarUsuario(campoEmail.getText().trim(),String.valueOf(campoContraseña.getPassword()));
-		            	if(exito==0) {
-		            		JOptionPane.showMessageDialog(ventana,"Ta rotisimo");
-		            		}
-		            	else if(exito==2) {
-		            		JOptionPane.showMessageDialog(ventana,"VAMO VICENTE");
-		            		}
-		            	else {
-		            		JOptionPane.showMessageDialog(ventana,"kien so vo");
-		            	}
+		            	String resultado;
+		            	resultado = GestorUsuario.autenticarUsuario(campoEmail.getText().trim(),String.valueOf(campoContraseña.getPassword()));
+		            	JOptionPane.showMessageDialog(ventana,resultado);
 		            	
 		            	}
 		        };

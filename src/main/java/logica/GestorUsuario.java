@@ -42,6 +42,7 @@ public class GestorUsuario {
 			  return "Los datos de inicio de sesion no son correctos";
 		  else {
 			  setUsuarioAutenticado(id);
+			  System.out.println(GestorUsuario.usuario_autenticado);
 			  return "Inicio de sesion exitoso";
 			 
 		  }
