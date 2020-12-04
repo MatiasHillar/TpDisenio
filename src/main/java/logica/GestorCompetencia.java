@@ -216,6 +216,9 @@ public class GestorCompetencia {
 			EliminacionDoble ed = new EliminacionDoble(new Deporte(deporte), nombre,  estado);
 			competenciaObj = daoComp.selectCompetenciaByFilters(ed);
 			break;
+		default:
+			Competencia c = new Competencia(new Deporte(deporte), nombre,  estado);
+			competenciaObj = daoComp.selectCompetenciaByFilters(c);
 		}
 		}
 		for(Competencia comp:competenciaObj) {

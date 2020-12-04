@@ -174,36 +174,41 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		List<Competencia> competencias = new ArrayList<Competencia>();
+		String query;
 		//NOMBRE DEPORTE MODALIDAD ESTADO
 		try {
+			conn.setAutoCommit(false);
 			String filtros = "";
 			if(c.getEstado() != "<Ninguno>") 
-				filtros += "estado=" + c.getEstado() + " ";
+				filtros += "estado='" + c.getEstado().toUpperCase() + "' ";
 			
 			if(!c.getNombre().equals("")) 
-				filtros += "nombre=" + c.getNombre() + " ";
+				filtros += "nombre='" + c.getNombre() + "' ";
 			
 			if(c.getDeporte().getNombreDeporte() != "<Ninguno>") 
-				filtros += "nombre_deporte=" + c.getDeporte().getNombreDeporte() + " ";
+				filtros += "nombre_deporte='" + c.getDeporte().getNombreDeporte() + "' ";
 			
 			if(c instanceof Liga) {
 				pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
+				query = SELECT_BY_FILTERS + "WHERE " + filtros;
 			}
 			else {
 				if(c instanceof EliminacionSimple) {
 					pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
+					query = SELECT_BY_FILTERS + "WHERE " + filtros;
 				}
 				else {
 					if(c instanceof EliminacionDoble) {
 						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE " + filtros );
+						query = SELECT_BY_FILTERS + "WHERE " + filtros;
 					}
 					else {
 						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "WHERE " + filtros);
+						query = SELECT_BY_FILTERS + "WHERE " + filtros;
 					}
 				}
 			}
-			
-			
+			System.out.println(query);
 			ResultSet res = pstmt.executeQuery();
 			
 			if(!res.next())
@@ -211,7 +216,9 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 			else {
 				do {
 					//Nombre deporte modalidad y estado
+					
 					Competencia comp = new Competencia();
+					
 					comp.setIdCompetencia(res.getInt(1));
 					comp.setNombre(res.getString(2));
 					comp.setDeporte(new Deporte(res.getString(8)));
