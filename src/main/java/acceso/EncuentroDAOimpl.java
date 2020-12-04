@@ -27,7 +27,6 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 	@Override
 	public Encuentro saveOrUpdate(Connection conn, Encuentro e) {
 		PreparedStatement pstmt = null;
-		ResultSet generatedKeys = null;
 		try {
 			if(e.getIdEncuentro()==null) {
 				pstmt = conn.prepareStatement(INSERT_ENCUENTRO, Statement.RETURN_GENERATED_KEYS);
@@ -38,10 +37,9 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 				pstmt = conn.prepareStatement(UPDATE_ENCUENTRO);
 				pstmt.setInt(1, e.getResultado().getId());
 				pstmt.setInt(2, e.getIdEncuentro());
+				daoRes.saveOrUpdate(conn, e.getResultado());
 			}
-			generatedKeys = pstmt.getGeneratedKeys();
-			if(generatedKeys.next()) e.setIdEncuentro(generatedKeys.getInt(1));
-			daoRes.saveOrUpdate(conn, e.getResultado());
+			
 			
 		}
 		catch(SQLException e2) {
