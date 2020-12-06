@@ -14,9 +14,11 @@ import logica.TIPO_RONDA;
 
 public class EncuentroDAOimpl implements EncuentroDAO{
 
-	private static final String INSERT_ENCUENTRO = "INSERT INTO pruebacomp.ENCUENTRO (id_ronda) VALUES (?)";
+	private static final String INSERT_ENCUENTRO = "INSERT INTO pruebacomp.ENCUENTRO (id_ronda, participante1,"
+			+ " participante2, id_ronda, id_lugar) VALUES (?, ?, ?, ?, ?)";
 
-	private static final String UPDATE_ENCUENTRO = "UPDATE pruebacomp.ENCUENTRO SET id_resultado = ?"
+	private static final String UPDATE_ENCUENTRO = "UPDATE pruebacomp.ENCUENTRO SET id_resultado = ?,"
+			+ " participante1 = ?, participante2 = ?, id_ronda = ?, id_lugar = ?"
 			+ " WHERE id_encuentro = ?";
 	
 	private static final String SELECT_ENCUENTROS_RONDA = "SELECT * FROM pruebacomp.ENCUENTRO WHERE id_ronda=?";
@@ -31,12 +33,20 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 			if(e.getIdEncuentro()==null) {
 				pstmt = conn.prepareStatement(INSERT_ENCUENTRO, Statement.RETURN_GENERATED_KEYS);
 				pstmt.setInt(1, e.getRonda().getIdRonda());
+				pstmt.setInt(2, e.getParticipante1().getIdParticipante());
+				pstmt.setInt(3, e.getParticipante2().getIdParticipante());
+				pstmt.setInt(4, e.getRonda().getIdRonda());
+				pstmt.setInt(5, e.getLugar().getIdLugar());
 				pstmt.executeUpdate();
 			}
 			else {
 				pstmt = conn.prepareStatement(UPDATE_ENCUENTRO);
 				pstmt.setInt(1, e.getResultado().getId());
-				pstmt.setInt(2, e.getIdEncuentro());
+				pstmt.setInt(2, e.getParticipante1().getIdParticipante());
+				pstmt.setInt(3, e.getParticipante2().getIdParticipante());
+				pstmt.setInt(4, e.getRonda().getIdRonda());
+				pstmt.setInt(5, e.getLugar().getIdLugar());
+				pstmt.setInt(6, e.getIdEncuentro());
 				daoRes.saveOrUpdate(conn, e.getResultado());
 			}
 			
@@ -83,6 +93,7 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 					Encuentro e = new Encuentro();
 					e.setIdEncuentro(res.getInt(1));
 					e.setFecha(res.getDate("fecha"));
+					//setear ronda?
 					e.setLugar((new LugarRealizacionDAOimpl()).buscarPorId(res.getInt("id_lugar")));
 					e.setParticipante1(((new ParticipanteDAOimpl()).buscarPorId(res.getInt("participante1"))));
 					e.setParticipante2(((new ParticipanteDAOimpl()).buscarPorId(res.getInt("participante2"))));
