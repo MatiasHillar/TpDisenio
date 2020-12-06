@@ -5,10 +5,15 @@ package acceso;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import logica.Competencia;
 import logica.DisponiblePara;
+import logica.Encuentro;
+import logica.LugarRealizacion;
 
 /**
  * @author Pichi
@@ -16,6 +21,7 @@ import logica.DisponiblePara;
  */
 public class DisponibilidadDAOimpl implements DisponibilidadDAO {
 	private static final String INSERT_DISPO = "INSERT INTO pruebacomp.disponible_para VALUES (?,?,?)";
+	private static final String SELECT_DISPO_COMPE = "SELECT * FROM pruebacomp.disponible_para WHERE id_competencia=?";
 	
 	
 	public DisponiblePara saveOrUpdate(DisponiblePara d, Connection conn) throws SQLException{
@@ -50,7 +56,46 @@ public class DisponibilidadDAOimpl implements DisponibilidadDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public List<DisponiblePara> buscarConIdCompe(int id, Connection conn){
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		List<DisponiblePara> dispos = new ArrayList<DisponiblePara>();
+		
+		try {
+			pstmt = conn.prepareStatement(SELECT_DISPO_COMPE, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
+			pstmt.setInt(1, id);
+			res = pstmt.executeQuery();
+			if(!res.next()) {
+				return dispos;
+			}
+			else {
+				do {
+					DisponiblePara e = new DisponiblePara();
+					e.setLugarRealizacion(new LugarRealizacion(res.getInt("ID_LUGAR")));
+					e.setCantidadEncuentros(res.getInt("cant_encuentros"));		
+					dispos.add(e);
+					
+				} while(res.next());		
+			}
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(pstmt != null)
+					pstmt.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return dispos;
+	}
+	
 	public int buscarDisponibilidad(int id) {
 		// TODO Auto-generated method stub
 		return 0;

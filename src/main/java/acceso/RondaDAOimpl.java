@@ -17,7 +17,7 @@ import logica.TIPO_RONDA;
 
 public class RondaDAOimpl implements RondaDAO {
 
-	private static final String INSERT_RONDA = "INSERT INTO pruebacomp.RONDA (id_fixture) values (?)";
+	private static final String INSERT_RONDA = "INSERT INTO pruebacomp.RONDA (id_fixture, tipo) values (?, ?::pruebacomp.tipo_ronda)";
 	private static final String SELECT_RONDAS_FIXTURE = "SELECT * FROM pruebacomp.RONDA WHERE id_fixture = ?";
 	private EncuentroDAO daoE = new EncuentroDAOimpl();
 	
@@ -29,12 +29,14 @@ public class RondaDAOimpl implements RondaDAO {
 			if(r.getIdRonda()==null) {
 			pstmt = conn.prepareStatement(INSERT_RONDA, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, r.getFixture().getIdFixture());
+			pstmt.setString(2, TIPO_RONDA.UNICA.toString());
 			}
 			pstmt.executeUpdate();
 			generatedKeys = pstmt.getGeneratedKeys();
 			if(generatedKeys.next()) r.setIdRonda(generatedKeys.getInt(1));
 			
 			for(Encuentro e : r.getEncuentros()) {
+				e.setRonda(r);
 				daoE.saveOrUpdate(conn, e);
 			}
 			
@@ -60,7 +62,7 @@ public class RondaDAOimpl implements RondaDAO {
 	}
 	
 	
-	public List<Ronda> buscarPorIdFixture(int idFixture){
+	public List<Ronda> buscarPorIdFixture(int idFixture) throws SQLException{
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -88,7 +90,7 @@ public class RondaDAOimpl implements RondaDAO {
 			conn.commit();
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
+			throw e;
 		}
 		
 		

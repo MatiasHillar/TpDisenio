@@ -21,6 +21,7 @@ import logica.EliminacionSimple;
 import logica.GestorUsuario;
 import logica.Liga;
 import logica.Participante;
+import logica.Usuario;
 
 
 
@@ -62,7 +63,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 	private static final String UPDATE_COMPETENCIA = "UPDATE pruebacomp.COMPETENCIA SET "
 			+ "FECHA_INICIO = ?, ESTADO = ?, NOMBRE_DEPORTE = ?, USUARIO_DUENO = ?, "
 			+ "PERMITE_EMPATE = ?, NOMBRE = ?, FECHA_FIN = ?, FORMA_PUNTUACION = ? "
-			+ "WHERE 'id_patente' = ?";
+			+ "WHERE id_competencia = ?";
 	
 	private static final String DELETE_COMPETENCIA = "DELETE FROM pruebacomp.COMPETENCIA WHERE "
 			+ "'id_competencia' = ?";
@@ -84,28 +85,43 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		Integer keyComp = null;
 		try {
 			conn.setAutoCommit(false);
+			System.out.println(c.getFormaPuntuacion());
 			keyFP = daoFP.saveOrUpdate(c.getFormaPuntuacion(), conn);
 			if(c.getIdCompetencia() != null){
+				System.out.println("EL ID NO ES NULL");
                 pstmt = conn.prepareStatement(UPDATE_COMPETENCIA);
-				pstmt.setDate(1, Date.valueOf(c.getFechaInicio().toString()));
+                if(c.getFechaInicio()==null)
+                	pstmt.setDate(1, null);
+                else
+                	pstmt.setDate(1, Date.valueOf(c.getFechaInicio().toString()));
+                
 				pstmt.setString(2, c.getEstado());
 				pstmt.setString(3, c.getDeporte().getNombreDeporte());
 				pstmt.setInt(4, c.getUsuario().getIdUsuario());
 				pstmt.setBoolean(5, c.getPermiteEmpate());
 				pstmt.setString(6, c.getNombre());
-				pstmt.setDate(7, Date.valueOf(c.getFechaFin().toString()));
+				
+				if(c.getFechaFin()==null)
+					pstmt.setDate(7, null);
+				else
+					pstmt.setDate(7, Date.valueOf(c.getFechaFin().toString()));
+				
 				pstmt.setInt(8, c.getFormaPuntuacion().getIdFormaPuntuacion());
 				pstmt.setInt(9, c.getIdCompetencia());
 				pstmt.executeUpdate();
-				
-				if(c.getClass() == Liga.class) {
+				System.out.println("A ver si es liga..");
+				if(c instanceof Liga) {
 					pstmt1 = conn.prepareStatement(UPDATE_LIGA);
 					pstmt1.setInt(1, ((Liga)c).getPuntosPartidoGanado());
 					pstmt1.setInt(2, ((Liga)c).getPuntosPartidoEmpatado());
 					pstmt1.setInt(3, c.getIdCompetencia());
 					pstmt1.executeUpdate();
-					//borrar fixture si se cambió de estado
+					
 					daoF.delete(conn, c.getIdCompetencia());
+					System.out.println("GUARDO EL FIXTURE...");
+					daoF.saveOrUpdate(conn, c.getFixture());
+					//borrar fixture si se cambió de estado 
+					
 				}	
 			
 				for(Participante p : c.getParticipantes()) {
@@ -123,7 +139,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 				pstmt.setInt(6, keyFP);
 				pstmt.setString(7, c.getReglamento());
 				pstmt.execute();
-				
+				System.out.println("HIZO UN INSERT XD");
 				generatedKeys = pstmt.getGeneratedKeys();
 				if(generatedKeys.next()) {
 					if(c.getClass() == Liga.class) {
@@ -145,13 +161,13 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 			}
 				
 			}
-			
+			/*
 			for(DisponiblePara disp : c.getDisponibleParas()) {
 				disp.setCompetencia(c);
 				System.out.println(c.getIdCompetencia());
 				daoDisp.saveOrUpdate(disp, conn);
 			}
-			
+			*/
 		
 				
 			
@@ -159,7 +175,9 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 			conn.commit();
 		}
 		catch(SQLException e) {
+			e.printStackTrace();
 			conn.rollback();
+			throw e;
 		}
 		try {
 			if(pstmt!=null)pstmt.close();
@@ -510,6 +528,9 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 		c.setEstado(rs.getString("ESTADO"));
 		c.setParticipantes((ArrayList<Participante>) (new ParticipanteDAOimpl()).buscar(c.getIdCompetencia()));
+		c.setDisponibleParas((ArrayList<DisponiblePara>) (new DisponibilidadDAOimpl()).buscarConIdCompe(id, conn));
+		c.setUsuario(new Usuario(GestorUsuario.usuario_autenticado));
+		c.setFormaPuntuacion((new FormaDePuntuacionDAOimpl()).buscarPorId(rs.getInt("forma_puntuacion")));
 		c.setFixture((new FixtureDAOimpl()).buscarPorIdCompetencia(id));
 		}
 		catch(SQLException e) {

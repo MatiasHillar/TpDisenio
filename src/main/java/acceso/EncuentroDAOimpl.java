@@ -14,7 +14,7 @@ import logica.TIPO_RONDA;
 
 public class EncuentroDAOimpl implements EncuentroDAO{
 
-	private static final String INSERT_ENCUENTRO = "INSERT INTO pruebacomp.ENCUENTRO = (id_ronda)";
+	private static final String INSERT_ENCUENTRO = "INSERT INTO pruebacomp.ENCUENTRO (id_ronda) VALUES (?)";
 
 	private static final String UPDATE_ENCUENTRO = "UPDATE pruebacomp.ENCUENTRO SET id_resultado = ?"
 			+ " WHERE id_encuentro = ?";
@@ -25,7 +25,7 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 	private ResultadoDAO daoRes = new ResultadoDAOimpl();
 	
 	@Override
-	public Encuentro saveOrUpdate(Connection conn, Encuentro e) {
+	public Encuentro saveOrUpdate(Connection conn, Encuentro e) throws SQLException {
 		PreparedStatement pstmt = null;
 		try {
 			if(e.getIdEncuentro()==null) {
@@ -43,7 +43,7 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 			
 		}
 		catch(SQLException e2) {
-			e2.printStackTrace();
+			throw e2;
 		}
 	finally {
 		try {

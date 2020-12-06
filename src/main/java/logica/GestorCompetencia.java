@@ -301,21 +301,22 @@ public class GestorCompetencia {
 			cantEncuentrosDisponibles += dispo.getCantidadEncuentros();
 		
 		ArrayList<DisponiblePara> disponibilidadesAAsignar = new ArrayList<DisponiblePara>(competencia.getDisponibleParas());
-		
 		if(competencia.getClass() == Liga.class) {
 			if(competencia.getParticipantes().size()%2==0) {
-				
+				System.out.println(cantEncuentrosDisponibles);
+				System.out.println(disponibilidadesAAsignar.size());
 				int cantEquipos = competencia.getParticipantes().size();
 				if(cantEncuentrosDisponibles<(cantEquipos-1)*(cantEquipos/2))
 					return "La cantidad de encuentros disponible en los lugares de realizacion es insuficiente. Agregue mas lugares";
 				
 				ArrayList<Ronda> rondas = new ArrayList<Ronda>();
-				for(int i=0,k = 0; i<cantEquipos; i++) {
+				for(int i=0,k = 0; i<cantEquipos-1; i++) {
 					Encuentro[] encuentros = new Encuentro[cantEquipos/2];
 					
 					for(int j=0; j<cantEquipos/2; j++) {
 						encuentros[j] = new Encuentro();
 						encuentros[j].setParticipante1(competencia.getParticipantes().get(k));
+						System.out.println(disponibilidadesAAsignar.get(0));
 						encuentros[j].setLugar(disponibilidadesAAsignar.get(0).getLugarRealizacion());
 						disponibilidadesAAsignar.get(0).setCantidadEncuentros(
 								disponibilidadesAAsignar.get(0).getCantidadEncuentros()-1);
@@ -366,6 +367,8 @@ public class GestorCompetencia {
 				for(Ronda ronda: rondas)
 					ronda.setFixture(fixture);
 				competencia.setFixture(fixture);
+				fixture.setCompetencia(competencia);
+				competencia.setEstado("PLANIFICADA");
 				try {
 					(new CompetenciaDAOimpl()).saveOrUpdate(competencia);
 				}
@@ -431,6 +434,8 @@ public class GestorCompetencia {
 				for(Ronda ronda: rondas)
 					ronda.setFixture(fixture);
 				competencia.setFixture(fixture);
+				fixture.setCompetencia(competencia);
+				competencia.setEstado("PLANIFICADA");
 				try {
 					(new CompetenciaDAOimpl()).saveOrUpdate(competencia);
 				}

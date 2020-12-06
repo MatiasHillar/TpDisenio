@@ -10,6 +10,7 @@ import java.util.List;
 
 import excepciones.NoExisteException;
 import logica.Competencia;
+import logica.EliminacionDoble;
 import logica.EliminacionSimple;
 import logica.FormaPuntuacion;
 import logica.Liga;
@@ -19,8 +20,10 @@ import logica.Sets;
 
 public class FormaDePuntuacionDAOimpl implements FormaDePuntuacionDAO {
 
-	private static final String SELECT_FORMA_PUNTUACION = "SELECT * FROM pruebacomp.FORMA_PUNTUACION WHERE "
-			+ "ID_FORMA_PUNTUACION = ?";
+	private static final String SELECT_FORMA_PUNTUACION = "SELECT * FROM pruebacomp.FORMA_PUNTUACION as FP, pruebacomp.";
+	
+	private static final String SELECT_FORMA_PUNTUACION2 = " as Li WHERE FP.ID_FORMA_PUNTUACION = ? AND FP.ID_FORMA_PUNTUACION=Li.ID_FORMA_PUNTUACION";
+	
 	
 	private static final String INSERT_FORMA_PUNTUACION = "INSERT INTO pruebacomp.FORMA_PUNTUACION VALUES (DEFAULT)";
 	
@@ -34,10 +37,10 @@ public class FormaDePuntuacionDAOimpl implements FormaDePuntuacionDAO {
 			+ "VALUES(?)";
 	
 	private static final String UPDATE_PUNTUACION = "UPDATE pruebacomp.puntuacion "
-			+ "SET TANTOS_POR_DEFAULT = ? WHERE ID_FORMA_PUNTACION = ?";
+			+ "SET TANTOS_POR_DEFAULT = ? WHERE ID_FORMA_PUNTUACION = ?";
 	
 	private static final String UPDATE_SETS = "UPDATE pruebacomp.sets "
-			+ "SET CANT_MAX_SETS = ? WHERE ID_FORMA_PUNTACION = ?";
+			+ "SET CANT_MAX_SETS = ? WHERE ID_FORMA_PUNTUACION = ?";
 
 	//	private static final String UPDATE_RES_FINAL = "UPDATE pruebacomp.forma_puntuacion SET"
 //			+ " WHERE ID_FORMA_PUNTACION = ?";
@@ -58,11 +61,11 @@ public class FormaDePuntuacionDAOimpl implements FormaDePuntuacionDAO {
 				
 				generatedKeys = pstmt.getGeneratedKeys();
 				if(generatedKeys.next()) {
-					if(f.getClass() == Puntuacion.class) {
+					if(f instanceof Puntuacion) {
 						pstmt1 = conn.prepareStatement(INSERT_PUNTUACION);
 						pstmt1.setInt(2, ((Puntuacion)f).getTantosPorDefault());
 				}
-					else if(f.getClass() == Sets.class) {
+					else if(f instanceof Sets) {
 						pstmt1 = conn.prepareStatement(INSERT_SETS);
 						pstmt1.setInt(2, ((Sets)f).getCantMaxSets());
 					}
@@ -77,14 +80,15 @@ public class FormaDePuntuacionDAOimpl implements FormaDePuntuacionDAO {
 				else key = -1;
 			}
 			else {
-				if(f.getClass() == Puntuacion.class) {
+				if(f instanceof Puntuacion) {
 					pstmt = conn.prepareStatement(UPDATE_PUNTUACION);
 					pstmt.setInt(1, ((Puntuacion)f).getTantosPorDefault());
 				}
-				else if(f.getClass() == Sets.class) {
+				else if(f instanceof Sets) {
 					pstmt = conn.prepareStatement(UPDATE_SETS);
 					pstmt.setInt(1, ((Sets)f).getCantMaxSets());
 				}
+				System.out.println(f.getIdFormaPuntuacion());
 				pstmt.setInt(2, f.getIdFormaPuntuacion());
 				pstmt.executeUpdate();
 			}
@@ -133,27 +137,42 @@ public class FormaDePuntuacionDAOimpl implements FormaDePuntuacionDAO {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		String query;
 		FormaPuntuacion f = null;
 		try {
-			pstmt = conn.prepareStatement(SELECT_FORMA_PUNTUACION,ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
+			query = SELECT_FORMA_PUNTUACION + "PUNTUACION" + SELECT_FORMA_PUNTUACION2;		
+			pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
-			if(!rs.first()) throw new NoExisteException();
-			if(rs.getInt("ID_FORMA_PUNTUACION") == 0) {
-				f = new Sets(rs.getInt("CANT_MAX_SETS"));
-			}
-			else if(rs.getInt("ID_FORMA_PUNTUACION") == 1) {
-				f = new Puntuacion(rs.getInt("TANTOS_POR_DEFAULT"));
+			if(rs.first()) {
+				f = new Puntuacion();
+				((Puntuacion) f).setTantosPorDefault(rs.getInt("tantos_por_default"));
+				f.setIdFormaPuntuacion(id);
 			}
 			else {
-				f = new ResultadoFinal();
+				query = SELECT_FORMA_PUNTUACION + "SETS" + SELECT_FORMA_PUNTUACION2;			
+				pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
+				pstmt.setInt(1, id);
+				rs = pstmt.executeQuery();
+				if(rs.first()) {
+					f = new Sets();
+					((Sets) f).setCantMaxSets(rs.getInt("cant_max_sets"));
+					f.setIdFormaPuntuacion(id);
+					
+				}
+				else {
+					query = SELECT_FORMA_PUNTUACION + "RESULTADO_FINAL" + SELECT_FORMA_PUNTUACION2;			
+					pstmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,    ResultSet.CONCUR_UPDATABLE);
+					pstmt.setInt(1, id);
+					rs = pstmt.executeQuery();
+					if(rs.first()) {
+						f = new ResultadoFinal();
+						f.setIdFormaPuntuacion(id);
+				}
 			}
-			
+			}
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
-		}
-		catch(NoExisteException e) {
 			e.printStackTrace();
 		}
 		finally {

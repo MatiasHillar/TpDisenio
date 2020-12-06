@@ -208,6 +208,10 @@ public class Competencia implements java.io.Serializable {
 	public Set<DisponiblePara> getDisponibleParas() {
 		return this.disponibleParas;
 	}
+	
+	public void setDisponibleParas(ArrayList<DisponiblePara> disponibleParas) {
+		this.disponibleParas = new HashSet<DisponiblePara>(disponibleParas);
+	}
 
 	public void setDisponibleParas(Set disponibleParas) {
 		this.disponibleParas = disponibleParas;

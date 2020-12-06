@@ -15,7 +15,7 @@ import excepciones.UsuarioExistenteException;
  */
 public class GestorUsuario {
 	
-	public static int usuario_autenticado=-1;
+	public static int usuario_autenticado=2;
 	  
 	  
 

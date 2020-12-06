@@ -13,7 +13,7 @@ import logica.Ronda;
 
 public class FixtureDAOimpl implements FixtureDAO {
 
-	private static final String INSERT_FIXTURE = "INSERT INTO pruebacomp.FIXURE id_competencia VALUES (?)";
+	private static final String INSERT_FIXTURE = "INSERT INTO pruebacomp.FIXTURE (id_competencia) VALUES (?)";
 	
 	private static final String UPDATE_FIXTURE = "UPDATE pruebacomp.FIXTURE SET id_competencia = ?"
 			+ " WHERE id_fixture = ?";
@@ -25,23 +25,26 @@ public class FixtureDAOimpl implements FixtureDAO {
 	private RondaDAO daoR = new RondaDAOimpl();
 	
 	@Override
-	public Fixture saveOrUpdate(Connection conn, Fixture f) {
+	public Fixture saveOrUpdate(Connection conn, Fixture f) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet generatedKeys = null;
 		try {
 			if(f.getIdFixture()==null) {
-			pstmt = conn.prepareStatement(INSERT_FIXTURE);
+			pstmt = conn.prepareStatement(INSERT_FIXTURE, java.sql.Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, f.getCompetencia().getIdCompetencia());
-		}
+			}
 			pstmt.executeUpdate();
+			System.out.println("INSERTO");
 			generatedKeys = pstmt.getGeneratedKeys();
 			if(generatedKeys.next()) f.setIdFixture(generatedKeys.getInt(1));
+			System.out.println(f.getIdFixture());
 			for(Ronda r : f.getRonda()) {
+				r.setFixture(f);
 				daoR.saveOrUpdate(conn, r);
 			}
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
+			throw e;
 		}
 		finally {
 			try {
