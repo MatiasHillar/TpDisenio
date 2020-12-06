@@ -77,7 +77,7 @@ public class PanelAltaParticipante extends PanelGenerico {
 				//ParticipanteDAO.delete(SELECCIONADO);
 				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelListarParticipantes(dtoCompetencia));
-				ventana.setSize(1024,655);
+				ventana.setSize(tamAltaComp);
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();
@@ -90,7 +90,7 @@ public class PanelAltaParticipante extends PanelGenerico {
 				String respuesta = "LOL";
 				respuesta = GestorParticipante.saveParticipante(dtoCompetencia.getIdCompetencia(),textNombre.getText().trim(),textCorreo.getText().trim());
 				JOptionPane.showMessageDialog(ventana,respuesta);
-				ventana.setContentPane(new PanelListarParticipantes(dtoCompetencia));
+				ventana.setContentPane(new PanelListarParticipantes(GestorCompetencia.buscarCompetencia(dtoCompetencia.getIdCompetencia())));
 				ventana.setSize(500,600);
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();

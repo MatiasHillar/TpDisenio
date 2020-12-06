@@ -146,7 +146,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 splitHorizontal= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		 splitHorizontal.setLeftComponent(panelIzq);
 		 splitHorizontal.setRightComponent(panelDer);
-		 splitHorizontal.setPreferredSize(new Dimension(1000,600));
+		 splitHorizontal.setPreferredSize(tamVerComp);
 		 splitHorizontal.setOneTouchExpandable(false);
 		 splitHorizontal.setResizeWeight(0.2);      
 		 splitHorizontal.setEnabled(false);
@@ -192,13 +192,13 @@ public class PanelVerCompetencia extends PanelGenerico {
 	
 	private void armarPanel() {
 		this.setLayout(new BorderLayout());
-		panel = new PanelGenerico();
-		this.add(panel,BorderLayout.CENTER);
+		//panel = new PanelGenerico();
+		//this.add(panel,BorderLayout.CENTER);
 		SpringLayout layout = new SpringLayout();
-		panel.setLayout(layout);
-		panel.add(splitHorizontal);
-		layout.putConstraint(SpringLayout.WEST,splitHorizontal,5,SpringLayout.WEST,panel);
-		layout.putConstraint(SpringLayout.NORTH,splitHorizontal,10,SpringLayout.NORTH,panel);
+		this.setLayout(layout);
+		this.add(splitHorizontal);
+		layout.putConstraint(SpringLayout.WEST,splitHorizontal,5,SpringLayout.WEST,this);
+		layout.putConstraint(SpringLayout.NORTH,splitHorizontal,10,SpringLayout.NORTH,this);
 		panelIzq = new PanelGenerico();
 		panelDer = new PanelGenerico();
 		splitHorizontal.setLeftComponent(panelIzq);

@@ -17,16 +17,20 @@ public class ButtonGenerico extends JButton{
 	}
 	@Override
     protected void paintComponent(Graphics g) {
-		if(this.isEnabled())
-		super.paintComponent(g);
+		if(this.isEnabled()) {
+			super.paintComponent(g);
+			this.setBackground(Color.decode("#112349"));
+			this.setForeground(Color.white);
+		}
 		else if(!this.isEnabled()) {
-		Graphics2D g2 = (Graphics2D) g.create();
-	    g2.setPaint(new GradientPaint(new Point(0, 0), Color.decode("#112379"), new Point(0,
-	    getHeight()),Color.decode("#112349")));
-	    g2.fillRoundRect(0, 0, getWidth(), getHeight(),20,20);
-	    g2.setPaint(Color.white);
-	    g2.drawString(getText(),(getWidth()/4)-5,((getHeight()/2)+this.getFont().getSize()/3));
-	    g2.dispose();}
+			Graphics2D g2 = (Graphics2D) g.create();
+			g2.setPaint(new GradientPaint(new Point(0, 0), Color.decode("#112379"),
+					new Point(0,getHeight()),Color.decode("#112349")));
+			g2.fillRoundRect(0, 0, getWidth(), getHeight(),20,20);
+			g2.setPaint(Color.white);
+			g2.drawString(getText(),(getWidth()/4)-5,((getHeight()/2)+this.getFont().getSize()/3));
+			g2.dispose();
+			}
         
 	}
 }

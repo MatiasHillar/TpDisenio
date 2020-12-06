@@ -172,12 +172,11 @@ public class PanelListarCompetencias extends PanelGenerico {
         
         ActionListener verCompetenciaListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	System.out.println("PICHI DEJA DE BARDEAR A MATI: "+GestorCompetencia.buscarCompetencia(listaComps.get(tablaCompetencias.getSelectedRow()).getIdCompetencia()));
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelVerCompetencia(GestorCompetencia.buscarCompetencia(listaComps.get(tablaCompetencias.getSelectedRow()).getIdCompetencia())));
-				ventana.setPreferredSize(new Dimension(500,500));
-				ventana.revalidate();
+				ventana.setSize(tamVerComp);
 				ventana.setLocationRelativeTo(null);
+				ventana.revalidate();
 				ventana.repaint();
             	}
         };

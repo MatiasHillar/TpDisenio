@@ -14,9 +14,10 @@ public class PanelGenerico extends JPanel {
 	static final Dimension tamPrincipal = new Dimension(300,450);
 	static final Dimension tamAltaComp = new Dimension(1000,650);
 	static final Dimension tamListarComp = new Dimension(1000,575);
+	static final Dimension tamVerComp = new Dimension(1000,700);
 	static final Dimension tamIniciarSesion = new Dimension(300,300);
 	static final Dimension tamCuentaNueva = new Dimension(300,400);
-	static final Dimension tamAltaPartic = new Dimension(450,300);
+	static final Dimension tamAltaPartic = new Dimension(400,300);
 	static final Color colorFondoBoton =  Color.decode("#112349");
 	static final Color colorTextoBoton =  Color.white;
 	@Override
@@ -27,7 +28,7 @@ public class PanelGenerico extends JPanel {
         int w = getWidth();
         int h = getHeight();
         Color color1 = Color.decode("#2148bc");
-        Color color2 = Color.decode("#10104a");
+        Color color2 = Color.decode("#20205a");
         GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, w, h);

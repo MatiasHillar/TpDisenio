@@ -31,9 +31,10 @@ import logica.GestorCompetencia;
 
 public class PanelListarParticipantes extends PanelGenerico{
 	JLabel labelPartic;
-	JButton buttonAgregarP;
+	ButtonGenerico buttonAgregarP;
 	ButtonGenerico buttonModificarP;
 	ButtonGenerico buttonEliminarP;
+	ButtonGenerico buttonCancelar;
 	JTable tablaParticipantes;
 	JScrollPane scrollPaneParticipantes;
 	CompetenciaDTO dtoComp;
@@ -51,21 +52,18 @@ public class PanelListarParticipantes extends PanelGenerico{
 	labelPartic = new JLabel("<HTML>Participantes de Competencia: <B>"+nombreC+"</B> </HTML>",SwingConstants.CENTER);
 	labelPartic.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
 	//Buttons
-	buttonAgregarP = new JButton("Agregar Nuevo Participante");
+	buttonAgregarP = new ButtonGenerico("Agregar Nuevo Participante");
 	buttonModificarP = new ButtonGenerico("Modificar Participante");
 	buttonEliminarP = new ButtonGenerico("Eliminar Participante");
+	buttonCancelar = new ButtonGenerico("Cancelar");
 	buttonAgregarP.setPreferredSize(new Dimension(200,30));
 	buttonModificarP.setPreferredSize(new Dimension(200,30));
 	buttonEliminarP.setPreferredSize(new Dimension(200,30));
+	buttonCancelar.setPreferredSize(new Dimension(200,30));
 	//Color Buttons
 	buttonModificarP.setEnabled(false);
 	buttonEliminarP.setEnabled(false);
-	buttonAgregarP.setBackground(Color.decode("#112349"));
-	buttonAgregarP.setForeground(Color.white);
-	buttonModificarP.setBackground(Color.decode("#112349"));
-	buttonModificarP.setForeground(Color.white);
-	buttonEliminarP.setBackground(Color.decode("#112349"));
-	buttonEliminarP.setForeground(Color.white);
+	
 	
 	//Tablas
 	tablaParticipantes = new JTable();
@@ -91,7 +89,6 @@ public class PanelListarParticipantes extends PanelGenerico{
 	};
 	ActionListener AgregarParticipanteListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			//ParticipanteDAO.delete(SELECCIONADO);
 			JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 			ventana.setContentPane(new PanelAltaParticipante(dtoComp));
 			ventana.setSize(tamAltaPartic);
@@ -101,6 +98,17 @@ public class PanelListarParticipantes extends PanelGenerico{
 		}
 	};
 	buttonAgregarP.addActionListener(AgregarParticipanteListener);
+	ActionListener cancelarListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+			ventana.setContentPane(new PanelVerCompetencia(GestorCompetencia.buscarCompetencia(dtoComp.getIdCompetencia())));
+			ventana.setSize(tamVerComp);
+			ventana.setLocationRelativeTo(null);
+			ventana.revalidate();
+			ventana.repaint();
+			}
+		};
+	buttonCancelar.addActionListener(cancelarListener);
 	}
 	
 	private void armarPanel() {
@@ -121,8 +129,9 @@ public class PanelListarParticipantes extends PanelGenerico{
 	add(buttonEliminarP);
 	sLayout.putConstraint(SpringLayout.WEST,buttonEliminarP,0,SpringLayout.WEST,buttonAgregarP);
 	sLayout.putConstraint(SpringLayout.NORTH,buttonEliminarP,20,SpringLayout.SOUTH,buttonModificarP);
-	//Colores
-	this.setBackground(Color.decode("#21489c"));
+	add(buttonCancelar);
+	sLayout.putConstraint(SpringLayout.WEST,buttonCancelar,0,SpringLayout.WEST,buttonAgregarP);
+	sLayout.putConstraint(SpringLayout.NORTH,buttonCancelar,20,SpringLayout.SOUTH,buttonEliminarP);
 	}
 	
 	private void construirTablaParticipantes(String[] columna,Object[][] datosParticipantes) {

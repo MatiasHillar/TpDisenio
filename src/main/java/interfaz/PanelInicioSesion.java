@@ -64,7 +64,12 @@ public class PanelInicioSesion extends PanelGenerico{
 		            	String resultado;
 		            	resultado = GestorUsuario.autenticarUsuario(campoEmail.getText().trim(),String.valueOf(campoContraseña.getPassword()));
 		            	JOptionPane.showMessageDialog(ventana,resultado);
-		            	
+		            	if(resultado.equals("Inicio de sesion exitoso")) {
+		            		ventana.setContentPane(new PanelPrincipal());
+		            		ventana.setSize(tamPrincipal);
+		            		ventana.setLocationRelativeTo(null);
+		            		ventana.revalidate();
+		            		ventana.repaint();}
 		            	}
 		        };
 		 buttonIniciar.addActionListener(iniciarSesionListener);
