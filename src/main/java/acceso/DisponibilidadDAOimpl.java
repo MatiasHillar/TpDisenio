@@ -22,11 +22,14 @@ import logica.LugarRealizacion;
 public class DisponibilidadDAOimpl implements DisponibilidadDAO {
 	private static final String INSERT_DISPO = "INSERT INTO pruebacomp.disponible_para VALUES (?,?,?)";
 	private static final String SELECT_DISPO_COMPE = "SELECT * FROM pruebacomp.disponible_para WHERE id_competencia=?";
-	
+	private static final String SELECT_DISPO = "SELECT * FROM pruebacomp.disponible_para WHERE"
+			+ " id_competencia = ? AND id_lugar = ? AND cant_encuentros = ?";
 	
 	public DisponiblePara saveOrUpdate(DisponiblePara d, Connection conn) throws SQLException{
 		PreparedStatement pstmt = null;
 		try {
+			if(checkNull(d.getCompetencia().getIdCompetencia(), d.getLugarRealizacion().getIdLugar(),
+					d.getCantidadEncuentros(), conn))
 			pstmt = conn.prepareStatement(INSERT_DISPO);
 			pstmt.setInt(1, d.getLugarRealizacion().getIdLugar());
 			pstmt.setInt(2, d.getCompetencia().getIdCompetencia());
@@ -101,4 +104,29 @@ public class DisponibilidadDAOimpl implements DisponibilidadDAO {
 		return 0;
 	}
 
+	private boolean checkNull(int id_competencia, int id_lugar, int cant_encuentros, Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Boolean ret = false;
+		try {
+			pstmt = conn.prepareStatement(SELECT_DISPO, ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
+			pstmt.setInt(1, id_competencia);
+			pstmt.setInt(2, id_lugar);
+			pstmt.setInt(3, cant_encuentros);
+			rs = pstmt.executeQuery();
+			ret = rs.first();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return ret;
+	}
 }
