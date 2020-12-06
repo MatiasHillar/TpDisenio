@@ -257,7 +257,7 @@ public class PanelAltaCompetencia extends PanelGenerico{
 			      SpinnerNumberModel modeloDisp;
 			      modeloDisp= new SpinnerNumberModel(1,1,99,1);
 			      JSpinner Spinnerdisponibilidad = new JSpinner(modeloDisp);
-			      JPanel panelAgregarSede = new JPanel();
+			      PanelGenerico panelAgregarSede = new PanelGenerico();
 			      panelAgregarSede.setLayout(new GridBagLayout());
 			      GridBagConstraints gbc= new GridBagConstraints();
 			      gbc.gridx=0;
@@ -272,7 +272,10 @@ public class PanelAltaCompetencia extends PanelGenerico{
 			      panelAgregarSede.add(new JLabel("Disponibilidad:"),gbc);
 			      gbc.gridx++;
 			      panelAgregarSede.add(Spinnerdisponibilidad,gbc);
-				int result  = JOptionPane.showConfirmDialog(null,panelAgregarSede,"Nombre",JOptionPane.OK_CANCEL_OPTION);
+			      UIManager.put("OptionPane.background",Color.decode("#20205a"));
+			      UIManager.put("Panel.background", Color.decode("#20205a"));
+			      
+			      int result  = JOptionPane.showConfirmDialog(null,panelAgregarSede,"Agregar Sede",JOptionPane.OK_CANCEL_OPTION);
 				if(result == JOptionPane.OK_OPTION) {
 					LugarRealizacion LElegido = new LugarRealizacion();
 					for (LugarRealizacion l : lugares) {
@@ -385,14 +388,6 @@ public class PanelAltaCompetencia extends PanelGenerico{
 		cartaLigaS.setOpaque(false);
 		cartaElimS.setOpaque(false);
 		vacio.setOpaque(false);
-		/*panelDer.setBackground(Color.decode("#21489c"));
-		panelIzq.setBackground(Color.decode("#21489c"));
-		basico.setBackground(Color.decode("#21489c"));
-		cartas.setBackground(Color.decode("#21489c"));
-		cartaLigaP.setBackground(Color.decode("#21489c"));
-		cartaLigaS.setBackground(Color.decode("#21489c"));
-		cartaElimS.setBackground(Color.decode("#21489c"));
-		vacio.setBackground(Color.decode("#21489c"));*/
 	}
 	
 	private JPanel panelBasico() {

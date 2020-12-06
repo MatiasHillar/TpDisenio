@@ -1,6 +1,8 @@
 package interfaz;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -20,6 +22,11 @@ public class PanelGenerico extends JPanel {
 	static final Dimension tamAltaPartic = new Dimension(400,300);
 	static final Color colorFondoBoton =  Color.decode("#112349");
 	static final Color colorTextoBoton =  Color.white;
+	
+	public PanelGenerico() {
+		super();
+	}
+	
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -33,7 +40,24 @@ public class PanelGenerico extends JPanel {
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, w, h);
     }
-	public PanelGenerico() {
-		super();
+	
+	void getComponents(Container c){
+
+	       Component[] m = c.getComponents();
+
+	       for(int i = 0; i < m.length; i++){
+
+	           if(m[i].getClass().getName() == "javax.swing.JPanel")
+	               m[i].setBackground(Color.decode("#2148bc"));
+	           
+	           if(m[i].getClass().getName() == "javax.swing.JLabel")
+	               m[i].setBackground(Color.decode("#2148bc"));
+	           if(m[i].getClass().getName() == "javax.swing.JButton") {
+	               m[i].setForeground(Color.white);
+	        	   m[i].setBackground(Color.decode("#102a63"));}
+	           
+	           if(c.getClass().isInstance(m[i]));
+	               getComponents((Container)m[i]);
+	       }
 	}
 }

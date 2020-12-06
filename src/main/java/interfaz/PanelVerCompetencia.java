@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -152,7 +153,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 splitHorizontal.setEnabled(false);
 		 
 		 //ACTION LISTENERS
-		 ActionListener pagDerListener = new ActionListener() {
+		ActionListener pagDerListener = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					paginaSeleccionada++;
 					labelPaginador.setText("<HTML> <B> PAGINA "+ (paginaSeleccionada)+"</B> </HTML>");
@@ -161,7 +162,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 			};
 			botonPagDer.addActionListener(pagDerListener);
 			
-		 ActionListener pagIzqListener = new ActionListener() {
+		ActionListener pagIzqListener = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(paginaSeleccionada!=1) {
 					paginaSeleccionada--;
@@ -174,7 +175,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 			};
 			botonPagIzq.addActionListener(pagIzqListener);
 			
-			ActionListener verParticipantesListener = new ActionListener() {
+		ActionListener verParticipantesListener = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 					ventana.setContentPane(new PanelListarParticipantes(dtoCompetencia));
@@ -184,8 +185,29 @@ public class PanelVerCompetencia extends PanelGenerico {
 					ventana.repaint();
 				}
 			};
-			botonVerPartic.addActionListener(verParticipantesListener);
-			
+		botonVerPartic.addActionListener(verParticipantesListener);
+		
+		ActionListener generarFixtureListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+				String Resultado;
+				Resultado = GestorCompetencia.generarFixture(dtoCompetencia);
+				JOptionPane.showMessageDialog(ventana,Resultado);
+			}
+		};
+		botonGenFixture.addActionListener(generarFixtureListener);
+		
+		ActionListener cancelarListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+				ventana.setContentPane(new PanelListarCompetencias());
+				ventana.revalidate();
+				ventana.setSize(tamListarComp);
+				ventana.setLocationRelativeTo(null);
+				ventana.repaint();
+			}
+		};
+		botonCancelar.addActionListener(cancelarListener);
 			//construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros());
 			construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
 	}

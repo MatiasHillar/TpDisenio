@@ -31,6 +31,8 @@ public class AppPrueba {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
+		//UIManager.put("Background",Color.decode("#20205a"));
+
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
@@ -47,6 +49,7 @@ public class AppPrueba {
 		} catch (IllegalAccessException e) {
 		    // handle exception
 		}
+		
 		JFrame ventana = new JFrame();	
 		ventana.setContentPane(new PanelPrincipal());
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

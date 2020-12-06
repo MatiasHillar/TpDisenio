@@ -1,10 +1,15 @@
 package interfaz;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -12,6 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import acceso.UsuarioDAOimpl;
 import logica.GestorUsuario;
@@ -21,8 +27,8 @@ public class PanelInicioSesion extends PanelGenerico{
 	JLabel labelTitulo;
 	JLabel labelEmail;
 	JLabel labelContraseña;
-	JButton buttonCancelar;
-	JButton buttonIniciar;
+	ButtonGenerico buttonCancelar;
+	ButtonGenerico buttonIniciar;
 	JTextField campoEmail;
 	JPasswordField campoContraseña;
 	
@@ -38,8 +44,8 @@ public class PanelInicioSesion extends PanelGenerico{
 		labelEmail = new JLabel("<HTML><B>Correo <br> Electrónico:</B></HTML>");
 		labelContraseña = new JLabel("<HTML><B>Contraseña:</B></HTML> ");
 		//Buttons
-		buttonCancelar = new JButton("Cancelar");
-		buttonIniciar = new JButton("Iniciar Sesión");
+		buttonCancelar = new ButtonGenerico("Cancelar");
+		buttonIniciar = new ButtonGenerico("Iniciar Sesión");
 		buttonCancelar.setPreferredSize(new Dimension(120,30));
 		buttonIniciar.setPreferredSize(new Dimension(120,30));
 		
@@ -55,15 +61,17 @@ public class PanelInicioSesion extends PanelGenerico{
 		//Listeners
 		ActionListener iniciarSesionListener = new ActionListener() {
 		            public void actionPerformed(ActionEvent e) {
-		            	//INICIAR SESION Y AUTENTICAR,POPUPS TMB
-		            	
 		            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
-		            	/*ventana.setContentPane(new PanelGeneral?NOSEEE());
-						ventana.revalidate();
-						ventana.repaint();*/
 		            	String resultado;
 		            	resultado = GestorUsuario.autenticarUsuario(campoEmail.getText().trim(),String.valueOf(campoContraseña.getPassword()));
-		            	JOptionPane.showMessageDialog(ventana,resultado);
+		        		JOptionPane pane =new JOptionPane(resultado, 
+		                JOptionPane.PLAIN_MESSAGE ,JOptionPane.DEFAULT_OPTION);
+		        		JDialog dialogInicio;
+		        		 getComponents(pane);
+		                 pane.setBackground(Color.decode("#2148bc"));
+		                 dialogInicio = pane.createDialog(ventana, "Autenticación de Login");
+		                 pane.setForeground(Color.white);
+		                 dialogInicio.setVisible(true);
 		            	if(resultado.equals("Inicio de sesion exitoso")) {
 		            		ventana.setContentPane(new PanelPrincipal());
 		            		ventana.setSize(tamPrincipal);
@@ -112,4 +120,5 @@ public class PanelInicioSesion extends PanelGenerico{
 		sLayout.putConstraint(SpringLayout.NORTH,buttonIniciar,25,SpringLayout.SOUTH,campoContraseña);
 		
 	}
+	
 }

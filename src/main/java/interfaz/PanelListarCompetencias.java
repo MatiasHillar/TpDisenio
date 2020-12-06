@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -173,16 +174,30 @@ public class PanelListarCompetencias extends PanelGenerico {
         ActionListener verCompetenciaListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+            	if(tablaCompetencias.getSelectedRow()==-1) {
+            		JOptionPane.showMessageDialog(ventana, "Seleccione una competencia");
+            	}
+            	else {
 				ventana.setContentPane(new PanelVerCompetencia(GestorCompetencia.buscarCompetencia(listaComps.get(tablaCompetencias.getSelectedRow()).getIdCompetencia())));
 				ventana.setSize(tamVerComp);
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();
+            		}
             	}
         };
         buttonVerComp.addActionListener(verCompetenciaListener);
         buttonBuscar.addActionListener(buscarListener);
         
+        ActionListener limpiarFiltrosListener = new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		textfNombre.setText("");
+        		comboDep.setSelectedIndex(0);
+        		comboMod.setSelectedIndex(0);
+        		comboEstado.setSelectedIndex(0);
+        	}
+        };
+        buttonLimpiar.addActionListener(limpiarFiltrosListener);
         construirTablaCompetencias(setearColumnasCompetencias(),obtenerMatrizCompetencias());
 	}
 	
