@@ -25,6 +25,10 @@ public class Provincia {
 		this.id_provincia = id;
 	}
 
+	public Provincia(String nombre) {
+		this.nombre = nombre;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}

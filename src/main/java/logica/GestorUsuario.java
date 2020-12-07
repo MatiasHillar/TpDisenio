@@ -53,6 +53,8 @@ public class GestorUsuario {
 	  
 	  public static String registrarUsuario(String nombreProvincia, String nombreLocalidad, String nombre, String apellido, String email, String password) {
 	    Localidad l = new Localidad(nombreLocalidad);
+	    Provincia p = new Provincia(nombreProvincia);
+	    l.setProvincia(p);
 	    Usuario nuevoUsuario = new Usuario(nombre, apellido, email, password, l);
 	    
 	    if(nombreProvincia.contentEquals("<Ninguna>"))
