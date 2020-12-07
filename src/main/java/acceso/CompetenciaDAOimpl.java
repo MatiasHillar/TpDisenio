@@ -117,13 +117,15 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					pstmt1.setInt(3, c.getIdCompetencia());
 					pstmt1.executeUpdate();
 					
-					daoF.delete(conn, c.getIdCompetencia());
-					System.out.println("GUARDO EL FIXTURE...");
-					daoF.saveOrUpdate(conn, c.getFixture());
+					
 					//borrar fixture si se cambió de estado 
 					
 				}	
-			
+				
+				daoF.delete(conn, c.getIdCompetencia());
+				System.out.println("GUARDO EL FIXTURE...");
+				daoF.saveOrUpdate(conn, c.getFixture());
+				
 				for(Participante p : c.getParticipantes()) {
 				daoP.saveOrUpdate(p);
 			}

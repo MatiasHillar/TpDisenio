@@ -25,6 +25,7 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 	
 	
 	private ResultadoDAO daoRes = new ResultadoDAOimpl();
+	private RondaDAO daoRonda = new RondaDAOimpl();
 	
 	@Override
 	public Encuentro saveOrUpdate(Connection conn, Encuentro e) throws SQLException {
@@ -92,7 +93,7 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 					Encuentro e = new Encuentro();
 					e.setIdEncuentro(res.getInt(1));
 					e.setFecha(res.getDate("fecha"));
-					//setear ronda?
+//					e.setRonda(res.getInt(daoRonda.)); setear competencia?
 					e.setLugar((new LugarRealizacionDAOimpl()).buscarPorId(res.getInt("id_lugar")));
 					e.setParticipante1(((new ParticipanteDAOimpl()).buscarPorId(res.getInt("participante1"))));
 					e.setParticipante2(((new ParticipanteDAOimpl()).buscarPorId(res.getInt("participante2"))));
