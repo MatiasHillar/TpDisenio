@@ -15,7 +15,7 @@ import logica.TIPO_RONDA;
 public class EncuentroDAOimpl implements EncuentroDAO{
 
 	private static final String INSERT_ENCUENTRO = "INSERT INTO pruebacomp.ENCUENTRO (id_ronda, participante1,"
-			+ " participante2, id_ronda, id_lugar) VALUES (?, ?, ?, ?, ?)";
+			+ " participante2, id_lugar) VALUES (?, ?, ?, ?)";
 
 	private static final String UPDATE_ENCUENTRO = "UPDATE pruebacomp.ENCUENTRO SET id_resultado = ?,"
 			+ " participante1 = ?, participante2 = ?, id_ronda = ?, id_lugar = ?"
@@ -35,8 +35,7 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 				pstmt.setInt(1, e.getRonda().getIdRonda());
 				pstmt.setInt(2, e.getParticipante1().getIdParticipante());
 				pstmt.setInt(3, e.getParticipante2().getIdParticipante());
-				pstmt.setInt(4, e.getRonda().getIdRonda());
-				pstmt.setInt(5, e.getLugar().getIdLugar());
+				pstmt.setInt(4, e.getLugar().getIdLugar());
 				pstmt.executeUpdate();
 			}
 			else {

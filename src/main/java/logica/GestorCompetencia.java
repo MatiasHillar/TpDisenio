@@ -264,8 +264,16 @@ public class GestorCompetencia {
 		
 		ArrayList<Encuentro> encuentros;
 		ArrayList<Ronda> rondas = new ArrayList<Ronda>(c.getFixture().getRonda());
-		encuentros = (ArrayList<Encuentro>) rondas.stream().map(r -> r.getEncuentros()).
-				flatMap(e -> e.stream()).filter(e -> e.getFecha().after(Date.from(Instant.now()))).collect(Collectors.toList());
+		if(c.getEstado()=="EN DISPUTA") {
+			encuentros = (ArrayList<Encuentro>) rondas.stream().map(r -> r.getEncuentros()).
+					flatMap(e -> e.stream()).filter(e -> e.getFecha().after(Date.from(Instant.now()))).collect(Collectors.toList());
+		}
+		else {
+			encuentros = (ArrayList<Encuentro>) rondas.stream().map(r -> r.getEncuentros()).
+					flatMap(e -> e.stream()).collect(Collectors.toList());
+		}
+		
+		
 		
 		i=0;
 		String[][] fixture = new String[encuentros.size()][3];

@@ -161,13 +161,13 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 			}
 				
 			}
-			/*
+
 			for(DisponiblePara disp : c.getDisponibleParas()) {
 				disp.setCompetencia(c);
 				System.out.println(c.getIdCompetencia());
 				daoDisp.saveOrUpdate(disp, conn);
 			}
-			*/
+
 		
 				
 			

@@ -29,13 +29,15 @@ public class DisponibilidadDAOimpl implements DisponibilidadDAO {
 		PreparedStatement pstmt = null;
 		try {
 			if(checkNull(d.getCompetencia().getIdCompetencia(), d.getLugarRealizacion().getIdLugar(),
-					d.getCantidadEncuentros(), conn))
-			pstmt = conn.prepareStatement(INSERT_DISPO);
-			pstmt.setInt(1, d.getLugarRealizacion().getIdLugar());
-			pstmt.setInt(2, d.getCompetencia().getIdCompetencia());
-			pstmt.setInt(3, d.getCantidadEncuentros());
+					d.getCantidadEncuentros(), conn)) {
+				pstmt = conn.prepareStatement(INSERT_DISPO);
+				pstmt.setInt(1, d.getLugarRealizacion().getIdLugar());
+				pstmt.setInt(2, d.getCompetencia().getIdCompetencia());
+				pstmt.setInt(3, d.getCantidadEncuentros());
 
-			pstmt.executeUpdate();
+				pstmt.executeUpdate();
+			}
+			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
