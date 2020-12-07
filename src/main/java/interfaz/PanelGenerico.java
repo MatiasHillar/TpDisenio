@@ -30,6 +30,7 @@ public class PanelGenerico extends JPanel {
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if(this.isOpaque()) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         int w = getWidth();
@@ -39,6 +40,7 @@ public class PanelGenerico extends JPanel {
         GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, w, h);
+        }
     }
 	
 	void getComponents(Container c){

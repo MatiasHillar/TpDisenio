@@ -47,6 +47,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -154,11 +155,31 @@ public class PanelAltaCompetencia extends PanelGenerico{
 		 tablaSedes = new JTable(10,10);
 		 scrollTabla = new JScrollPane(tablaSedes);
 		 scrollTabla.setPreferredSize(new Dimension(150, 80));
+		 scrollTabla.getVerticalScrollBar().setBackground(Color.decode("#5693f5"));
+		 scrollTabla.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+			    @Override
+			    protected void configureScrollBarColors() {
+			        this.thumbColor = Color.decode("#2148bc");
+			        this.thumbDarkShadowColor = (Color.decode("#0f2e8a"));
+			    }
+			});	 
 		 tablaSedes.setPreferredScrollableViewportSize(tablaSedes.getPreferredSize());
 		 tablaSedes.setFillsViewportHeight(true);
+		 
+		 
 		 scrollTexto = new JScrollPane(campoReglamento);
 		 scrollTexto.setPreferredSize(new Dimension(300,400));
 		 scrollTexto.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		 scrollTexto.getVerticalScrollBar().setBackground(Color.decode("#5693f5"));
+		 scrollTexto.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+			    @Override
+			    protected void configureScrollBarColors() {
+			        this.thumbColor = Color.decode("#2148bc");
+			        this.thumbDarkShadowColor = (Color.decode("#0f2e8a"));
+			    }
+			});
+		 
+		 
 		 modeloSets = new SpinnerNumberModel(3,1,9,2);
 		 modeloTantos =new SpinnerNumberModel(3,0,99,1);
 		 modeloPG =new SpinnerNumberModel(3,1,99,1);
@@ -272,8 +293,12 @@ public class PanelAltaCompetencia extends PanelGenerico{
 			      panelAgregarSede.add(new JLabel("Disponibilidad:"),gbc);
 			      gbc.gridx++;
 			      panelAgregarSede.add(Spinnerdisponibilidad,gbc);
-			      UIManager.put("OptionPane.background",Color.decode("#20205a"));
-			      UIManager.put("Panel.background", Color.decode("#20205a"));
+
+			      
+			      panelAgregarSede.setBackground(Color.decode("#2148bc"));
+			      ((JPanel) panelAgregarSede).repaint();
+			      UIManager.put("OptionPane.background", Color.decode("#2148bc"));
+			      UIManager.getLookAndFeelDefaults().put("Panel.background", Color.decode("#2148bc"));		
 			      
 			      int result  = JOptionPane.showConfirmDialog(null,panelAgregarSede,"Agregar Sede",JOptionPane.OK_CANCEL_OPTION);
 				if(result == JOptionPane.OK_OPTION) {
@@ -305,7 +330,7 @@ public class PanelAltaCompetencia extends PanelGenerico{
 			public void actionPerformed(ActionEvent e) {
 				//DESCOMENTAR CUANDO PICHI LO IMPLEMENTE
 				String retorno;
-			retorno = GestorCompetencia.saveCompetencia(campoNombre.getText().trim(), campoDeporte.getSelectedItem().toString(), lugaresElegidos,
+				retorno = GestorCompetencia.saveCompetencia(campoNombre.getText().trim(), campoDeporte.getSelectedItem().toString(), lugaresElegidos,
 			            campoMod.getSelectedItem().toString(),campoFormaP.getSelectedItem().toString(), campoReglamento.getText().trim(),(Integer) modeloTantos.getValue(),
 			           (Integer) modeloPG.getValue(),(Integer) modeloPE.getValue(),permiteEmpate,(Integer) modeloSets.getValue());
 			if(retorno=="guardado") {
@@ -554,14 +579,16 @@ public class PanelAltaCompetencia extends PanelGenerico{
    public void construirTabla(String[] columnas,Object[][] data) {
 		 ModeloTablaSedes model = new ModeloTablaSedes(data,columnas);
 		 tablaSedes.setModel(model);
-		//ASIGNO TIPO DE DATOS A CADA COLUMNA
+		 tablaSedes.getTableHeader().setDefaultRenderer(new GenericoTableHeaderRenderer());
+
+
 		 tablaSedes.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasSedes("texto"));
 		 tablaSedes.getColumnModel().getColumn(1).setCellRenderer(new GestionCeldasSedes("texto"));
 		 tablaSedes.getTableHeader().setReorderingAllowed(false);
 		 tablaSedes.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		 tablaSedes.setRowHeight(35);
 		 tablaSedes.setGridColor(Color.BLACK);
-		// TAMAÑO DE CADA COLUMNA
+
 		 tablaSedes.getColumnModel().getColumn(0).setPreferredWidth(10);
 		 tablaSedes.getColumnModel().getColumn(1).setPreferredWidth(15);
 		 

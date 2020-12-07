@@ -24,6 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import acceso.ParticipanteDAO;
 import logica.CompetenciaDTO;
@@ -72,6 +73,14 @@ public class PanelListarParticipantes extends PanelGenerico{
 	scrollPaneParticipantes.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);  
 	scrollPaneParticipantes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 	scrollPaneParticipantes.setPreferredSize(new Dimension(400,200));
+	scrollPaneParticipantes.getVerticalScrollBar().setBackground(Color.decode("#5693f5"));
+	scrollPaneParticipantes.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+		    @Override
+		    protected void configureScrollBarColors() {
+		        this.thumbColor = Color.decode("#2148bc");
+		        this.thumbDarkShadowColor = (Color.decode("#0f2e8a"));
+		    }
+		});
 	construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
 	
 	//Listeners
@@ -138,10 +147,13 @@ public class PanelListarParticipantes extends PanelGenerico{
 		 ModeloTablaParticipantes model = new ModeloTablaParticipantes(datosParticipantes,columna);
 		 tablaParticipantes.setModel(model);
 		 tablaParticipantes.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasGen("texto"));
+		 tablaParticipantes.getTableHeader().setDefaultRenderer(new GenericoTableHeaderRenderer());
+
 		 tablaParticipantes.getTableHeader().setReorderingAllowed(false);
 		 tablaParticipantes.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		 tablaParticipantes.setRowHeight(35);
 		 tablaParticipantes.setGridColor(Color.BLACK);
+		 
 		 tablaParticipantes.getColumnModel().getColumn(0).setPreferredWidth(100);
 	}
 	private Object[][] obtenerArrayDatosParticipantes() {

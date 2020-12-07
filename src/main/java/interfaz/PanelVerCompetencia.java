@@ -30,6 +30,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.JTableHeader;
 
 import logica.CompetenciaDTO;
@@ -138,11 +139,18 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 tablaEncuentros.setPreferredSize(new Dimension(270,210));
 		 tablaParticipantes = new JTable(3,3);
 		 tablaParticipantes.setSize(70,140);
-		 tablaParticipantes.getTableHeader().setForeground(Color.decode("#112349"));
 		 scrollPaneParticipantes = new JScrollPane(tablaParticipantes);
 		 scrollPaneParticipantes.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);  
 		 scrollPaneParticipantes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 		 scrollPaneParticipantes.setPreferredSize(new Dimension(300,200));
+		 scrollPaneParticipantes.getVerticalScrollBar().setBackground(Color.decode("#5693f5"));
+		 scrollPaneParticipantes.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+			    @Override
+			    protected void configureScrollBarColors() {
+			        this.thumbColor = Color.decode("#2148bc");
+			        this.thumbDarkShadowColor = (Color.decode("#0f2e8a"));
+			    }
+			});
 		 //SPLITS
 		 splitHorizontal= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		 splitHorizontal.setLeftComponent(panelIzq);
@@ -229,6 +237,11 @@ public class PanelVerCompetencia extends PanelGenerico {
 		panelDer.setPreferredSize(new Dimension(380,290));
 		armarPanelIzq();
 		armarPanelDer();
+		//Colores paneles
+		panelDer.setOpaque(false);
+		panelIzq.setOpaque(false);
+		splitHorizontal.setOpaque(false);
+		
 	}
 	private void armarPanelIzq() {
 		SpringLayout sLayout = new SpringLayout();
@@ -321,7 +334,8 @@ public class PanelVerCompetencia extends PanelGenerico {
 	public void construirTablaEncuentros(String[] columnas,Object[][] data) {
 		 ModeloTablaGen model = new ModeloTablaGen(data,columnas);
 		 tablaEncuentros.setModel(model);
-		
+		 tablaEncuentros.getTableHeader().setDefaultRenderer(new GenericoTableHeaderRenderer());
+
 		
 		 tablaEncuentros.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasGen("texto"));
 		 tablaEncuentros.getColumnModel().getColumn(1).setCellRenderer(new GestionCeldasGen("texto"));
@@ -371,15 +385,16 @@ public class PanelVerCompetencia extends PanelGenerico {
 			Object[][] datosParticipantes) {
 		 ModeloTablaParticipantes model = new ModeloTablaParticipantes(datosParticipantes,columna);
 		 tablaParticipantes.setModel(model);
+		 tablaParticipantes.getTableHeader().setDefaultRenderer(new GenericoTableHeaderRenderer());
 		
-		
+	
 		 tablaParticipantes.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasGen("texto"));
 
 		 tablaParticipantes.getTableHeader().setReorderingAllowed(false);
 		 tablaParticipantes.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		 tablaParticipantes.setRowHeight(35);
 		 tablaParticipantes.setGridColor(Color.BLACK);
-		
+		 tablaParticipantes.setShowGrid(true);
 
 		 tablaParticipantes.getColumnModel().getColumn(0).setPreferredWidth(100);
 
