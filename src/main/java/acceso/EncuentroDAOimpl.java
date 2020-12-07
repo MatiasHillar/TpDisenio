@@ -25,7 +25,6 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 	
 	
 	private ResultadoDAO daoRes = new ResultadoDAOimpl();
-	private RondaDAO daoRonda = new RondaDAOimpl();
 	private ParticipanteDAO daoP = new ParticipanteDAOimpl();
 	private LugarRealizacionDAO daoL = new LugarRealizacionDAOimpl();
 	

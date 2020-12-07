@@ -78,6 +78,7 @@ public class GestorCompetencia {
 					}
 					competencia.setDisponibleParas(disponibleParas);
 					competencia.setReglamento(reglamento);
+					System.out.println(disponibleParas.size());
 					(new CompetenciaDAOimpl()).saveOrUpdate(competencia);
 					return "guardado";
 					
@@ -428,7 +429,7 @@ public class GestorCompetencia {
 				int equipoMasAlto = cantEquipos-1;
 				
 				for(int i=0, k=equipoMasAlto; i<cantEquipos; i++) {
-					for(int j=1; j<cantEquipos/2; j++) {
+					for(int j=0; j<cantEquipos/2; j++) {
 						rondas.get(i).getEncuentros().get(j)
 						.setParticipante2(competencia.getParticipantes().get(k));
 						k--;
@@ -438,6 +439,12 @@ public class GestorCompetencia {
 					}
 				}
 				
+				for(Ronda r: rondas) {
+					List<Encuentro> encuentros = r.getEncuentros();
+					for(Encuentro e: encuentros) {
+						System.out.println(e.getParticipante2().getNombre());
+					}
+				}
 				Fixture fixture = new Fixture(rondas);
 				for(Ronda ronda: rondas)
 					ronda.setFixture(fixture);
