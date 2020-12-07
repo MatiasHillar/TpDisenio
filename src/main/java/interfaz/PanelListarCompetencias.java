@@ -1,5 +1,6 @@
 package interfaz;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,6 +16,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,8 +26,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
-
-
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import logica.CompetenciaDTO;
 import logica.Deporte;
@@ -130,7 +131,14 @@ public class PanelListarCompetencias extends PanelGenerico {
 		scrollPaneCompetencias.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);  
 		scrollPaneCompetencias.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 		scrollPaneCompetencias.setPreferredSize(new Dimension(900,270));
-		
+		scrollPaneCompetencias.getVerticalScrollBar().setBackground(Color.decode("#5693f5"));
+		scrollPaneCompetencias.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+			    @Override
+			    protected void configureScrollBarColors() {
+			        this.thumbColor = Color.decode("#2148bc");
+			        this.thumbDarkShadowColor = (Color.decode("#0f2e8a"));
+			    }
+			});
 		//Listeners
 		ActionListener buscarListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -174,8 +182,20 @@ public class PanelListarCompetencias extends PanelGenerico {
         ActionListener verCompetenciaListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+            	JLabel labelAlerta;
+            	labelAlerta = new JLabel("<HTML><b> <font color='white'>Seleccione una competencia  </b></HTML>");
+            	labelAlerta.setBackground(Color.red);
             	if(tablaCompetencias.getSelectedRow()==-1) {
-            		JOptionPane.showMessageDialog(ventana, "Seleccione una competencia");
+            		PanelGenerico panelDialogo = new PanelGenerico();
+            		panelDialogo.setLayout(new BorderLayout());
+            		panelDialogo.add(labelAlerta,BorderLayout.CENTER);
+            		JDialog jd = new JDialog(ventana);
+            		jd.setContentPane(panelDialogo);
+            		JOptionPane jpane = new JOptionPane(labelAlerta,JOptionPane.PLAIN_MESSAGE);
+            		getComponents(jpane);
+            		jpane.setBackground(Color.decode("#2148bc"));
+            		jd = jpane.createDialog(ventana, "ALERTA");            		
+            		jd.setVisible(true);
             	}
             	else {
 				ventana.setContentPane(new PanelVerCompetencia(GestorCompetencia.buscarCompetencia(listaComps.get(tablaCompetencias.getSelectedRow()).getIdCompetencia())));
@@ -199,6 +219,7 @@ public class PanelListarCompetencias extends PanelGenerico {
         };
         buttonLimpiar.addActionListener(limpiarFiltrosListener);
         construirTablaCompetencias(setearColumnasCompetencias(),obtenerMatrizCompetencias());
+        
 	}
 	
 	private void armarPanel() {
@@ -255,7 +276,7 @@ public class PanelListarCompetencias extends PanelGenerico {
 		// TODO Auto-generated method stub
 		ModeloTablaCompetencias model = new ModeloTablaCompetencias(datos,columnas);
 		tablaCompetencias.setModel(model);
-		
+		tablaCompetencias.getTableHeader().setDefaultRenderer(new GenericoTableHeaderRenderer());
 		
 		tablaCompetencias.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasGen("texto"));
 		tablaCompetencias.getColumnModel().getColumn(1).setCellRenderer(new GestionCeldasGen("texto"));
@@ -263,9 +284,11 @@ public class PanelListarCompetencias extends PanelGenerico {
 		tablaCompetencias.getColumnModel().getColumn(3).setCellRenderer(new GestionCeldasGen("texto"));
 
 		tablaCompetencias.getTableHeader().setReorderingAllowed(false);
-		tablaCompetencias.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+		tablaCompetencias.getTableHeader().setForeground(Color.white);
+		tablaCompetencias.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
 		tablaCompetencias.setRowHeight(35);
 		tablaCompetencias.setGridColor(Color.BLACK);
+		tablaCompetencias.setShowGrid(true);
 		
 		tablaCompetencias.getColumnModel().getColumn(0).setPreferredWidth(250);
 		tablaCompetencias.getColumnModel().getColumn(1).setPreferredWidth(150);
@@ -296,34 +319,3 @@ public class PanelListarCompetencias extends PanelGenerico {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

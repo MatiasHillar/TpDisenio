@@ -12,6 +12,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import logica.GestorCompetencia;
 
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.ColorUIResource;
 
 
 public class AppPrueba {
@@ -31,8 +32,12 @@ public class AppPrueba {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		//UIManager.put("Background",Color.decode("#20205a"));
-
+		UIManager.put("nimbusBlueGrey",Color.decode("#5693f5"));
+		UIManager.put("nimbusScrollBar:\"ScrollBar.button\".size",0);
+		UIManager.put("ScrollBar.thumbHighlight", new ColorUIResource(Color.decode("#24248f")));
+		UIManager.put("ScrollBar.thumbDarkShadow", new ColorUIResource(Color.decode("#24248f")));
+		UIManager.put("ScrollBar.highlight", new ColorUIResource(Color.decode("#24248f")));
+		UIManager.put("ScrollBar.trackHighlight", new ColorUIResource(Color.decode("#24248f")));
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {

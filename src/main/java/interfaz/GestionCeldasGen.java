@@ -14,8 +14,6 @@ private String tipo = "texto";
 	
 	private Font normal = new Font("Verdana", Font.PLAIN, 12);
 	private Font bold = new Font("Verdana", Font.BOLD, 12);
-	private Font subrayada = new Font("Verdana", TextAttribute.UNDERLINE_ON, 12);
-	private JLabel label = new JLabel();
 	public GestionCeldasGen() {
 		
 	}
