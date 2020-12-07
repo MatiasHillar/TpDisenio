@@ -15,10 +15,7 @@ import logica.DisponiblePara;
 import logica.Encuentro;
 import logica.LugarRealizacion;
 
-/**
- * @author Pichi
- *
- */
+
 public class DisponibilidadDAOimpl implements DisponibilidadDAO {
 	private static final String INSERT_DISPO = "INSERT INTO pruebacomp.disponible_para VALUES (?,?,?)";
 	private static final String SELECT_DISPO_COMPE = "SELECT * FROM pruebacomp.disponible_para WHERE id_competencia=?";
@@ -62,6 +59,7 @@ public class DisponibilidadDAOimpl implements DisponibilidadDAO {
 		return null;
 	}
 	
+	@Override
 	public List<DisponiblePara> buscarConIdCompe(int id, Connection conn){
 		PreparedStatement pstmt = null;
 		ResultSet res = null;

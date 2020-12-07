@@ -10,4 +10,5 @@ public interface FixtureDAO {
 	public Fixture saveOrUpdate(Connection conn, Fixture f) throws SQLException;
 	public void delete(Connection conn, int id);
 	public Fixture buscarPorId(int id);
+	public Fixture buscarPorIdCompetencia(int id_compe, Connection conn);
 }

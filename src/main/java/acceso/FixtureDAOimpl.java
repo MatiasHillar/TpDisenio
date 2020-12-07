@@ -87,29 +87,35 @@ public class FixtureDAOimpl implements FixtureDAO {
 		return null;
 	}
 	
-	
-	public Fixture buscarPorIdCompetencia(int idCompetencia) {
-		Connection conn = DB.getConexion();
+	@Override
+	public Fixture buscarPorIdCompetencia(int idCompetencia, Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Fixture f = new Fixture();
 		
 		try {
-			conn.setAutoCommit(false);
 			pstmt = conn.prepareStatement(SELECT_FIXTURE_COMP);
 			pstmt.setInt(1, idCompetencia);
-			ResultSet res = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			
 			
-			if(res.next()) {
+			if(rs.next()) {
 				
-				f = new Fixture(res.getInt(1), ((RondaDAOimpl) daoR).buscarPorIdFixture(res.getInt(1)));
+				f = new Fixture(rs.getInt(1), daoR.buscarPorIdFixture(rs.getInt(1),conn));
 			}
-			conn.commit();
+			
 			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(pstmt!=null)pstmt.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		

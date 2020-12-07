@@ -10,5 +10,5 @@ public interface FormaDePuntuacionDAO {
 	public Integer saveOrUpdate (FormaPuntuacion f, Connection conn)throws SQLException;
 	public void delete (int id);
 	public List<FormaPuntuacion> buscarTodos();
-	public FormaPuntuacion buscarPorId(int id);
+	public FormaPuntuacion buscarPorId(int id, Connection conn);
 }

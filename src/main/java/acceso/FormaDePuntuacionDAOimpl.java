@@ -133,8 +133,7 @@ public class FormaDePuntuacionDAOimpl implements FormaDePuntuacionDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public FormaPuntuacion buscarPorId(int id) {
-		Connection conn = DB.getConexion();
+	public FormaPuntuacion buscarPorId(int id, Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query;

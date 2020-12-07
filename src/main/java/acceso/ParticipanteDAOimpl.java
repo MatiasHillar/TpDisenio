@@ -13,10 +13,7 @@ import java.util.List;
 import logica.Competencia;
 import logica.Participante;
 
-/**
- * @author Pichi
- *
- */
+
 public class ParticipanteDAOimpl implements ParticipanteDAO{
 
 	private static final String SELECT_PARTICIPANTE = "SELECT * FROM pruebacomp.PARTICIPANTE"
@@ -135,38 +132,37 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 	
 	//busca por competencia
 	@Override
-	public List<Participante> buscar(int idCompetencia) {
-		Connection conn = DB.getConexion();
+	public List<Participante> buscar(int idCompetencia, Connection conn) {
 		PreparedStatement pstmt = null;
 		List<Participante> participantes = new ArrayList<Participante>();
+		ResultSet rs = null;
 		
 		try {
-			conn.setAutoCommit(false);
+			
 			pstmt = conn.prepareStatement(SELECT_COMP_PARTICIPANTES);
 			pstmt.setInt(1, idCompetencia);
-			ResultSet res = pstmt.executeQuery();
-			if(!res.next())
+			rs = pstmt.executeQuery();
+			if(!rs.next())
 				return participantes;
 			else {
 				do {
 					Participante p = new Participante();
-					p.setIdParticipante(res.getInt(1));
-					p.setNombre(res.getString(2));
-					p.setEmail(res.getString(3));
-					p.setCompetencia(new Competencia(res.getInt(4)));
+					p.setIdParticipante(rs.getInt(1));
+					p.setNombre(rs.getString(2));
+					p.setEmail(rs.getString(3));
+					p.setCompetencia(new Competencia(rs.getInt(4)));
 					
 					
 					participantes.add(p);
-				} while(res.next());				
+				} while(rs.next());				
 			}			
-			conn.commit();
+		
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
 		try {
 			if(pstmt!=null)pstmt.close();
-			if(conn!=null)conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -177,28 +173,26 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 	}
 
 	@Override
-	public Participante buscarPorId(int id) {
-		Connection conn = DB.getConexion();
+	public Participante buscarPorId(int id, Connection conn) {
 		PreparedStatement pstmt = null;
 		Participante p = null;
+		ResultSet rs = null;
 		try {
-			conn.setAutoCommit(false);
 			pstmt = conn.prepareStatement(SELECT_PARTICIPANTE);
 			pstmt.setInt(1, id);
-			ResultSet res = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			
 			
-			if(res.next()) {
-				p = new Participante(id, res.getString(2), res.getString(3), new Competencia(res.getInt(4)));
+			if(rs.next()) {
+				p = new Participante(id, rs.getString(2), rs.getString(3), new Competencia(rs.getInt(4)));
 			}
-			conn.commit();
+
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
 		try {
 			if(pstmt!=null)pstmt.close();
-			if(conn!=null)conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();

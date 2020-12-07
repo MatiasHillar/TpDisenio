@@ -23,6 +23,8 @@ import logica.Provincia;
  */
 public class ProvinciaDAOimpl implements ProvinciaDAO{
 
+	private LocalidadDAO daoLoc = new LocalidadDAOimpl();
+	
 	@Override
 	public List<Provincia> buscarProvincias() {
 		HttpURLConnection conn = null;
@@ -51,7 +53,7 @@ public class ProvinciaDAOimpl implements ProvinciaDAO{
 		    	  JSONObject jsonob = (JSONObject) array.get(i);
 
 		    	  Provincia p = new Provincia((String) jsonob.get("nombre"), Long.valueOf((String) jsonob.get("id")),
-		    			  (new LocalidadDAOimpl()).buscarPorProvincia(Long.valueOf((String) jsonob.get("id"))));
+		    			  daoLoc.buscarPorProvincia(Long.valueOf((String) jsonob.get("id"))));
 		    	  provincias.add(p);
 		    	  
 		      }

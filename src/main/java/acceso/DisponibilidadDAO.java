@@ -11,4 +11,5 @@ public interface DisponibilidadDAO {
 	public void delete (int id);
 	public List<DisponiblePara> buscarTodos();
 	public int buscarDisponibilidad(int id);
+	public List<DisponiblePara> buscarConIdCompe(int id_compe, Connection conn);
 }

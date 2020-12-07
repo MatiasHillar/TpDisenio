@@ -529,11 +529,11 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		c.setPermiteEmpate(rs.getBoolean("PERMITE_EMPATE"));
 		c.setDeporte(new Deporte(rs.getString("NOMBRE_DEPORTE")));
 		c.setEstado(rs.getString("ESTADO"));
-		c.setParticipantes((ArrayList<Participante>) (new ParticipanteDAOimpl()).buscar(c.getIdCompetencia()));
-		c.setDisponibleParas((ArrayList<DisponiblePara>) (new DisponibilidadDAOimpl()).buscarConIdCompe(id, conn));
+		c.setParticipantes((ArrayList<Participante>) daoP.buscar(c.getIdCompetencia(),conn));
+		c.setDisponibleParas((ArrayList<DisponiblePara>) daoDisp.buscarConIdCompe(id, conn));
 		c.setUsuario(new Usuario(GestorUsuario.usuario_autenticado));
-		c.setFormaPuntuacion((new FormaDePuntuacionDAOimpl()).buscarPorId(rs.getInt("forma_puntuacion")));
-		c.setFixture((new FixtureDAOimpl()).buscarPorIdCompetencia(id));
+		c.setFormaPuntuacion(daoFP.buscarPorId(rs.getInt("forma_puntuacion"),conn));
+		c.setFixture(daoF.buscarPorIdCompetencia(id,conn));
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -541,6 +541,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		finally {
 			try {
 				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
@@ -563,7 +564,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 			
 			c.setIdCompetencia(idCompetencia);
 			c.setNombre(rs.getString("nombre"));
-			c.setParticipantes((ArrayList<Participante>) (new ParticipanteDAOimpl()).buscar(idCompetencia));
+			c.setParticipantes((ArrayList<Participante>) daoP.buscar(idCompetencia,conn));
 			
 			
 		}

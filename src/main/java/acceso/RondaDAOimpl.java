@@ -61,33 +61,31 @@ public class RondaDAOimpl implements RondaDAO {
 
 	}
 	
-	
-	public List<Ronda> buscarPorIdFixture(int idFixture) throws SQLException{
-		Connection conn = DB.getConexion();
+	@Override
+	public List<Ronda> buscarPorIdFixture(int idFixture, Connection conn) throws SQLException{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Ronda> rondas = new ArrayList<Ronda>();
 		
 		try {
-			conn.setAutoCommit(false);
 			pstmt = conn.prepareStatement(SELECT_RONDAS_FIXTURE);
 			pstmt.setInt(1, idFixture);
-			ResultSet res = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			
 			
-			if(!res.next()) {
+			if(!rs.next()) {
 				return rondas;
 			}
 			else {
 				do {
 					Ronda r = new Ronda();
-					r.setIdRonda(res.getInt(1));
-					r.setTipo(TIPO_RONDA.valueOf(res.getString(3)));			
-					r.setEncuentros((new EncuentroDAOimpl()).buscarEncuentrosPorRonda(res.getInt(1)));
+					r.setIdRonda(rs.getInt(1));
+					r.setTipo(TIPO_RONDA.valueOf(rs.getString(3)));			
+					r.setEncuentros((ArrayList<Encuentro>)daoE.buscarEncuentrosPorRonda(rs.getInt(1),conn));
 					rondas.add(r);
-				} while(res.next());		
+				} while(rs.next());		
 			}
-			conn.commit();
+			
 		}
 		catch(SQLException e) {
 			throw e;

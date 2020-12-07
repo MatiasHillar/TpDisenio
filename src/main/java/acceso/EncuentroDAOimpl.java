@@ -26,6 +26,8 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 	
 	private ResultadoDAO daoRes = new ResultadoDAOimpl();
 	private RondaDAO daoRonda = new RondaDAOimpl();
+	private ParticipanteDAO daoP = new ParticipanteDAOimpl();
+	private LugarRealizacionDAO daoL = new LugarRealizacionDAOimpl();
 	
 	@Override
 	public Encuentro saveOrUpdate(Connection conn, Encuentro e) throws SQLException {
@@ -71,43 +73,48 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 		// TODO Auto-generated method stub
 		
 	}
-
-	public ArrayList<Encuentro> buscarEncuentrosPorRonda(int idRonda) {
-		// TODO Auto-generated method stub
-		Connection conn = DB.getConexion();
+	
+	@Override
+	public ArrayList<Encuentro> buscarEncuentrosPorRonda(int idRonda, Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Encuentro> encuentros = new ArrayList<Encuentro>();
 		try {
-			conn.setAutoCommit(false);
+			
 			pstmt = conn.prepareStatement(SELECT_ENCUENTROS_RONDA);
 			pstmt.setInt(1, idRonda);
-			ResultSet res = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			
 			
-			if(!res.next()) {
+			if(!rs.next()) {
 				return encuentros;
 			}
 			else {
 				do {
 					Encuentro e = new Encuentro();
-					e.setIdEncuentro(res.getInt(1));
-					e.setFecha(res.getDate("fecha"));
+					e.setIdEncuentro(rs.getInt(1));
+					e.setFecha(rs.getDate("fecha"));
 //					e.setRonda(res.getInt(daoRonda.)); setear competencia?
-					e.setLugar((new LugarRealizacionDAOimpl()).buscarPorId(res.getInt("id_lugar")));
-					e.setParticipante1(((new ParticipanteDAOimpl()).buscarPorId(res.getInt("participante1"))));
-					e.setParticipante2(((new ParticipanteDAOimpl()).buscarPorId(res.getInt("participante2"))));
+					e.setLugar(daoL.buscarPorId(rs.getInt("id_lugar")));
+					e.setParticipante1((daoP.buscarPorId(rs.getInt("participante1"),conn)));
+					e.setParticipante2((daoP.buscarPorId(rs.getInt("participante2"),conn)));
 					
 					encuentros.add(e);
 					
-				} while(res.next());		
+				} while(rs.next());		
 			}
-			conn.commit();
+			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
+		finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		
 		return encuentros;
