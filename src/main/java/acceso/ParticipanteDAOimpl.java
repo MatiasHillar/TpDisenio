@@ -36,7 +36,6 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 	
 	@Override
 	public void saveOrUpdate(Participante p) throws SQLException {
-		// TODO Auto-generated method stub
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		

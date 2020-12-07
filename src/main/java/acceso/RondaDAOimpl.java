@@ -90,7 +90,13 @@ public class RondaDAOimpl implements RondaDAO {
 		catch(SQLException e) {
 			throw e;
 		}
-		
+		finally {
+			try {
+				if(pstmt!=null)pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		
 		return rondas;

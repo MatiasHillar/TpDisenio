@@ -27,8 +27,9 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	private static final String CHECK_EXISTENCE = "SELECT email=crypt(?, email) FROM pruebacomp.usuario";
 	
 	
-	private ProvinciaDAOimplSQL daoProv = new ProvinciaDAOimplSQL();
-	private LocalidadDAOimplSQL daoLoca = new LocalidadDAOimplSQL();
+	private ProvinciaDAO daoProv = new ProvinciaDAOimplSQL();
+	private LocalidadDAO daoLoca = new LocalidadDAOimplSQL();
+	
 	public Usuario saveOrUpdate(Usuario u) throws UsuarioExistenteException {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
@@ -49,8 +50,8 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 					pstmt.setString(2, u.getApellido());
 					pstmt.setString(3, u.getEmail());
 					pstmt.setString(4, u.getPassword());
-					pstmt.setString(5, u.getLocalidad().getNombre());
-					pstmt.execute();
+					pstmt.setInt(5, u.getLocalidad().getIdLocalidad());
+					pstmt.executeUpdate();
 				}
 			}
 			else {

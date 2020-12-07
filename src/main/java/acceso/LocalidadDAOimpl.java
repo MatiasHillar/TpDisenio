@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
@@ -106,6 +108,12 @@ public class LocalidadDAOimpl implements LocalidadDAO {
 		}
 		
 		return id;
+	}
+
+	@Override
+	public Localidad saveOrUpdate(Connection conn, Localidad l) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
