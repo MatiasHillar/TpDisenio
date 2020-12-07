@@ -11,7 +11,7 @@ import java.util.Set;
 public class Localidad implements java.io.Serializable {
 
 	private Integer idLocalidad;
-	//private Provincia provincia;
+	private Provincia provincia;
 	private String nombre;
 	private Set usuarios = new HashSet(0);
 
@@ -67,6 +67,14 @@ public class Localidad implements java.io.Serializable {
 
 	public void setUsuarios(Set usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public Provincia getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(Provincia provincia) {
+		this.provincia = provincia;
 	}
 
 }

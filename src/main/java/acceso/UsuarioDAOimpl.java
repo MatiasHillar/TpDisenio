@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import excepciones.UsuarioExistenteException;
+import logica.Localidad;
+import logica.Provincia;
 import logica.Usuario;
 
 public class UsuarioDAOimpl implements UsuarioDAO {
@@ -24,6 +26,9 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	
 	private static final String CHECK_EXISTENCE = "SELECT email=crypt(?, email) FROM pruebacomp.usuario";
 	
+	
+	private ProvinciaDAOimplSQL daoProv = new ProvinciaDAOimplSQL();
+	private LocalidadDAOimplSQL daoLoca = new LocalidadDAOimplSQL();
 	public Usuario saveOrUpdate(Usuario u) throws UsuarioExistenteException {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
@@ -32,6 +37,13 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 				if(checkExistence(u))
 					throw (new UsuarioExistenteException());
 				else {
+					Provincia pUser = u.getLocalidad().getProvincia();
+					u.getLocalidad().setProvincia(daoProv.saveOrUpdate(conn, pUser));
+					
+					Localidad lUser = u.getLocalidad();
+					u.setLocalidad(daoLoca.saveOrUpdate(conn, lUser));
+					
+					
 					pstmt = conn.prepareStatement(INSERT_USUARIO);
 					pstmt.setString(1, u.getNombre());
 					pstmt.setString(2, u.getApellido());
