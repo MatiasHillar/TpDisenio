@@ -142,7 +142,7 @@ public class GestorCompetencia {
 				else {
 					if(forma_p.contentEquals("Sets")) {
 						Sets forma = new Sets(max_sets);
-						EliminacionSimple competencia = new EliminacionSimple(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
+						EliminacionDoble competencia = new EliminacionDoble(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
 								nombre, false, "CREADA");
 						HashSet<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>();
 						for (Map.Entry<LugarRealizacion, Integer> entry : lugares.entrySet()) {
@@ -157,7 +157,7 @@ public class GestorCompetencia {
 					}
 					else {
 						ResultadoFinal forma = new ResultadoFinal();
-						EliminacionSimple competencia = new EliminacionSimple(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
+						EliminacionDoble competencia = new EliminacionDoble(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
 								nombre, false, "CREADA");
 						HashSet<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>();
 						for (Map.Entry<LugarRealizacion, Integer> entry : lugares.entrySet()) {

@@ -15,4 +15,9 @@ public class EliminacionDoble extends Competencia implements java.io.Serializabl
 	public EliminacionDoble(Deporte deporte, String nombre, String estado) {
 		super(deporte, nombre, estado);
 	}
+
+
+	public EliminacionDoble(Deporte deporte, FormaPuntuacion forma, Usuario usuario, String nombre, boolean permiteEmpate, String estado) {
+		super(deporte, forma, usuario, nombre, permiteEmpate, estado);
+	}
 }
