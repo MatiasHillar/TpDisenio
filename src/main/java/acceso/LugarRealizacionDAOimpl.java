@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,8 @@ import logica.Usuario;
 
 public class LugarRealizacionDAOimpl implements LugarRealizacionDAO {
 
-	private static final String INSERT_LUGAR = "INSERT INTO pruebacomp.lugar_realizacion NOMBRE, "
-			+ "USUARIO_DUENO VALUES(?, ?)";
+	private static final String INSERT_LUGAR = "INSERT INTO pruebacomp.lugar_realizacion (NOMBRE, "
+			+ "USUARIO_DUENO) VALUES (?, ?)";
 	private static final String UPDATE_LUGAR = "UPDATE pruebacomp.lugar_realizacion SET "
 			+ "NOMBRE = ?, USUARIO_DUENO = ? "
 			+ "WHERE ID_LUGAR = ?"; 
@@ -25,6 +26,7 @@ public class LugarRealizacionDAOimpl implements LugarRealizacionDAO {
 	private static final String SELECT_LUGAR = "SELECT * FROM pruebacomp.lugar_realizacion WHERE"
 			+ " ID_LUGAR = ?";
 	private static final String INSERT_SE_PUEDE_REALIZAR = "INSERT INTO pruebacomp.se_puede_realizar VALUES (?, ?)";
+	
 	
 	@Override
 	public LugarRealizacion saveOrUpdate(LugarRealizacion l, Connection conn) {
@@ -166,6 +168,49 @@ public class LugarRealizacionDAOimpl implements LugarRealizacionDAO {
 			}
 		}
 		return lista;
+	}
+
+	public void saveOrUpdate(LugarRealizacion l) throws SQLException{
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(INSERT_LUGAR, java.sql.Statement.RETURN_GENERATED_KEYS);
+			pstmt.setString(1, l.getNombre());
+			pstmt.setInt(2, l.getUsuario().getIdUsuario());
+			pstmt.executeUpdate();
+			ResultSet genKeys = pstmt.getGeneratedKeys();
+			
+			if(genKeys.next()) 
+				l.setIdLugar(genKeys.getInt(1));
+			
+			else
+				throw (new SQLException("No retorno keys"));
+			System.out.println(l.getDeportes().size());
+			for(Deporte d: l.getDeportes()) {
+					pstmt = conn.prepareStatement(INSERT_SE_PUEDE_REALIZAR, ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
+					pstmt.setInt(1, l.getIdLugar());
+					pstmt.setString(2, d.getNombreDeporte());
+					pstmt.executeUpdate();
+				}
+				
+				
+			
+			
+			conn.commit();
+		}
+		catch(SQLException e) {
+			conn.rollback();
+			throw e;
+		}
+		finally {
+			if(pstmt!=null)
+				pstmt.close();
+			if(conn!=null)
+				conn.close();
+		}
+		
 	}
 		
 }

@@ -129,6 +129,14 @@ public class PanelCuentaNueva extends PanelGenerico {
 					respuesta=GestorUsuario.registrarUsuario(comboProvincia.getSelectedItem().toString(),comboLocalidad.getSelectedItem().toString()
 							,campoNombre.getText(),campoApellido.getText(),campoCorreo.getText(),String.valueOf(campoContraseña.getPassword()));
 					JOptionPane.showMessageDialog(ventana,respuesta);
+					if(respuesta.equals("Usuario registrado con exito!")) {
+						ventana.setContentPane(new PanelPrincipal());
+						ventana.setSize(PanelGenerico.tamPrincipal);
+						ventana.setLocationRelativeTo(null);
+						ventana.revalidate();
+						ventana.repaint();
+					}
+					
 					
 				}
 			};

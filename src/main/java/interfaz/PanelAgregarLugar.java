@@ -56,9 +56,9 @@ public class PanelAgregarLugar extends PanelGenerico{
 		botonCancelar.setPreferredSize(new Dimension(130,40));
 		botonAceptar = new ButtonGenerico("Aceptar");
 		botonAceptar.setPreferredSize(new Dimension(130,40));
-		botonAgregarDeporte = new ButtonGenerico("Agregar");
+		botonAgregarDeporte = new ButtonGenerico("Agregar ->");
 		botonAgregarDeporte.setPreferredSize(new Dimension(100,30));
-		botonQuitarDeporte = new ButtonGenerico("Quitar");
+		botonQuitarDeporte = new ButtonGenerico("<- Quitar");
 		botonQuitarDeporte.setPreferredSize(new Dimension(100,30));
 		 
 		 //Color buttons
@@ -73,12 +73,16 @@ public class PanelAgregarLugar extends PanelGenerico{
 		botonQuitarDeporte.setForeground(colorTextoBoton);
 		botonQuitarDeporte.setEnabled(false);
 		
+		//fields
+		fieldNombre = new JTextField();
+		fieldNombre.setPreferredSize(new Dimension(200, 30));
 		
 		//Labels	
 		labelNombre = new JLabel("Nombre:");
+		labelNombre.setPreferredSize(new Dimension(80,30));
 		deportesAgregados = new JLabel("Deportes agregados:");
 		deportesNoAgregados = new JLabel("Deportes sin agregar:");
-		labelAgregarDeportes = new JLabel("Agregar Deportes");
+		labelAgregarDeportes = new JLabel("<HTML><B><U> Agregar deportes </U></B></HTML>");
 		
 		// LIST MODELS
 		modeloAgregados = new DefaultListModel<String>();
@@ -94,9 +98,25 @@ public class PanelAgregarLugar extends PanelGenerico{
 		
 		// Listas
 		listaDeportesNoAgregados = new JList<String>(modeloNoAgregados);
-		listaDeportesAgregados = new JList<String>(modeloAgregados);
-
+		scrollListaNoAgregados = new JScrollPane(listaDeportesNoAgregados);
+		scrollListaNoAgregados.setPreferredSize(new Dimension(175,300));
+		scrollListaNoAgregados.setMinimumSize((new Dimension(175,300)));
+		scrollListaNoAgregados.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollListaNoAgregados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
+		
+		listaDeportesAgregados = new JList<String>(modeloAgregados);
+		scrollListaAgregados = new JScrollPane(listaDeportesAgregados);
+		scrollListaAgregados.setPreferredSize(new Dimension(175,300));
+		scrollListaAgregados.setMinimumSize((new Dimension(175,300)));
+		scrollListaAgregados.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollListaAgregados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		
+		splitVertical = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollListaNoAgregados, scrollListaAgregados);
+		splitVertical.setPreferredSize(new Dimension(350,300));
+		splitVertical.setOneTouchExpandable(false);
+		splitVertical.setEnabled(false);
 		//LISTENERS
 		listaDeportesNoAgregados.addListSelectionListener(new ListSelectionListener() {
 
@@ -105,8 +125,8 @@ public class PanelAgregarLugar extends PanelGenerico{
 				// TODO Auto-generated method stub
 				if(!((JList) e.getSource()).isSelectionEmpty()) {
 					listaDeportesAgregados.clearSelection();
-					botonQuitarDeporte.setEnabled(true);
-					botonAgregarDeporte.setEnabled(false);
+					botonQuitarDeporte.setEnabled(false);
+					botonAgregarDeporte.setEnabled(true);
 				}
 				
 			}
@@ -120,8 +140,8 @@ public class PanelAgregarLugar extends PanelGenerico{
 				// TODO Auto-generated method stub
 				if(!((JList) e.getSource()).isSelectionEmpty()) {
 					listaDeportesNoAgregados.clearSelection();
-					botonAgregarDeporte.setEnabled(true);
-					botonQuitarDeporte.setEnabled(false);
+					botonAgregarDeporte.setEnabled(false);
+					botonQuitarDeporte.setEnabled(true);
 				
 				}
 			}
@@ -134,8 +154,13 @@ public class PanelAgregarLugar extends PanelGenerico{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
+				
+			
 				modeloAgregados.addElement(listaDeportesNoAgregados.getSelectedValue());
 				modeloNoAgregados.removeElement(listaDeportesNoAgregados.getSelectedValue());
+				listaDeportesNoAgregados.clearSelection();
+				botonAgregarDeporte.setEnabled(false);
 			}
 			
 		});
@@ -147,8 +172,14 @@ public class PanelAgregarLugar extends PanelGenerico{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
+				
+				
+				
 				modeloNoAgregados.addElement(listaDeportesAgregados.getSelectedValue());
 				modeloAgregados.removeElement(listaDeportesAgregados.getSelectedValue());
+				listaDeportesAgregados.clearSelection();
+				botonQuitarDeporte.setEnabled(false);
 			}
 			
 		});
@@ -162,20 +193,27 @@ public class PanelAgregarLugar extends PanelGenerico{
 				ArrayList<String> deportesAgregados = new ArrayList<String>();
 				for(int i=0; i<modeloAgregados.getSize(); i++) 
 					deportesAgregados.add(modeloAgregados.get(i));
+				System.out.println(deportesAgregados.size());
+				System.out.println(fieldNombre.getText().trim());
 				
-				//String mensaje = GestorLugarRealizacion.save(fieldNombre.getText().trim(), deportesAgregados);
+				String mensaje = GestorLugarRealizacion.save(fieldNombre.getText().trim(), deportesAgregados);
 				
-				/*if(mensaje == "exito") 
+				if(mensaje == "exito") {
 					mensajeExito();
+					JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+					ventana.setContentPane(new PanelPrincipal());
+					ventana.setSize(tamPrincipal);
+					ventana.setLocationRelativeTo(null);
+					ventana.revalidate();
+					ventana.repaint();
+				}
+					
 				else
-					mensajeError(mensaje);*/
+					mensajeError(mensaje);
 				
-				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
-				ventana.setContentPane(new PanelPrincipal());
-				ventana.setSize(tamPrincipal);
-				ventana.setLocationRelativeTo(null);
-				ventana.revalidate();
-				ventana.repaint();
+			
+				
+			
 			}
 			
 		});
@@ -200,22 +238,55 @@ public class PanelAgregarLugar extends PanelGenerico{
 	}
 	
 	private void armarPanel() {
+		
 		SpringLayout sLayout = new SpringLayout();
 		this.setLayout(sLayout);
 		add(labelNombre);
-		sLayout.putConstraint(SpringLayout.WEST,labelNombre,20,SpringLayout.WEST,this);
+		sLayout.putConstraint(SpringLayout.WEST,labelNombre,50,SpringLayout.WEST,this);
 		sLayout.putConstraint(SpringLayout.NORTH,labelNombre,30,SpringLayout.NORTH,this);
+		
+		
+		add(fieldNombre);
+		sLayout.putConstraint(SpringLayout.WEST, fieldNombre, 30, SpringLayout.EAST, labelNombre);
+		sLayout.putConstraint(SpringLayout.NORTH, fieldNombre, 30, SpringLayout.NORTH, this);
+		
 		add(labelAgregarDeportes);
-		sLayout.putConstraint(SpringLayout.WEST,labelAgregarDeportes,20,SpringLayout.WEST,labelNombre);
-		sLayout.putConstraint(SpringLayout.NORTH,labelAgregarDeportes,30,SpringLayout.NORTH,labelNombre);
-		add(deportesAgregados);
-		sLayout.putConstraint(SpringLayout.WEST,deportesAgregados,20,SpringLayout.WEST,labelAgregarDeportes);
-		sLayout.putConstraint(SpringLayout.NORTH,deportesAgregados,30,SpringLayout.NORTH,labelAgregarDeportes);
+		sLayout.putConstraint(SpringLayout.WEST,labelAgregarDeportes,170,SpringLayout.WEST,this);
+		sLayout.putConstraint(SpringLayout.NORTH,labelAgregarDeportes,30,SpringLayout.SOUTH,labelNombre);
 		add(deportesNoAgregados);
-		sLayout.putConstraint(SpringLayout.WEST,deportesNoAgregados,20,SpringLayout.WEST,deportesAgregados);
-		sLayout.putConstraint(SpringLayout.NORTH,deportesNoAgregados,30,SpringLayout.NORTH,deportesAgregados);
-		add(listaDeportesNoAgregados);
-		add(listaDeportesAgregados);
+		
+		sLayout.putConstraint(SpringLayout.WEST,deportesNoAgregados,-100,SpringLayout.WEST,labelAgregarDeportes);
+		sLayout.putConstraint(SpringLayout.NORTH,deportesNoAgregados,30,SpringLayout.NORTH,labelAgregarDeportes);
+		
+		add(deportesAgregados);
+		sLayout.putConstraint(SpringLayout.WEST,deportesAgregados,180,SpringLayout.WEST,deportesNoAgregados);
+		sLayout.putConstraint(SpringLayout.NORTH,deportesAgregados,0,SpringLayout.NORTH,deportesNoAgregados);
+		
+		
+		add(splitVertical);
+		sLayout.putConstraint(SpringLayout.WEST, splitVertical, 40, SpringLayout.WEST, this);
+		sLayout.putConstraint(SpringLayout.NORTH, splitVertical, 5, SpringLayout.SOUTH, deportesNoAgregados);
+		
+		
+		add(botonAgregarDeporte);
+		sLayout.putConstraint(SpringLayout.WEST, botonAgregarDeporte, 22, SpringLayout.WEST, splitVertical);
+		sLayout.putConstraint(SpringLayout.NORTH, botonAgregarDeporte, 10, SpringLayout.SOUTH, splitVertical);
+		
+		add(botonQuitarDeporte);
+		sLayout.putConstraint(SpringLayout.EAST, botonQuitarDeporte, -22, SpringLayout.EAST, splitVertical);
+		sLayout.putConstraint(SpringLayout.NORTH, botonQuitarDeporte, 10, SpringLayout.SOUTH, splitVertical);
+		
+		
+		
+		add(botonCancelar);
+		sLayout.putConstraint(SpringLayout.SOUTH, botonCancelar, -20, SpringLayout.SOUTH, this);
+		sLayout.putConstraint(SpringLayout.WEST, botonCancelar, 20, SpringLayout.WEST, this);
+		
+		add(botonAceptar);
+		sLayout.putConstraint(SpringLayout.SOUTH, botonAceptar, -20, SpringLayout.SOUTH, this);
+		sLayout.putConstraint(SpringLayout.EAST, botonAceptar, -20, SpringLayout.EAST, this);
+		
+		
 	}
 
 	

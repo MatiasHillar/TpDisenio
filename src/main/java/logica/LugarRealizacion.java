@@ -2,6 +2,7 @@ package logica;
 // default package
 // Generated 7 oct. 2020 00:43:56 by Hibernate Tools 5.4.18.Final
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +23,13 @@ public class LugarRealizacion implements java.io.Serializable {
 	public LugarRealizacion(int idLugar) {
 		this.idLugar = idLugar;
 	}
+	
+	public LugarRealizacion(Usuario usuario, String nombre, ArrayList<Deporte> deportes) {
+		this.nombre = nombre;
+		this.usuario = usuario;
+		this.deportes = new HashSet<Deporte>(deportes);
+	}
+	
 
 	public LugarRealizacion(Integer idLugar, Usuario usuario, String nombre, Set<Deporte> deportes,
 			Set<DisponiblePara> disponibleParas) {

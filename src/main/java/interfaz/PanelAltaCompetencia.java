@@ -271,7 +271,7 @@ public class PanelAltaCompetencia extends PanelGenerico{
 		 ActionListener agregarSedeListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			      JComboBox<String> comboLugares = new JComboBox<String>();
-			      lugares= GestorLugarRealizacion.buscarLugaresPorDeporte((String) campoDeporte.getSelectedItem(),String.valueOf(GestorUsuario.usuario_autenticado));
+			      lugares= GestorLugarRealizacion.buscarLugaresPorDeporte((String) campoDeporte.getSelectedItem(),GestorUsuario.usuario_autenticado.getIdUsuario().toString());
 			      for (LugarRealizacion l : lugares) {
 					comboLugares.addItem(l.getNombre());
 				}
