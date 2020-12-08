@@ -101,7 +101,7 @@ public class FixtureDAOimpl implements FixtureDAO {
 			
 			if(rs.next()) {
 				
-				f = new Fixture(rs.getInt(1), daoR.buscarPorIdFixture(rs.getInt(1),conn));
+				f = new Fixture(rs.getInt("id_fixture"), daoR.buscarPorIdFixture(rs.getInt("id_fixture"),conn));
 			}
 			
 			

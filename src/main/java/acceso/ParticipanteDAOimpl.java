@@ -146,10 +146,10 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 			else {
 				do {
 					Participante p = new Participante();
-					p.setIdParticipante(rs.getInt(1));
-					p.setNombre(rs.getString(2));
-					p.setEmail(rs.getString(3));
-					p.setCompetencia(new Competencia(rs.getInt(4)));
+					p.setIdParticipante(rs.getInt("id_participante"));
+					p.setNombre(rs.getString("nombre"));
+					p.setEmail(rs.getString("email"));
+					p.setCompetencia(new Competencia(rs.getInt("id_competencia")));
 					
 					
 					participantes.add(p);
@@ -183,7 +183,7 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 			
 			
 			if(rs.next()) {
-				p = new Participante(id, rs.getString(2), rs.getString(3), new Competencia(rs.getInt(4)));
+				p = new Participante(id, rs.getString("nombre"), rs.getString("email"), new Competencia(rs.getInt("id_competencia")));
 			}
 
 		}

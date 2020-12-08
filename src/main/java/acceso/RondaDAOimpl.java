@@ -79,9 +79,9 @@ public class RondaDAOimpl implements RondaDAO {
 			else {
 				do {
 					Ronda r = new Ronda();
-					r.setIdRonda(rs.getInt(1));
-					r.setTipo(TIPO_RONDA.valueOf(rs.getString(3)));			
-					r.setEncuentros((ArrayList<Encuentro>)daoE.buscarEncuentrosPorRonda(rs.getInt(1),conn));
+					r.setIdRonda(rs.getInt("id_ronda"));
+					r.setTipo(TIPO_RONDA.valueOf(rs.getString("tipo")));			
+					r.setEncuentros((ArrayList<Encuentro>)daoE.buscarEncuentrosPorRonda(rs.getInt("id_ronda"),conn));
 					rondas.add(r);
 				} while(rs.next());		
 			}

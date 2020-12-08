@@ -91,7 +91,7 @@ public class EncuentroDAOimpl implements EncuentroDAO{
 			else {
 				do {
 					Encuentro e = new Encuentro();
-					e.setIdEncuentro(rs.getInt(1));
+					e.setIdEncuentro(rs.getInt("id_encuentro"));
 					e.setFecha(rs.getDate("fecha"));
 //					e.setRonda(res.getInt(daoRonda.)); setear competencia?
 					e.setLugar(daoL.buscarPorId(rs.getInt("id_lugar"), conn));

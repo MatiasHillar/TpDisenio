@@ -116,7 +116,7 @@ public class DeporteDAOimpl implements DeporteDAO {
 				rs = pstmt.executeQuery();
 				if(!rs.first()) System.out.println("no existe");;
 				d = new Deporte();
-			d.setNombreDeporte(rs.getString("NOMBRE"));
+			d.setNombreDeporte(rs.getString("NOMBRE_DEPORTE"));
 			}
 			catch(SQLException e) {
 				e.printStackTrace();

@@ -140,9 +140,9 @@ public class LugarRealizacionDAOimpl implements LugarRealizacionDAO {
 				
 				do {
 					LugarRealizacion l = new LugarRealizacion();
-					l.setNombre(rs.getString(2));
-					l.setIdLugar(Integer.valueOf(rs.getInt(1)));
-					l.setUsuario(new Usuario(rs.getInt(3)));
+					l.setNombre(rs.getString("nombre"));
+					l.setIdLugar(Integer.valueOf(rs.getInt("id_lugar")));
+					l.setUsuario(new Usuario(rs.getInt("usuario_dueno")));
 					l.addDeporte(new Deporte(deporte));
 					lista.add(l);
 					
