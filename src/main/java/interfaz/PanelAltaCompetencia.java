@@ -295,13 +295,10 @@ public class PanelAltaCompetencia extends PanelGenerico{
 			      panelAgregarSede.add(Spinnerdisponibilidad,gbc);
 
 			      
-			      panelAgregarSede.setBackground(Color.decode("#2148bc"));
-			      ((JPanel) panelAgregarSede).repaint();
-			      UIManager.put("OptionPane.background", Color.decode("#2148bc"));
-			      UIManager.getLookAndFeelDefaults().put("Panel.background", Color.decode("#2148bc"));		
-			      
+			      panelAgregarSede.setOpaque(false);
+
 			      int result  = JOptionPane.showConfirmDialog(null,panelAgregarSede,"Agregar Sede",JOptionPane.OK_CANCEL_OPTION);
-				if(result == JOptionPane.OK_OPTION) {
+			      if(result == JOptionPane.OK_OPTION) {
 					LugarRealizacion LElegido = new LugarRealizacion();
 					for (LugarRealizacion l : lugares) {
 						if(l.getNombre()==comboLugares.getSelectedItem())
@@ -328,13 +325,18 @@ public class PanelAltaCompetencia extends PanelGenerico{
 		};
 	     ActionListener aceptarListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//DESCOMENTAR CUANDO PICHI LO IMPLEMENTE
 				String retorno;
 				retorno = GestorCompetencia.saveCompetencia(campoNombre.getText().trim(), campoDeporte.getSelectedItem().toString(), lugaresElegidos,
 			            campoMod.getSelectedItem().toString(),campoFormaP.getSelectedItem().toString(), campoReglamento.getText().trim(),(Integer) modeloTantos.getValue(),
 			           (Integer) modeloPG.getValue(),(Integer) modeloPE.getValue(),permiteEmpate,(Integer) modeloSets.getValue());
 			if(retorno=="guardado") {
 				mensajeExito();
+				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+				ventana.setContentPane(new PanelPrincipal());
+				ventana.setSize(tamPrincipal);
+				ventana.setLocationRelativeTo(null);
+				ventana.revalidate();
+				ventana.repaint();
 				}
 			else  {
 				mensajeError(retorno);

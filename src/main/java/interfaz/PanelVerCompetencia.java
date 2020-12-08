@@ -31,9 +31,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 
 import logica.CompetenciaDTO;
+import logica.Encuentro;
 import logica.GestorCompetencia;
 
 
@@ -71,8 +73,9 @@ public class PanelVerCompetencia extends PanelGenerico {
 	//Variables
 	ArrayList<String> columnasTablaEncuentros;
 	CompetenciaDTO dtoCompetencia;
-	
+	String[][] encuentrosFuturos;
 	Integer paginaSeleccionada;
+	Integer maxPag;
 	public PanelVerCompetencia(CompetenciaDTO dtoComp) {
 		super();
 		dtoCompetencia = dtoComp;
@@ -85,6 +88,15 @@ public class PanelVerCompetencia extends PanelGenerico {
 		
 		//Variables
 		paginaSeleccionada = 1;
+		encuentrosFuturos = dtoCompetencia.getFixture();
+		maxPag=(dtoCompetencia.getFixture().length)/5;
+		System.out.println("MAXPAG "+maxPag);
+		for(int i=0;i<10;i++) {
+				System.out.print("ENCUENTRO : "+i+"  ");
+				System.out.print("  P1 "+encuentrosFuturos[i][0]);
+				System.out.println("  P2 "+encuentrosFuturos[i][1]);
+			
+		}
 		
 		//Labels
 		labelDatosComp = new JLabel("<HTML><B><U>Datos de la competencia: </U></B></HTML>");
@@ -163,10 +175,18 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 //ACTION LISTENERS
 		ActionListener pagDerListener = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					if(paginaSeleccionada<maxPag) {
 					paginaSeleccionada++;
 					labelPaginador.setText("<HTML> <B> PAGINA "+ (paginaSeleccionada)+"</B> </HTML>");
 					System.out.println("Pagina es "+paginaSeleccionada);
+					construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros(paginaSeleccionada));
+					tablaEncuentros.repaint();
+						}
+					else {
+						System.out.println("LO ESTAS ROMPIENDO");
+					}
 				}
+				
 			};
 			botonPagDer.addActionListener(pagDerListener);
 			
@@ -174,11 +194,16 @@ public class PanelVerCompetencia extends PanelGenerico {
 				public void actionPerformed(ActionEvent e) {
 					if(paginaSeleccionada!=1) {
 					paginaSeleccionada--;
-					labelPaginador.setText("<HTML> <B> PAGINA "+ (paginaSeleccionada)+"</B> </HTML>");}
+					labelPaginador.setText("<HTML> <B> PAGINA "+ (paginaSeleccionada)+"</B> </HTML>");
+					construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros(paginaSeleccionada));
+					tablaEncuentros.repaint();
+					}
 					else {
 						//Ver si ponemos una excepcion o JDialog
 						System.out.println("LO ESTAS ROMPIENDO");
 					}
+					
+					
 				}
 			};
 			botonPagIzq.addActionListener(pagIzqListener);
@@ -216,7 +241,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 			}
 		};
 		botonCancelar.addActionListener(cancelarListener);
-			//construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros());
+			construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros(0));
 			construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
 	}
 	
@@ -335,7 +360,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 ModeloTablaGen model = new ModeloTablaGen(data,columnas);
 		 tablaEncuentros.setModel(model);
 		 tablaEncuentros.getTableHeader().setDefaultRenderer(new GenericoTableHeaderRenderer());
-
+		 
 		
 		 tablaEncuentros.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasGen("texto"));
 		 tablaEncuentros.getColumnModel().getColumn(1).setCellRenderer(new GestionCeldasGen("texto"));
@@ -346,10 +371,13 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 tablaEncuentros.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		 tablaEncuentros.setRowHeight(35);
 		 tablaEncuentros.setGridColor(Color.BLACK);
+		 tablaEncuentros.setShowGrid(true);
 		
 
-		 tablaEncuentros.getColumnModel().getColumn(0).setPreferredWidth(10);
-		 tablaEncuentros.getColumnModel().getColumn(1).setPreferredWidth(15);
+		 tablaEncuentros.getColumnModel().getColumn(0).setPreferredWidth(80);
+		 tablaEncuentros.getColumnModel().getColumn(1).setPreferredWidth(85);
+		 tablaEncuentros.getColumnModel().getColumn(2).setPreferredWidth(15);
+		 
 		 
 	}
 	
@@ -365,20 +393,15 @@ public class PanelVerCompetencia extends PanelGenerico {
 		return columnas;
 		
 	}
-	private Object[][] obtenerMatrizDatosEncuentros() {
-		/*String informacion[][] = new String[.size()][columnasTabla.size()];
-		int i=0;
-		System.out.println(lugaresElegidos.entrySet());
-		for(Map.Entry<LugarRealizacion,Integer> lugar : lugaresElegidos.entrySet()) {
-			informacion[i][0] = lugar.getKey().getNombre();
-			informacion[i][1] = String.valueOf(lugar.getValue());
-			System.out.println(lugar.getKey().getNombre());
-			System.out.println(String.valueOf(lugar.getValue()));
-			i++;
+	private Object[][] obtenerMatrizDatosEncuentros(int pagina) {
+		String informacion[][] = new String[5][3];
+		int k=0;
+		for(int i = 0 +((paginaSeleccionada-1)*5);i<((paginaSeleccionada-1)*5)+5;i++) {
+			informacion[k] = encuentrosFuturos[i];
+			k++;
 		}
 		return informacion;
-		*/
-		return null;
+		
 	}
 	
 	private void construirTablaParticipantes(String[] columna,

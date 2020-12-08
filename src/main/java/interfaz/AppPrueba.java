@@ -17,26 +17,11 @@ import javax.swing.plaf.ColorUIResource;
 
 public class AppPrueba {
 	public static void main(String[] args) {
-		/*try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		UIManager.put("nimbusBlueGrey",Color.decode("#5693f5"));
+		//UIManager.put("nimbusBlueGrey",Color.decode("#5693f5"));
 		UIManager.put("nimbusScrollBar:\"ScrollBar.button\".size",0);
 		UIManager.put("ScrollBar.thumbHighlight", new ColorUIResource(Color.decode("#24248f")));
 		UIManager.put("ScrollBar.thumbDarkShadow", new ColorUIResource(Color.decode("#24248f")));
-		UIManager.put("ScrollBar.highlight", new ColorUIResource(Color.decode("#24248f")));
+		UIManager.put("ScrollBar.highlight", new ColorUIResource(Color.decode("#5693f5")));
 		UIManager.put("ScrollBar.trackHighlight", new ColorUIResource(Color.decode("#24248f")));
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

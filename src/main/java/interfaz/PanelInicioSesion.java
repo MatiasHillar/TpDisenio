@@ -13,6 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -62,10 +63,14 @@ public class PanelInicioSesion extends PanelGenerico{
 		ActionListener iniciarSesionListener = new ActionListener() {
 		            public void actionPerformed(ActionEvent e) {
 		            	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
+		            	PanelGenerico pg = new PanelGenerico();
 		            	String resultado;
 		            	resultado = GestorUsuario.autenticarUsuario(campoEmail.getText().trim(),String.valueOf(campoContraseña.getPassword()));
-		        		JOptionPane pane =new JOptionPane(resultado, 
-		                JOptionPane.PLAIN_MESSAGE ,JOptionPane.DEFAULT_OPTION);
+		            	JLabel labelResultado = new JLabel(resultado);
+		            	labelResultado.setForeground(Color.white);
+		            	pg.add(labelResultado);
+		            	pg.setOpaque(false);
+		        		JOptionPane pane =new JOptionPane(pg);
 		        		JDialog dialogInicio;
 		        		 getComponents(pane);
 		                 pane.setBackground(Color.decode("#2148bc"));

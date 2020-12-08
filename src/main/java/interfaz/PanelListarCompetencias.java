@@ -172,6 +172,7 @@ public class PanelListarCompetencias extends PanelGenerico {
             public void actionPerformed(ActionEvent e) {
             	JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelAltaCompetencia());
+				ventana.setSize(tamAltaComp);
 				ventana.revalidate();
 				ventana.setLocationRelativeTo(null);
 				ventana.repaint();
