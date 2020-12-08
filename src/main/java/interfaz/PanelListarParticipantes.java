@@ -29,6 +29,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import acceso.ParticipanteDAO;
 import logica.CompetenciaDTO;
 import logica.GestorCompetencia;
+import logica.GestorParticipante;
 
 public class PanelListarParticipantes extends PanelGenerico{
 	JLabel labelPartic;
@@ -94,8 +95,34 @@ public class PanelListarParticipantes extends PanelGenerico{
 	ActionListener EliminarParticipanteListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			//ParticipanteDAO.delete(SELECCIONADO);
+			Object[] opcionesDialog = { "Si", "No"};
+			String nomSseleccionado;
+			String idSeleccionado = null;
+			String[][] nuevaLista = new String[dtoComp.getParticipantes().length][3];
+			nomSseleccionado=tablaParticipantes.getValueAt(tablaParticipantes.getSelectedRow(),0).toString();
+			int i=0;
+			for(String[] s : dtoComp.getParticipantes()){
+				if(s[0].equals(nomSseleccionado)) {
+					idSeleccionado=s[2];
+					System.out.println("NOMBRE: "+s[0]+"ID: "+s[2]);
+				}
+				else {
+					nuevaLista[i]=s;
+					i++;
+				}
+			}
+			int opcionElegida;
+			opcionElegida=JOptionPane.showOptionDialog(null,"Esta seguro de que desea borrar el participante seleccionado?","Confirme eliminación"
+					,JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,opcionesDialog,null);
+			if(opcionElegida==JOptionPane.YES_OPTION) {
+				GestorParticipante.deleteParticipante(idSeleccionado);
+				dtoComp.setParticipantes(nuevaLista);
+			}
+			construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
+			tablaParticipantes.repaint();
 		}
 	};
+	buttonEliminarP.addActionListener(EliminarParticipanteListener);
 	ActionListener AgregarParticipanteListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));

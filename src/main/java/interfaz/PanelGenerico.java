@@ -15,11 +15,11 @@ public class PanelGenerico extends JPanel {
 	//Confien en mi, esto parece andar -Martin
 	static final Dimension tamPrincipal = new Dimension(300,450);
 	static final Dimension tamAltaComp = new Dimension(1000,650);
-	static final Dimension tamListarComp = new Dimension(1000,575);
+	static final Dimension tamListarComp = new Dimension(1000,600);
 	static final Dimension tamVerComp = new Dimension(1000,700);
 	static final Dimension tamIniciarSesion = new Dimension(300,300);
 	static final Dimension tamCuentaNueva = new Dimension(300,375);
-	static final Dimension tamAltaPartic = new Dimension(400,300);
+	static final Dimension tamAltaPartic = new Dimension(400,330);
 	static final Color colorFondoBoton =  Color.decode("#112349");
 	static final Color colorTextoBoton =  Color.white;
 	

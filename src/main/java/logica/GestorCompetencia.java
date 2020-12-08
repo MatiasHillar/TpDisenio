@@ -253,12 +253,13 @@ public class GestorCompetencia {
 		dto.setEstado(c.getEstado());
 		
 		ArrayList<Participante> participantes = c.getParticipantes();
-		String[][] parString = new String[participantes.size()][2];
+		String[][] parString = new String[participantes.size()][3];
 		int i=0;
 		
 		for(Participante p:participantes) {
 			parString[i][0] = p.getNombre();
 			parString[i][1] = p.getEmail();
+			parString[i][2] = p.getIdParticipante().toString();
 			i++;
  		}
 		

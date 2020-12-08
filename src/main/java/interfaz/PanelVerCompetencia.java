@@ -142,7 +142,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 botonCancelar.setForeground(Color.white);
 		 
 		 //Tablas
-		 tablaEncuentros = new JTable(3,3);
+		 tablaEncuentros = new JTable(5,3);
 		 tablaEncuentros.setPreferredSize(new Dimension(270,210));
 		 tablaParticipantes = new JTable(3,3);
 		 tablaParticipantes.setSize(70,140);
@@ -356,7 +356,9 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 ModeloTablaGen model = new ModeloTablaGen(data,columnas);
 		 tablaEncuentros.setModel(model);
 		 tablaEncuentros.getTableHeader().setDefaultRenderer(new GenericoTableHeaderRenderer());
-		 
+		 for(int i = 0 ; i < 3 ; i++) {
+			 System.out.println("Columna: "+i+" "+columnas[i]);
+		 }
 		
 		 tablaEncuentros.getColumnModel().getColumn(0).setCellRenderer(new GestionCeldasGen("texto"));
 		 tablaEncuentros.getColumnModel().getColumn(1).setCellRenderer(new GestionCeldasGen("texto"));
@@ -364,6 +366,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 
 		 
 		 tablaEncuentros.getTableHeader().setReorderingAllowed(false);
+		 tablaEncuentros.getTableHeader().setVisible(true);
 		 tablaEncuentros.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		 tablaEncuentros.setRowHeight(35);
 		 tablaEncuentros.setGridColor(Color.BLACK);

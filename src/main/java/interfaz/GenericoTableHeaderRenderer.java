@@ -33,6 +33,7 @@ public class GenericoTableHeaderRenderer extends DefaultTableCellRenderer {
    * table header cell, and the opaque property is set to false.
    */
   public GenericoTableHeaderRenderer() {
+	  super();
     setHorizontalAlignment(CENTER);
     setHorizontalTextPosition(LEFT);
     setVerticalAlignment(BOTTOM);
@@ -65,9 +66,9 @@ public class GenericoTableHeaderRenderer extends DefaultTableCellRenderer {
             isSelected, hasFocus, row, column);
     JTableHeader tableHeader = table.getTableHeader();
     if (tableHeader != null) {
-     // setBackground(Color.decode("#2148bc"));
+      setBackground(Color.decode("#2148bc"));
     }
-    //setBackground(Color.decode("#2148bc"));
+    setBackground(Color.decode("#2148bc"));
     setIcon(getIcon(table, column));
     setBorder(UIManager.getBorder("TableHeader.cellBorder"));
     return this;

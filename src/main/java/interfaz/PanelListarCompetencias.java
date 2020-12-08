@@ -42,6 +42,7 @@ public class PanelListarCompetencias extends PanelGenerico {
 	JLabel labelDep;
 	JLabel labelMod;
 	JLabel labelEstado;
+	JLabel labelCriterioBusqueda;
 	JButton buttonBuscar;
 	JButton buttonLimpiar;
 	JButton buttonCancelar;
@@ -74,7 +75,8 @@ public class PanelListarCompetencias extends PanelGenerico {
 		labelDep = new JLabel("Deporte: ");
 		labelMod = new JLabel("Modalidad: ");
 		labelEstado = new JLabel("Estado: ");
-		
+		labelCriterioBusqueda = new JLabel("<HTML> <B>- Indique al menos un criterio de búsqueda</B></HTML>");
+		labelCriterioBusqueda.setFont(labelEstado.getFont().deriveFont(15f));
 		//Buttons
 		buttonBuscar = new JButton("Buscar");
 		buttonBuscar.setPreferredSize(tamBotChico);
@@ -271,6 +273,9 @@ public class PanelListarCompetencias extends PanelGenerico {
 	add(buttonVerComp);
 	sLayout.putConstraint(SpringLayout.EAST,buttonVerComp,-15,SpringLayout.EAST,scrollPaneCompetencias);
 	sLayout.putConstraint(SpringLayout.NORTH,buttonVerComp,20,SpringLayout.SOUTH,scrollPaneCompetencias);
+	add(labelCriterioBusqueda);
+	sLayout.putConstraint(SpringLayout.WEST,labelCriterioBusqueda,5,SpringLayout.WEST,this);
+	sLayout.putConstraint(SpringLayout.NORTH,labelCriterioBusqueda,15,SpringLayout.SOUTH,buttonVerComp);
 	}
 	
 	private void construirTablaCompetencias(String[] columnas, Object[][] datos) {
