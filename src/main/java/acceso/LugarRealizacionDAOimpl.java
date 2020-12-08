@@ -24,28 +24,43 @@ public class LugarRealizacionDAOimpl implements LugarRealizacionDAO {
 			+ "ID_LUGAR = ?";
 	private static final String SELECT_LUGAR = "SELECT * FROM pruebacomp.lugar_realizacion WHERE"
 			+ " ID_LUGAR = ?";
+	private static final String INSERT_SE_PUEDE_REALIZAR = "INSERT INTO pruebacomp.se_puede_realizar VALUES (?, ?)";
 	
-	public LugarRealizacion saveOrUpdate(LugarRealizacion l) {
-		Connection conn = DB.getConexion();
+	@Override
+	public LugarRealizacion saveOrUpdate(LugarRealizacion l, Connection conn) {
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
+		ResultSet generatedKeys = null;
 		try {
 			if(l.getIdLugar() == null) {
-				pstmt = conn.prepareStatement(INSERT_LUGAR);
-				//setear parametros
+				pstmt = conn.prepareStatement(INSERT_LUGAR, java.sql.Statement.RETURN_GENERATED_KEYS);
+				pstmt.setString(1, l.getNombre());
+				pstmt.setInt(2, l.getUsuario().getIdUsuario());
+				pstmt.executeUpdate();
+				generatedKeys = pstmt.getGeneratedKeys();
+				pstmt1 = conn.prepareStatement(INSERT_SE_PUEDE_REALIZAR);
+				int key = generatedKeys.getInt(1);
+				for(Deporte d : l.getDeportes()) {
+					pstmt1.setInt(1, key);
+					pstmt1.setString(2, d.getNombreDeporte());
+					pstmt1.executeUpdate();
+				}
 			}
 			else {
 				pstmt = conn.prepareStatement(UPDATE_LUGAR);
-			
-			//setear parametros
+				pstmt.setString(1, l.getNombre());
+				pstmt.setInt(2, l.getUsuario().getIdUsuario());
+				pstmt.setInt(3, l.getIdLugar());
+				pstmt.executeUpdate();
+				//updatear se_puede_realizar? solo tiene pks, no deberían cambiar de valor nunca
 			}
-			pstmt.executeUpdate();
+			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
 		try {
 			if(pstmt!=null)pstmt.close();
-			if(conn!=null)conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();

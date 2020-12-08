@@ -13,8 +13,8 @@ public class LugarRealizacion implements java.io.Serializable {
 	private Integer idLugar;
 	private Usuario usuario;
 	private String nombre;
-	private Set deportes = new HashSet(0);
-	private Set disponibleParas = new HashSet(0);
+	private Set<Deporte> deportes = new HashSet<Deporte>(0);
+	private Set<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>(0);
 
 	public LugarRealizacion() {
 	}
@@ -23,7 +23,8 @@ public class LugarRealizacion implements java.io.Serializable {
 		this.idLugar = idLugar;
 	}
 
-	public LugarRealizacion(Integer idLugar, Usuario usuario, String nombre, Set deportes, Set disponibleParas) {
+	public LugarRealizacion(Integer idLugar, Usuario usuario, String nombre, Set<Deporte> deportes,
+			Set<DisponiblePara> disponibleParas) {
 		this.idLugar = idLugar;
 		this.usuario = usuario;
 		this.nombre = nombre;
@@ -55,19 +56,19 @@ public class LugarRealizacion implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set getDeportes() {
+	public Set<Deporte> getDeportes() {
 		return this.deportes;
 	}
 
-	public void setDeportes(Set deportes) {
+	public void setDeportes(Set<Deporte> deportes) {
 		this.deportes = deportes;
 	}
 
-	public Set getDisponibleParas() {
+	public Set<DisponiblePara> getDisponibleParas() {
 		return this.disponibleParas;
 	}
 
-	public void setDisponibleParas(Set disponibleParas) {
+	public void setDisponibleParas(Set<DisponiblePara> disponibleParas) {
 		this.disponibleParas = disponibleParas;
 	}
 
