@@ -394,9 +394,11 @@ public class PanelVerCompetencia extends PanelGenerico {
 	}
 	private Object[][] obtenerMatrizDatosEncuentros(int pagina) {
 		String informacion[][] = new String[5][3];
+		int i=0;
 		int k=0;
-		for(int i = 0 +((paginaSeleccionada-1)*5);i<((paginaSeleccionada-1)*5)+5;i++) {
+		while(i<(((paginaSeleccionada-1)*5)+5) && i< dtoCompetencia.getFixture().length &&k<5) {
 			informacion[k] = encuentrosFuturos[i];
+			i++;
 			k++;
 		}
 		return informacion;

@@ -16,4 +16,8 @@ public class ModeloTablaCompetencias extends DefaultTableModel{
 	public ModeloTablaCompetencias() {
 		
 	}
+	@Override
+	public boolean isCellEditable(int row, int column) {
+        return false;
+    }
 }

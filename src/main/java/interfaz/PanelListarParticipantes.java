@@ -69,7 +69,7 @@ public class PanelListarParticipantes extends PanelGenerico{
 	
 	//Tablas
 	tablaParticipantes = new JTable();
-	tablaParticipantes.setPreferredSize(new Dimension(400,200));
+	//tablaParticipantes.setPreferredSize(new Dimension(400,200));
 	scrollPaneParticipantes = new JScrollPane(tablaParticipantes);
 	scrollPaneParticipantes.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);  
 	scrollPaneParticipantes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 

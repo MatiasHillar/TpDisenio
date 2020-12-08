@@ -17,5 +17,8 @@ public class ModeloTablaParticipantes extends DefaultTableModel{
 	public ModeloTablaParticipantes() {
 		
 	}
-	
+	@Override
+	public boolean isCellEditable(int row, int column) {
+        return false;
+    }
 }

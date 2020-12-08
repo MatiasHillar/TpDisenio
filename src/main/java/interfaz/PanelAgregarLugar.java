@@ -95,10 +95,7 @@ public class PanelAgregarLugar extends PanelGenerico{
 		// Listas
 		listaDeportesNoAgregados = new JList<String>(modeloNoAgregados);
 		listaDeportesAgregados = new JList<String>(modeloAgregados);
-		
-		
-		
-		
+
 		
 		//LISTENERS
 		listaDeportesNoAgregados.addListSelectionListener(new ListSelectionListener() {
@@ -156,8 +153,7 @@ public class PanelAgregarLugar extends PanelGenerico{
 			
 		});
 		
-		
-		
+	
 		botonAceptar.addActionListener(new ActionListener() {
 
 			@Override
@@ -180,9 +176,6 @@ public class PanelAgregarLugar extends PanelGenerico{
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();
-				
-				
-				
 			}
 			
 		});
@@ -209,7 +202,20 @@ public class PanelAgregarLugar extends PanelGenerico{
 	private void armarPanel() {
 		SpringLayout sLayout = new SpringLayout();
 		this.setLayout(sLayout);
-		
+		add(labelNombre);
+		sLayout.putConstraint(SpringLayout.WEST,labelNombre,20,SpringLayout.WEST,this);
+		sLayout.putConstraint(SpringLayout.NORTH,labelNombre,30,SpringLayout.NORTH,this);
+		add(labelAgregarDeportes);
+		sLayout.putConstraint(SpringLayout.WEST,labelAgregarDeportes,20,SpringLayout.WEST,labelNombre);
+		sLayout.putConstraint(SpringLayout.NORTH,labelAgregarDeportes,30,SpringLayout.NORTH,labelNombre);
+		add(deportesAgregados);
+		sLayout.putConstraint(SpringLayout.WEST,deportesAgregados,20,SpringLayout.WEST,labelAgregarDeportes);
+		sLayout.putConstraint(SpringLayout.NORTH,deportesAgregados,30,SpringLayout.NORTH,labelAgregarDeportes);
+		add(deportesNoAgregados);
+		sLayout.putConstraint(SpringLayout.WEST,deportesNoAgregados,20,SpringLayout.WEST,deportesAgregados);
+		sLayout.putConstraint(SpringLayout.NORTH,deportesNoAgregados,30,SpringLayout.NORTH,deportesAgregados);
+		add(listaDeportesNoAgregados);
+		add(listaDeportesAgregados);
 	}
 
 	
