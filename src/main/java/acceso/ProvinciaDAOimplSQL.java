@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import logica.Localidad;
@@ -38,12 +39,16 @@ public class ProvinciaDAOimplSQL implements ProvinciaDAO{
 		try {
 			int idProv = checkNull(conn, p);
 			if(idProv == -1) {
-				pstmt = conn.prepareStatement(INSERT_PROVINCIA, java.sql.Statement.RETURN_GENERATED_KEYS);
+				pstmt = conn.prepareStatement(INSERT_PROVINCIA, Statement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, p.getNombre());
 				pstmt.executeUpdate();
 				generatedKeys = pstmt.getGeneratedKeys();
 				
-				p.setId_provincia(generatedKeys.getInt(1));
+				if(generatedKeys.next())
+					p.setId_provincia(generatedKeys.getInt(1));
+				else {
+					System.out.println("NA SE ROMPIO TODO");
+				}
 			}
 			else {	
 				p.setId_provincia(idProv);	

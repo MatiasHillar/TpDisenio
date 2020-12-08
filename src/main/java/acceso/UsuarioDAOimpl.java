@@ -30,10 +30,11 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	private ProvinciaDAO daoProv = new ProvinciaDAOimplSQL();
 	private LocalidadDAO daoLoca = new LocalidadDAOimplSQL();
 	
-	public Usuario saveOrUpdate(Usuario u) throws UsuarioExistenteException {
+	public Usuario saveOrUpdate(Usuario u) throws UsuarioExistenteException, SQLException {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
+			conn.setAutoCommit(false);
 			if(u.getIdUsuario() == null) {
 				if(checkExistence(u))
 					throw (new UsuarioExistenteException());
@@ -65,8 +66,11 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 				pstmt.executeUpdate();
 
 			}
+			
+			conn.commit();
 		}
 		catch(SQLException e) {
+			conn.rollback();
 			e.printStackTrace();
 		}
 		try {

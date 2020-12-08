@@ -10,6 +10,6 @@ public interface LugarRealizacionDAO {
 	public LugarRealizacion saveOrUpdate(LugarRealizacion l, Connection conn);
 	public void delete(int id);
 	public List<LugarRealizacion> buscarTodos();
-	public LugarRealizacion buscarPorId(Integer id);
+	public LugarRealizacion buscarPorId(Integer id, Connection conn);
 //	List<LugarRealizacion> buscarLugaresPorDeporte(String deporte, String usuario);
 }

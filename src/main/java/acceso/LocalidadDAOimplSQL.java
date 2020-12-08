@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import logica.Localidad;
@@ -36,12 +37,17 @@ public class LocalidadDAOimplSQL implements LocalidadDAO{
 		try {
 			idLoc = checkNull(conn, l);
 			if(idLoc == -1) {
-			pstmt = conn.prepareStatement(INSERT_LOCALIDAD, java.sql.Statement.RETURN_GENERATED_KEYS);
+			pstmt = conn.prepareStatement(INSERT_LOCALIDAD, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setLong(1, l.getProvincia().getId_provincia());
 			pstmt.setString(2, l.getNombre());
 			pstmt.executeUpdate();
 			generatedKeys = pstmt.getGeneratedKeys();
-			l.setIdLocalidad(generatedKeys.getInt(1));
+			
+			if(generatedKeys.next())
+				l.setIdLocalidad(generatedKeys.getInt(1));
+			else
+				System.out.println("NA SE ROMPIO TODO AMEGO");
+			
 			}
 			
 			else {

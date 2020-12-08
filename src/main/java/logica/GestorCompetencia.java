@@ -106,7 +106,7 @@ public class GestorCompetencia {
 				
 			}
 			else {
-				if(modalidad.contentEquals("Eliminacion Simple")) {
+				if(modalidad.contentEquals("Eliminatoria Simple")) {
 					if(forma_p.contentEquals("Sets")) {
 						Sets forma = new Sets(max_sets);
 						EliminacionSimple competencia = new EliminacionSimple(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
@@ -224,6 +224,7 @@ public class GestorCompetencia {
 		}
 		for(Competencia comp:competenciaObj) {
 			CompetenciaDTO dto = new CompetenciaDTO(comp.getIdCompetencia(), comp.getDeporte().getNombreDeporte(),  comp.getNombre(), comp.getEstado());
+			System.out.println(comp.getEstado() + comp.getDeporte());
 			if(comp instanceof Liga)
 				dto.setModalidad("Liga");
 			else
@@ -308,6 +309,9 @@ public class GestorCompetencia {
 		
 		for(DisponiblePara dispo: competencia.getDisponibleParas()) 
 			cantEncuentrosDisponibles += dispo.getCantidadEncuentros();
+		
+		if(competencia.getParticipantes().size()<2)
+			return "No puede generar fixture con menos de dos participantes";
 		
 		ArrayList<DisponiblePara> disponibilidadesAAsignar = new ArrayList<DisponiblePara>(competencia.getDisponibleParas());
 		if(competencia.getClass() == Liga.class) {

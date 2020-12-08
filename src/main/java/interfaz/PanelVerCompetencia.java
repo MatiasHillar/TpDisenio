@@ -91,12 +91,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 		encuentrosFuturos = dtoCompetencia.getFixture();
 		maxPag=(dtoCompetencia.getFixture().length)/5;
 		System.out.println("MAXPAG "+maxPag);
-		for(int i=0;i<10;i++) {
-				System.out.print("ENCUENTRO : "+i+"  ");
-				System.out.print("  P1 "+encuentrosFuturos[i][0]);
-				System.out.println("  P2 "+encuentrosFuturos[i][1]);
-			
-		}
+		
 		
 		//Labels
 		labelDatosComp = new JLabel("<HTML><B><U>Datos de la competencia: </U></B></HTML>");
@@ -241,6 +236,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 			}
 		};
 		botonCancelar.addActionListener(cancelarListener);
+		if(!dtoCompetencia.getEstado().equals("CREADA"))
 			construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros(0));
 			construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
 	}

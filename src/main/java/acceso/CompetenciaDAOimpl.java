@@ -291,10 +291,10 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 					}
 					
 					
-					comp.setIdCompetencia(res.getInt(1));
-					comp.setNombre(res.getString(2));
-					comp.setDeporte(new Deporte(res.getString(8)));
-					comp.setEstado(res.getString(10));
+					comp.setIdCompetencia(res.getInt("id_competencia"));
+					comp.setNombre(res.getString("nombre"));
+					comp.setDeporte(new Deporte(res.getString("nombre_deporte")));
+					comp.setEstado(res.getString("estado"));
 					
 					competencias.add(comp);
 					

@@ -95,8 +95,7 @@ public class LugarRealizacionDAOimpl implements LugarRealizacionDAO {
 		return lista;
 	}
 
-	public LugarRealizacion buscarPorId(Integer id) {
-		Connection conn = DB.getConexion();
+	public LugarRealizacion buscarPorId(Integer id, Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		LugarRealizacion l = null;

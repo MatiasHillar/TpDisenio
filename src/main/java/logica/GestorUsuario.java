@@ -3,6 +3,7 @@
  */
 package logica;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import acceso.ProvinciaDAOimpl;
@@ -15,7 +16,7 @@ import excepciones.UsuarioExistenteException;
  */
 public class GestorUsuario {
 	
-	public static int usuario_autenticado=1;
+	public static int usuario_autenticado=-1;
 	  
 
 	  public static ArrayList<ProvinciaDTO> obtenerProvincias() {
@@ -79,7 +80,9 @@ public class GestorUsuario {
 	    catch(UsuarioExistenteException e) {
 	      return "Ya existe un usuario registrado con ese email";
 	    }
-	    
+	    catch(SQLException e) {
+	    	return "Hubo un error al guardar el usuario en la base de datos";
+	    }
 	    
 	    
 	    return "Usuario registrado con exito!";
