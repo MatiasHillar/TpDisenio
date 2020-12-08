@@ -129,6 +129,13 @@ public class CompetenciaDTO {
 
 
 
+	public CompetenciaDTO(String nombre, int id) {
+		this.nombre = nombre;
+		this.idCompetencia = id;
+	}
+
+
+
 	public Integer getIdCompetencia() {
 		return idCompetencia;
 	}

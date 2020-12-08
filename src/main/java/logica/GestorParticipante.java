@@ -21,15 +21,29 @@ public class GestorParticipante {
 	
 	public static String saveParticipante(int id_competencia, String nombre_participante, String email_participante ) {
 		Participante p = new Participante();
+		boolean emailNoValido = false;
+		boolean nombreVacio = false;
+		boolean emailVacio = false;
 		if(nombre_participante.trim().length() == 0) {
-			return "El nombre del participante no puede estar en blanco";
+			nombreVacio = true;
 		}
 		if(email_participante.trim().length() == 0) {
-			return "El email del participante no puede estar en blanco";
+			emailVacio = true;
 		}
 		if(!validarEmail(email_participante)) {
-			return "El email ingresado no es valido";
+			emailNoValido = true;
 		}
+		String response = "";
+		if(nombreVacio)
+			response += "n";
+		if(emailVacio)
+			response += "e";
+		if(emailNoValido)
+			response += "v";
+		
+		if(nombreVacio || emailVacio || emailNoValido)
+			return response;
+		
 		
 		p.setNombre(nombre_participante);
 		p.setEmail(email_participante);

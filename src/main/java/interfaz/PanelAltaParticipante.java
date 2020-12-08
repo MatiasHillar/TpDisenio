@@ -32,13 +32,15 @@ public class PanelAltaParticipante extends PanelGenerico {
 	JLabel labelCamposOb;
 	JLabel labelOblig1;
 	JLabel labelOblig2;
+	JLabel labelNombreVacio;
+	JLabel labelEmailVacio;
 	JButton buttonCancelar;
 	JButton buttonAceptar;
 	JTextField textNombre;
 	JTextField textCorreo;
 	CompetenciaDTO dtoCompetencia;
 	String nombreC= "";
-	
+	SpringLayout layout;
 	public PanelAltaParticipante(CompetenciaDTO dtoComp) {
 		super();
 		dtoCompetencia=dtoComp;
@@ -58,6 +60,10 @@ public class PanelAltaParticipante extends PanelGenerico {
 		labelCamposOb = new JLabel("<HTML><B> <font color='gray'>Todos los campos marcados con </font color='gray'><font color='red'> (*) <font color='gray'> son obligatorios</B></font color='gray'>");
 		labelOblig1 = new JLabel("<HTML><font color='red'> (*) </HTML>");
 		labelOblig2 = new JLabel("<HTML><font color='red'> (*) </HTML>");
+		labelNombreVacio = new JLabel("<HTML><font color='red'> No se ha completado el campo </HTML>");
+		labelEmailVacio = new JLabel("<HTML><font color='red'> No se ha completado el campo </HTML>");
+		labelNombreVacio.setVisible(false);
+		labelEmailVacio.setVisible(false);
 		//Buttons
 		buttonCancelar = new JButton("Cancelar");
 		buttonAceptar = new JButton("Aceptar");
@@ -89,12 +95,49 @@ public class PanelAltaParticipante extends PanelGenerico {
 				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				String respuesta = "LOL";
 				respuesta = GestorParticipante.saveParticipante(dtoCompetencia.getIdCompetencia(),textNombre.getText().trim(),textCorreo.getText().trim());
-				JOptionPane.showMessageDialog(ventana,respuesta);
-				ventana.setContentPane(new PanelListarParticipantes(GestorCompetencia.buscarCompetencia(dtoCompetencia.getIdCompetencia())));
-				ventana.setSize(500,600);
-				ventana.setLocationRelativeTo(null);
-				ventana.revalidate();
-				ventana.repaint();
+				
+				
+				if(respuesta.equals("Exito")){
+					JOptionPane.showMessageDialog(ventana,respuesta);
+					ventana.setContentPane(new PanelListarParticipantes(GestorCompetencia.buscarCompetencia(dtoCompetencia.getIdCompetencia())));
+					ventana.setSize(500,600);
+					ventana.setLocationRelativeTo(null);
+					ventana.revalidate();
+					ventana.repaint();
+				}
+				else {
+					switch(respuesta) {
+					case "n":
+						labelNombreVacio.setVisible(true);
+						labelEmailVacio.setVisible(false);
+						break;
+					case "e":
+						labelNombreVacio.setVisible(false);
+						labelEmailVacio.setText("<HTML><font color='red'> No se ha completado el campo </HTML>");
+						labelEmailVacio.setVisible(true);
+						break;
+					case "v":
+						labelNombreVacio.setVisible(false);
+						labelEmailVacio.setText("<HTML><font color='red'> El email ingresado no es valido </HTML>");
+						labelEmailVacio.setVisible(true);
+						break;
+					case "nev":
+						labelNombreVacio.setVisible(true);
+						labelEmailVacio.setText("<HTML><font color='red'> No se ha completado el campo </HTML>");
+						labelEmailVacio.setVisible(true);
+						break;
+					case "nv":
+						labelNombreVacio.setVisible(true);
+						labelEmailVacio.setText("<HTML><font color='red'> El email ingresado no es valido </HTML>");
+						labelEmailVacio.setVisible(true);
+						break;
+					case "ev":
+						labelNombreVacio.setVisible(false);
+						labelEmailVacio.setText("<HTML><font color='red'> No se ha completado el campo </HTML>");
+						labelEmailVacio.setVisible(true);
+						break;
+					}
+				}
 			}
 		};
 		buttonAceptar.addActionListener(aceptarListener);
@@ -103,6 +146,7 @@ public class PanelAltaParticipante extends PanelGenerico {
 	private void armarPanel() {
 		SpringLayout sLayout = new SpringLayout();
 		SpringLayout s2Layout = new SpringLayout();
+		layout = sLayout;
 		this.setLayout(s2Layout);
 		this.setLayout(sLayout);
 		this.add(labelAñadir);
@@ -134,6 +178,22 @@ public class PanelAltaParticipante extends PanelGenerico {
 		this.add(labelCamposOb);
 		sLayout.putConstraint(SpringLayout.WEST,labelCamposOb,0,SpringLayout.WEST,labelCorreo);
 		sLayout.putConstraint(SpringLayout.NORTH,labelCamposOb,10,SpringLayout.SOUTH,buttonCancelar);
+		this.add(labelOblig1);
+		sLayout.putConstraint(SpringLayout.WEST, labelOblig1, 5, SpringLayout.EAST, textNombre);
+		sLayout.putConstraint(SpringLayout.NORTH, labelOblig1, 40, SpringLayout.SOUTH, labelDatosP);
+		this.add(labelOblig2);
+		sLayout.putConstraint(SpringLayout.WEST, labelOblig2, 5, SpringLayout.EAST, textCorreo);
+		sLayout.putConstraint(SpringLayout.NORTH, labelOblig2, 40, SpringLayout.SOUTH, labelNombre);
+		
+		this.add(labelNombreVacio);
+		sLayout.putConstraint(SpringLayout.NORTH, labelNombreVacio, 5, SpringLayout.SOUTH, textNombre);
+		sLayout.putConstraint(SpringLayout.WEST, labelNombreVacio, 130, SpringLayout.EAST, labelNombre);
+		
+		
+		this.add(labelEmailVacio);
+		sLayout.putConstraint(SpringLayout.NORTH, labelEmailVacio, 5, SpringLayout.SOUTH, textCorreo);
+		sLayout.putConstraint(SpringLayout.WEST, labelEmailVacio, 9, SpringLayout.EAST, labelCorreo);
+		
 	}
 }
 
