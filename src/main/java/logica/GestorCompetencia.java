@@ -69,7 +69,7 @@ public class GestorCompetencia {
 				if(forma_p.contentEquals("Sets")) {
 					
 					Sets forma = new Sets(max_sets);
-					Liga competencia = new Liga(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
+					Liga competencia = new Liga(new Deporte(deporte), forma, GestorUsuario.usuario_autenticado,
 							nombre, permite_empate, "CREADA", puntos_pg, puntos_pe);
 					HashSet<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>();
 					for (Map.Entry<LugarRealizacion, Integer> entry : lugares.entrySet()) {
@@ -87,7 +87,7 @@ public class GestorCompetencia {
 					if(puntos_pg<=puntos_pe)
 						return "Los puntos por partido ganado deben ser mayores que los puntos por partido empatado";
 					Puntuacion forma = new Puntuacion(tantos_default);
-					Liga competencia = new Liga(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
+					Liga competencia = new Liga(new Deporte(deporte), forma, GestorUsuario.usuario_autenticado,
 							nombre, permite_empate, "CREADA", puntos_pg, puntos_pe);
 					HashSet<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>();
 					for (Map.Entry<LugarRealizacion, Integer> entry : lugares.entrySet()) {
@@ -109,7 +109,7 @@ public class GestorCompetencia {
 				if(modalidad.contentEquals("Eliminatoria Simple")) {
 					if(forma_p.contentEquals("Sets")) {
 						Sets forma = new Sets(max_sets);
-						EliminacionSimple competencia = new EliminacionSimple(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
+						EliminacionSimple competencia = new EliminacionSimple(new Deporte(deporte), forma, GestorUsuario.usuario_autenticado,
 								nombre, false, "CREADA");
 						HashSet<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>();
 						for (Map.Entry<LugarRealizacion, Integer> entry : lugares.entrySet()) {
@@ -124,7 +124,7 @@ public class GestorCompetencia {
 					}
 					else {
 						ResultadoFinal forma = new ResultadoFinal();
-						EliminacionSimple competencia = new EliminacionSimple(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
+						EliminacionSimple competencia = new EliminacionSimple(new Deporte(deporte), forma, GestorUsuario.usuario_autenticado,
 								nombre, false, "CREADA");
 						HashSet<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>();
 						for (Map.Entry<LugarRealizacion, Integer> entry : lugares.entrySet()) {
@@ -143,7 +143,7 @@ public class GestorCompetencia {
 				else {
 					if(forma_p.contentEquals("Sets")) {
 						Sets forma = new Sets(max_sets);
-						EliminacionDoble competencia = new EliminacionDoble(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
+						EliminacionDoble competencia = new EliminacionDoble(new Deporte(deporte), forma, GestorUsuario.usuario_autenticado,
 								nombre, false, "CREADA");
 						HashSet<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>();
 						for (Map.Entry<LugarRealizacion, Integer> entry : lugares.entrySet()) {
@@ -158,7 +158,7 @@ public class GestorCompetencia {
 					}
 					else {
 						ResultadoFinal forma = new ResultadoFinal();
-						EliminacionDoble competencia = new EliminacionDoble(new Deporte(deporte), forma, new Usuario(GestorUsuario.usuario_autenticado),
+						EliminacionDoble competencia = new EliminacionDoble(new Deporte(deporte), forma, GestorUsuario.usuario_autenticado,
 								nombre, false, "CREADA");
 						HashSet<DisponiblePara> disponibleParas = new HashSet<DisponiblePara>();
 						for (Map.Entry<LugarRealizacion, Integer> entry : lugares.entrySet()) {
@@ -196,7 +196,7 @@ public class GestorCompetencia {
 		System.out.println(nombre + deporte + modalidad + estado);
 		if(nombre.equals("") && deporte.equals("<Ninguno>") && modalidad.equals("<Ninguna>") && estado.equals("<Ninguno>")) {
 			System.out.println("SIN FILTROS");
-			competenciaObj = daoComp.buscarPorUsr(GestorUsuario.usuario_autenticado);
+			competenciaObj = daoComp.buscarPorUsr(GestorUsuario.usuario_autenticado.getIdUsuario());
 		}
 		else {
 		switch(modalidad) {

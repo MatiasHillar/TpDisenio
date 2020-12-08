@@ -16,7 +16,7 @@ import excepciones.UsuarioExistenteException;
  */
 public class GestorUsuario {
 	
-	public static int usuario_autenticado=-1;
+	public static Usuario usuario_autenticado=null;
 	  
 
 	  public static ArrayList<ProvinciaDTO> obtenerProvincias() {
@@ -31,18 +31,17 @@ public class GestorUsuario {
 	    return provinciasDTO;
 	  }
 	  
-	  private static void setUsuarioAutenticado(int id) {
-	    GestorUsuario.usuario_autenticado = id;
+	  private static void setUsuarioAutenticado(Usuario u) {
+	    GestorUsuario.usuario_autenticado = u;
 	  }
 	  
 	  
 	  public static String autenticarUsuario(String email, String password) {
-		  int id = (new UsuarioDAOimpl()).autenticarUsuario(email, password);
-		  if(id == -1)
+		  Usuario u = (new UsuarioDAOimpl()).autenticarUsuario(email, password);
+		  if(u == null)
 			  return "Los datos de inicio de sesion no son correctos";
 		  else {
-			  setUsuarioAutenticado(id);
-			  System.out.println(GestorUsuario.usuario_autenticado);
+			  setUsuarioAutenticado(u);
 			  return "Inicio de sesion exitoso";
 			 
 		  }

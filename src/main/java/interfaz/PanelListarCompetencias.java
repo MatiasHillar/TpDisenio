@@ -69,7 +69,7 @@ public class PanelListarCompetencias extends PanelGenerico {
 		Dimension tamBotChico = new Dimension(150,30);
 		listaComps = new ArrayList<CompetenciaDTO>();
 		//Labels
-		labelCompetencias = new JLabel("Competencias creadas por el usuario: "+GestorUsuario.usuario_autenticado);
+		labelCompetencias = new JLabel("Competencias creadas por el usuario: "+GestorUsuario.usuario_autenticado.getNombre()+ " "+ GestorUsuario.usuario_autenticado.getApellido());
 		labelCompetencias.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
 		labelNombre = new JLabel("Nombre: ");
 		labelDep = new JLabel("Deporte: ");

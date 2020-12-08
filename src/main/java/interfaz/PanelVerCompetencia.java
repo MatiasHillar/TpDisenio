@@ -70,6 +70,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 	JTable tablaParticipantes;
 	JSplitPane splitHorizontal;
 	JScrollPane scrollPaneParticipantes;
+	JScrollPane scrollPaneEncuentros;
 	//Variables
 	ArrayList<String> columnasTablaEncuentros;
 	CompetenciaDTO dtoCompetencia;
@@ -89,7 +90,11 @@ public class PanelVerCompetencia extends PanelGenerico {
 		//Variables
 		paginaSeleccionada = 1;
 		encuentrosFuturos = dtoCompetencia.getFixture();
-		maxPag=(dtoCompetencia.getFixture().length)/5;
+		if(dtoCompetencia.getFixture().length%6==0)
+			maxPag=(dtoCompetencia.getFixture().length)/6;
+		else
+			maxPag=((dtoCompetencia.getFixture().length)/6)+1;
+		
 		System.out.println("MAXPAG "+maxPag);
 		
 		
@@ -143,7 +148,11 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 
 		 //Tablas
 		 tablaEncuentros = new JTable(5,3);
-		 tablaEncuentros.setPreferredSize(new Dimension(270,210));
+		 tablaEncuentros.setPreferredSize(new Dimension(320,230));
+		 scrollPaneEncuentros = new JScrollPane(tablaEncuentros);
+		 scrollPaneEncuentros.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);  
+		 scrollPaneEncuentros.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER); 
+		 scrollPaneEncuentros.setPreferredSize(new Dimension(320,230));
 		 tablaParticipantes = new JTable(3,3);
 		 tablaParticipantes.setSize(70,140);
 		 scrollPaneParticipantes = new JScrollPane(tablaParticipantes);
@@ -176,6 +185,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 					System.out.println("Pagina es "+paginaSeleccionada);
 					construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros(paginaSeleccionada));
 					tablaEncuentros.repaint();
+					((AbstractTableModel) tablaEncuentros.getModel()).fireTableDataChanged();
 						}
 					else {
 						System.out.println("LO ESTAS ROMPIENDO");
@@ -192,6 +202,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 					labelPaginador.setText("<HTML> <B> PAGINA "+ (paginaSeleccionada)+"</B> </HTML>");
 					construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros(paginaSeleccionada));
 					tablaEncuentros.repaint();
+					((AbstractTableModel) tablaEncuentros.getModel()).fireTableDataChanged();
 					}
 					else {
 						//Ver si ponemos una excepcion o JDialog
@@ -297,19 +308,38 @@ public class PanelVerCompetencia extends PanelGenerico {
         panelIzq.add(labelProxEnc);
         sLayout.putConstraint(SpringLayout.WEST,labelProxEnc,25,SpringLayout.WEST,panelIzq);
 		sLayout.putConstraint(SpringLayout.NORTH,labelProxEnc,90,SpringLayout.SOUTH,labelEstado);
+		
+		/*
 		panelIzq.add(tablaEncuentros);
 		sLayout.putConstraint(SpringLayout.WEST,tablaEncuentros,155,SpringLayout.WEST,panelIzq);
 		sLayout.putConstraint(SpringLayout.NORTH,tablaEncuentros,30,SpringLayout.SOUTH,labelProxEnc);
+		*/
 		
+		panelIzq.add(scrollPaneEncuentros);
+		sLayout.putConstraint(SpringLayout.WEST,scrollPaneEncuentros,20,SpringLayout.WEST,panelIzq);
+		sLayout.putConstraint(SpringLayout.NORTH,scrollPaneEncuentros,30,SpringLayout.SOUTH,labelProxEnc);
+		
+		
+		/*
 		panelIzq.add(labelPaginador);
 		sLayout.putConstraint(SpringLayout.WEST,labelPaginador,100,SpringLayout.WEST,tablaEncuentros);
 		sLayout.putConstraint(SpringLayout.NORTH,labelPaginador,10,SpringLayout.SOUTH,tablaEncuentros);
+		*/
+		panelIzq.add(labelPaginador);
+		sLayout.putConstraint(SpringLayout.WEST,labelPaginador,140,SpringLayout.WEST,scrollPaneEncuentros);
+		sLayout.putConstraint(SpringLayout.NORTH,labelPaginador,10,SpringLayout.SOUTH,scrollPaneEncuentros);
+		
+	
 		panelIzq.add(botonPagIzq);
 		sLayout.putConstraint(SpringLayout.EAST,botonPagIzq,-20,SpringLayout.WEST,labelPaginador);
-		sLayout.putConstraint(SpringLayout.NORTH,botonPagIzq,5,SpringLayout.SOUTH,tablaEncuentros);
+		//sLayout.putConstraint(SpringLayout.NORTH,botonPagIzq,5,SpringLayout.SOUTH,tablaEncuentros);
+		sLayout.putConstraint(SpringLayout.NORTH,botonPagIzq,5,SpringLayout.SOUTH,scrollPaneEncuentros);
+		
+		
 		panelIzq.add(botonPagDer);
 		sLayout.putConstraint(SpringLayout.WEST,botonPagDer,20,SpringLayout.EAST,labelPaginador);
-		sLayout.putConstraint(SpringLayout.NORTH,botonPagDer,5,SpringLayout.SOUTH,tablaEncuentros);
+		//sLayout.putConstraint(SpringLayout.NORTH,botonPagDer,5,SpringLayout.SOUTH,tablaEncuentros);
+		sLayout.putConstraint(SpringLayout.NORTH,botonPagDer,5,SpringLayout.SOUTH,scrollPaneEncuentros);
 	
 	}
 	private void armarPanelDer() {
@@ -373,9 +403,9 @@ public class PanelVerCompetencia extends PanelGenerico {
 		 tablaEncuentros.setShowGrid(true);
 		
 
-		 tablaEncuentros.getColumnModel().getColumn(0).setPreferredWidth(80);
-		 tablaEncuentros.getColumnModel().getColumn(1).setPreferredWidth(85);
-		 tablaEncuentros.getColumnModel().getColumn(2).setPreferredWidth(15);
+		 tablaEncuentros.getColumnModel().getColumn(0).setPreferredWidth(100);
+		 tablaEncuentros.getColumnModel().getColumn(1).setPreferredWidth(100);
+		 tablaEncuentros.getColumnModel().getColumn(2).setPreferredWidth(120);
 		 
 		 
 	}
@@ -393,10 +423,10 @@ public class PanelVerCompetencia extends PanelGenerico {
 		
 	}
 	private Object[][] obtenerMatrizDatosEncuentros(int pagina) {
-		String informacion[][] = new String[5][3];
-		int i=0;
+		String informacion[][] = new String[6][3];
+		int i=(paginaSeleccionada-1)*6;
 		int k=0;
-		while(i<(((paginaSeleccionada-1)*5)+5) && i< dtoCompetencia.getFixture().length &&k<5) {
+		while(i<(paginaSeleccionada*6) && i< dtoCompetencia.getFixture().length &&k<6) {
 			informacion[k] = encuentrosFuturos[i];
 			i++;
 			k++;

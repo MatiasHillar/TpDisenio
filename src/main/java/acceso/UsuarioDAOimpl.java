@@ -22,7 +22,7 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	private static final String SELECT_USUARIO = "SELECT * FROM pruebacomp.usuario WHERE"
 			+ " ID_USUARIO = ?";
 	
-	private static final String AUTENTICAR_USER = "SELECT id_usuario FROM pruebacomp.usuario WHERE password=crypt(?, password) AND email=crypt(?, email)";
+	private static final String AUTENTICAR_USER = "SELECT * FROM pruebacomp.usuario WHERE password=crypt(?, password) AND email=crypt(?, email)";
 	
 	private static final String CHECK_EXISTENCE = "SELECT email=crypt(?, email) FROM pruebacomp.usuario";
 	
@@ -166,25 +166,41 @@ public class UsuarioDAOimpl implements UsuarioDAO {
 	
 	
 	
-	public int autenticarUsuario(String email, String password) {
+	public Usuario autenticarUsuario(String email, String password) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		int id = -1;
+		Usuario u = null;
 		try {
 			pstmt = conn.prepareStatement(AUTENTICAR_USER, ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
 			pstmt.setString(1, password);
 			pstmt.setString(2, email);
 			rs = pstmt.executeQuery();
-			if(rs.first())
-				id = rs.getInt(1);
+			if(rs.first()) {
+				u = new Usuario();
+				u.setIdUsuario(rs.getInt("id_usuario"));
+				u.setNombre(rs.getString("nombre"));
+				u.setApellido(rs.getString("apellido"));
+			
+			}
+				
 			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
-		return id;
+		finally {
+			try {
+				if(pstmt!=null)
+					pstmt.close();
+				if(conn!=null)
+					conn.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return u;
 		
 		
 	}

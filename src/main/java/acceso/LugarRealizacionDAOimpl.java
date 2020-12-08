@@ -103,8 +103,11 @@ public class LugarRealizacionDAOimpl implements LugarRealizacionDAO {
 			pstmt = conn.prepareStatement(SELECT_LUGAR,ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
-			if(!rs.first()) System.out.println("no existe");;
+			if(!rs.first()) System.out.println("no existe");
 			l = new LugarRealizacion();
+			l.setNombre(rs.getString("nombre"));
+			l.setIdLugar(rs.getInt("id_lugar"));
+			
 		//setear valores
 		}
 		catch(SQLException e) {

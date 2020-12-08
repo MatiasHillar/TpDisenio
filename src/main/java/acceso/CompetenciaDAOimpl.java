@@ -531,7 +531,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		c.setEstado(rs.getString("ESTADO"));
 		c.setParticipantes((ArrayList<Participante>) daoP.buscar(c.getIdCompetencia(),conn));
 		c.setDisponibleParas((ArrayList<DisponiblePara>) daoDisp.buscarConIdCompe(id, conn));
-		c.setUsuario(new Usuario(GestorUsuario.usuario_autenticado));
+		c.setUsuario(GestorUsuario.usuario_autenticado);
 		c.setFormaPuntuacion(daoFP.buscarPorId(rs.getInt("forma_puntuacion"),conn));
 		c.setFixture(daoF.buscarPorIdCompetencia(id,conn));
 		}

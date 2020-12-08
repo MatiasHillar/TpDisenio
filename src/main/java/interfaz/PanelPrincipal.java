@@ -55,7 +55,7 @@ public class PanelPrincipal extends PanelGenerico{
 		buttonListarCompetencias.setPreferredSize(tamBotonesGen);
 		buttonAltaCompetencia.setPreferredSize(tamBotonesGen);
 		buttonSalir.setPreferredSize(tamBotonesGen);
-		if(GestorUsuario.usuario_autenticado==-1) {
+		if(GestorUsuario.usuario_autenticado==null) {
 			buttonAltaCompetencia.setEnabled(false);
 			buttonListarCompetencias.setEnabled(false);
 		}
