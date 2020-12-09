@@ -83,7 +83,7 @@ public class PanelAltaParticipante extends PanelGenerico {
 				//ParticipanteDAO.delete(SELECCIONADO);
 				JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 				ventana.setContentPane(new PanelListarParticipantes(dtoCompetencia));
-				ventana.setSize(tamAltaComp);
+				ventana.setSize(tamListarPart);
 				ventana.setLocationRelativeTo(null);
 				ventana.revalidate();
 				ventana.repaint();

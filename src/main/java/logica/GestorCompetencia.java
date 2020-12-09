@@ -314,7 +314,11 @@ public class GestorCompetencia {
 		if(competencia.getParticipantes().size()<2)
 			return "No puede generar fixture con menos de dos participantes";
 		
-		ArrayList<DisponiblePara> disponibilidadesAAsignar = new ArrayList<DisponiblePara>(competencia.getDisponibleParas());
+		ArrayList<DisponiblePara> disponibilidadesAAsignar = new ArrayList<DisponiblePara>();
+		for(DisponiblePara dp: competencia.getDisponibleParas()) {
+			disponibilidadesAAsignar.add(new DisponiblePara(competencia, dp.getLugarRealizacion(), dp.getCantidadEncuentros()));
+		}
+		
 		if(competencia.getClass() == Liga.class) {
 			if(competencia.getParticipantes().size()%2==0) {
 				System.out.println(cantEncuentrosDisponibles);

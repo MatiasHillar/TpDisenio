@@ -219,7 +219,7 @@ public class PanelVerCompetencia extends PanelGenerico {
 					JFrame ventana = ((JFrame) SwingUtilities.getWindowAncestor(((JButton) e.getSource()).getParent()));
 					ventana.setContentPane(new PanelListarParticipantes(dtoCompetencia));
 					ventana.revalidate();
-					ventana.setSize(500,600);
+					ventana.setSize(tamListarPart);
 					ventana.setLocationRelativeTo(null);
 					ventana.repaint();
 				}
@@ -232,6 +232,13 @@ public class PanelVerCompetencia extends PanelGenerico {
 				String Resultado;
 				Resultado = GestorCompetencia.generarFixture(dtoCompetencia);
 				JOptionPane.showMessageDialog(ventana,Resultado);
+				if(Resultado.equals("Se generó el fixture exitosamente.")) {
+					ventana.setContentPane(new PanelVerCompetencia(GestorCompetencia.buscarCompetencia(dtoCompetencia.getIdCompetencia())));
+					ventana.revalidate();
+					ventana.setSize(tamVerComp);
+					ventana.setLocationRelativeTo(null);
+					ventana.repaint();
+				}
 			}
 		};
 		botonGenFixture.addActionListener(generarFixtureListener);
@@ -247,7 +254,6 @@ public class PanelVerCompetencia extends PanelGenerico {
 			}
 		};
 		botonCancelar.addActionListener(cancelarListener);
-		if(!dtoCompetencia.getEstado().equals("CREADA"))
 			construirTablaEncuentros(setearColumnasEncuentros(),obtenerMatrizDatosEncuentros(0));
 			construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());
 	}

@@ -68,7 +68,7 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 	private static final String DELETE_COMPETENCIA = "DELETE FROM pruebacomp.COMPETENCIA WHERE "
 			+ "'id_competencia' = ?";
 	
-	
+	private static final String UPDATE_ESTADO = "UPDATE pruebacomp.COMPETENCIA SET estado = ? WHERE id_competencia = ?";
 	
 	private FormaDePuntuacionDAO daoFP = new FormaDePuntuacionDAOimpl();
 	private DisponibilidadDAO daoDisp = new DisponibilidadDAOimpl();
@@ -219,32 +219,32 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 				
 			
 			if(c instanceof Liga) {
-				pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " " + filtros );	
+				pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado.getIdUsuario() + " " + filtros );	
 				res = pstmt.executeQuery();
 				competencias.addAll(armarListaDeCompes(res, "Liga"));
 			}
 			else {
 				if(c instanceof EliminacionSimple) {
-					pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " "+ filtros );	
+					pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado.getIdUsuario() + " "+ filtros );	
 					res = pstmt.executeQuery();
 					competencias.addAll(armarListaDeCompes(res, "Eliminacion Simple"));
 
 				}
 				else {
 					if(c instanceof EliminacionDoble) {
-						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " "+ filtros );
+						pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado.getIdUsuario() + " "+ filtros );
 						res = pstmt.executeQuery();
 						competencias.addAll(armarListaDeCompes(res, "Eliminacion Doble"));
 
 					}
 					else {
-							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " " + filtros);
+							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.liga as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado.getIdUsuario() + " " + filtros);
 							res = pstmt.executeQuery();
 							competencias.addAll(armarListaDeCompes(res, "Liga"));
-							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " " + filtros );
+							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_simple as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado.getIdUsuario() + " " + filtros );
 							res = pstmt.executeQuery();
 							competencias.addAll(armarListaDeCompes(res, "Eliminacion Simple"));
-							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado + " " + filtros );
+							pstmt = conn.prepareStatement(SELECT_BY_FILTERS + "INNER JOIN pruebacomp.eliminacion_doble as LI ON COM.id_competencia=LI.id_competencia WHERE usuario_dueno=" + GestorUsuario.usuario_autenticado.getIdUsuario() + " " + filtros );
 							res = pstmt.executeQuery();
 							competencias.addAll(armarListaDeCompes(res, "Eliminacion Doble"));
 							
@@ -574,6 +574,30 @@ public class CompetenciaDAOimpl implements CompetenciaDAO{
 		
 		
 		return c;
+	}
+
+
+	public void actualizarEstado(Connection conn, int idCompetencia, String estado) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement(UPDATE_ESTADO);
+			pstmt.setString(1, estado);
+			pstmt.setInt(2, idCompetencia);
+			pstmt.executeUpdate();
+			
+			
+		}
+		catch(SQLException e){
+			throw e;
+		}
+		finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 		
 	}

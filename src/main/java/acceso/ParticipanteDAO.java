@@ -16,7 +16,7 @@ import logica.Participante;
  */
 public interface ParticipanteDAO {
 	public void saveOrUpdate(Participante p)throws SQLException;
-	public void delete (int id);
+	public void delete (Participante p) throws SQLException;
 	public void deleteByFilters(String nombre, String email);
 	public List<Participante> buscar(int id, Connection conn);
 	Participante buscarPorId(int id, Connection conn);

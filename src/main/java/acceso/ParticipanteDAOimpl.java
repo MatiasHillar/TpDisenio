@@ -75,7 +75,7 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(Participante p) throws SQLException{
 		// TODO Auto-generated method stub
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
@@ -83,13 +83,16 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 		try {
 			conn.setAutoCommit(false);
 			pstmt = conn.prepareStatement(DELETE_PARTICIPANTE);
-			pstmt.setInt(1, id);
+			pstmt.setInt(1, p.getIdParticipante());
 			pstmt.execute();
+			
+			(new FixtureDAOimpl()).deleteByCompetencia(conn, p.getCompetencia().getIdCompetencia());
 			
 			
 			conn.commit();
 		}
 		catch(SQLException e) {
+			conn.rollback();
 			e.printStackTrace();
 		}
 		try {
@@ -200,5 +203,48 @@ public class ParticipanteDAOimpl implements ParticipanteDAO{
 		return p;
 		
 	}
-
+	
+	
+	public void save(Participante p) throws SQLException {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn.setAutoCommit(false);
+			if(p.getIdParticipante() == null) {
+				pstmt = conn.prepareStatement(INSERT_PARTICIPANTE);
+				pstmt.setString(1, p.getNombre());
+				pstmt.setString(2, p.getEmail());
+				pstmt.setInt(3, p.getCompetencia().getIdCompetencia());
+				pstmt.execute();
+				
+				(new FixtureDAOimpl()).deleteByCompetencia(conn, p.getCompetencia().getIdCompetencia());
+				
+				
+			}
+			else {
+				pstmt = conn.prepareStatement(UPDATE_PARTICIPANTE);
+				pstmt.setString(1, p.getNombre());
+				pstmt.setString(2, p.getEmail());
+				pstmt.executeUpdate();
+				
+				
+			}
+			
+			conn.commit();
+		}
+		catch(SQLException e) {
+			conn.rollback();
+		}
+		
+		try {
+			if(pstmt!=null)pstmt.close();
+			if(conn!=null)conn.close();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

@@ -115,7 +115,7 @@ public class PanelListarParticipantes extends PanelGenerico{
 			opcionElegida=JOptionPane.showOptionDialog(null,"Esta seguro de que desea borrar el participante seleccionado?","Confirme eliminación"
 					,JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,opcionesDialog,null);
 			if(opcionElegida==JOptionPane.YES_OPTION) {
-				GestorParticipante.deleteParticipante(idSeleccionado);
+				GestorParticipante.deleteParticipante(idSeleccionado, dtoComp);
 				dtoComp.setParticipantes(nuevaLista);
 			}
 			construirTablaParticipantes(setearColumnasParticipantes(),obtenerArrayDatosParticipantes());

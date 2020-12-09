@@ -49,7 +49,7 @@ public class GestorParticipante {
 		p.setEmail(email_participante);
 		p.setCompetencia(new Competencia(id_competencia));
 		try {
-			(new ParticipanteDAOimpl()).saveOrUpdate(p);
+			(new ParticipanteDAOimpl()).save(p);
 		}
 		catch(SQLException e) {
 			return "Hubo un error al guardar el participante";
@@ -66,8 +66,14 @@ public class GestorParticipante {
 	
 	
 	
-	public static void deleteParticipante(String id) {
-		(new ParticipanteDAOimpl()).delete(Integer.valueOf(id));
+	public static void deleteParticipante(String id, CompetenciaDTO dtoComp) {
+		Participante p = new Participante(id, new Competencia(dtoComp.getIdCompetencia()));
+		try {
+			(new ParticipanteDAOimpl()).delete(p);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 }

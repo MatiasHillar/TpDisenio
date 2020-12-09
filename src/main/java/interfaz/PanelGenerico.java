@@ -23,7 +23,7 @@ public class PanelGenerico extends JPanel {
 	static final Color colorFondoBoton =  Color.decode("#112349");
 	static final Color colorTextoBoton =  Color.white;
 	static final Dimension tamAgregarlugar = new Dimension(450, 700);
-	
+	static final Dimension tamListarPart = new Dimension(500,600);
 	public PanelGenerico() {
 		super();
 	}

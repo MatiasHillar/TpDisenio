@@ -20,6 +20,12 @@ public Participante() {
 	// TODO Auto-generated constructor stub
 }
 
+public Participante(String id, Competencia competencia) {
+	this.idParticipante = Integer.valueOf(id);
+	this.competencia = competencia;
+	
+}
+
 public Competencia getCompetencia() {
 	return competencia;
 }

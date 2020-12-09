@@ -66,6 +66,7 @@ public class FixtureDAOimpl implements FixtureDAO {
 			pstmt = conn.prepareStatement(DELETE_FIXTURE);
 			pstmt.setInt(1, idCompetencia);
 			pstmt.execute();
+			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -122,6 +123,32 @@ public class FixtureDAOimpl implements FixtureDAO {
 		return f;
 		
 		
+	}
+	
+	
+	public void deleteByCompetencia(Connection conn, int idCompetencia) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(DELETE_FIXTURE);
+			pstmt.setInt(1, idCompetencia);
+			pstmt.execute();
+			
+			(new CompetenciaDAOimpl()).actualizarEstado( conn,  idCompetencia , "CREADA");
+			
+		}
+		catch(SQLException e) {
+			throw e;
+		}
+		finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }
