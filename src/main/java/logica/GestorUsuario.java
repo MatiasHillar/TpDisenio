@@ -6,7 +6,7 @@ package logica;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import acceso.ProvinciaDAOimpl;
+import acceso.ProvinciaDAOimplHTTP;
 import acceso.UsuarioDAOimpl;
 import excepciones.UsuarioExistenteException;
 
@@ -21,7 +21,7 @@ public class GestorUsuario {
 
 	  public static ArrayList<ProvinciaDTO> obtenerProvincias() {
 	    ArrayList<ProvinciaDTO> provinciasDTO = new ArrayList<ProvinciaDTO>();
-	    ArrayList<Provincia> provincias = (ArrayList<Provincia>) (new ProvinciaDAOimpl()).buscarProvincias();
+	    ArrayList<Provincia> provincias = (ArrayList<Provincia>) (new ProvinciaDAOimplHTTP()).buscarProvincias();
 	    
 	    for(Provincia p: provincias) {
 	      ProvinciaDTO dto = new ProvinciaDTO(p.getNombre(), p.getLocalidades());

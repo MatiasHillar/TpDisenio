@@ -23,7 +23,7 @@ import logica.Provincia;
  * @author Pichi
  *
  */
-public class LocalidadDAOimpl implements LocalidadDAO {
+public class LocalidadDAOimplHTTP implements LocalidadDAO {
 
 	@Override
 	public ArrayList<Localidad> buscarPorProvincia(Long id) {

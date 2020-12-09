@@ -23,9 +23,9 @@ import logica.Provincia;
  * @author Pichi
  *
  */
-public class ProvinciaDAOimpl implements ProvinciaDAO{
+public class ProvinciaDAOimplHTTP implements ProvinciaDAO{
 
-	private LocalidadDAO daoLoc = new LocalidadDAOimpl();
+	private LocalidadDAO daoLoc = new LocalidadDAOimplHTTP();
 	
 	@Override
 	public List<Provincia> buscarProvincias() {
