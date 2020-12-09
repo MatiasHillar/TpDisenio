@@ -32,12 +32,17 @@ public class ButtonGenerico extends JButton{
 			g.drawRoundRect( getWidth()-2,getHeight()-2, getWidth()+2, getHeight()+2, 15, 15);
 		}
 		else if(!this.isEnabled()) {
+
+			
+			
 			Graphics2D g2 = (Graphics2D) g.create();
 			g2.setPaint(new GradientPaint(new Point(0, 0), Color.decode("#112379"),
 					new Point(0,getHeight()),Color.decode("#112349")));
 			g2.fillRoundRect(0, 0, getWidth(), getHeight(),20,20);
 			g2.setPaint(Color.white);
-			g2.drawString(getText(),(getWidth()/4)-5,((getHeight()/2)+this.getFont().getSize()/3));
+			int stringLen = (int)  g2.getFontMetrics().getStringBounds(getText(), g2).getWidth();
+		        int start = getWidth()/2 - stringLen/2;
+		        g2.drawString(getText(), start, (getHeight()/2)+4);
 			g2.dispose();
 			}
         
